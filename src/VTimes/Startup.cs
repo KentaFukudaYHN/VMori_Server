@@ -1,5 +1,7 @@
+using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Services._RecommendVideos;
+using ApplicationCore.Interfaces._DataServices;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -86,11 +88,16 @@ namespace Api
             //DIƒRƒ“ƒeƒi‚ÉEfgRepository‚Ì“o˜^
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
+            //DIƒRƒ“ƒeƒi‚ÉDataService‚Ì“o˜^
+            services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
+
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosService), typeof(RecommendVideosService));
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosWorker), typeof(RecommendVideosWorker));
+            services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
         }
     }
 }

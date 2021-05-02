@@ -7,7 +7,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Services._Auth
+namespace ApplicationCore.Services
 {
     /// <summary>
     /// 認証Service

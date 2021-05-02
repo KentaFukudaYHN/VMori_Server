@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Services._RecommendVideos
+namespace ApplicationCore.Services
 {
     /// <summary>
     /// おすすめ動画Service

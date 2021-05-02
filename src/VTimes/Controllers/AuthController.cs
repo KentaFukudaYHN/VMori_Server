@@ -6,7 +6,6 @@ using VMori.ViewModel;
 
 namespace VMori.Controllers
 {
-    [ApiController]
     public class AuthController : Controller
     {
         private readonly IAuthWorker _authWorker;
