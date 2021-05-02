@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
+    public abstract class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
         private readonly VMoriContext _db;
 

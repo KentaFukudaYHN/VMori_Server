@@ -1,11 +1,9 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Interfaces;
-using ApplicationCore.Specifications;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Interfaces._DataServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -16,10 +14,15 @@ namespace ApplicationCore.Services._Auth
     /// </summary>
     public class AuthService : IAuthService
     {
-        IAsyncRepository<Account> _accountRepository;
-        public AuthService(IAsyncRepository<Account> accountRepository)
+        IAccountDataService _accountDataService;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="accountDataService"></param>
+        public AuthService(IAccountDataService accountDataService)
         {
-            _accountRepository = accountRepository;
+            _accountDataService = accountDataService;
         }
 
         /// <summary>
@@ -33,8 +36,7 @@ namespace ApplicationCore.Services._Auth
             if (string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(ps))
                 throw new ArgumentException();
 
-            var list = await _accountRepository.ListAsync(new AccountSpecification(mail, ps));
-            var account = list.FirstOrDefault();
+            var account = await _accountDataService.GetAsync(mail, ps);
             if (account == null)
                 return false;
 
