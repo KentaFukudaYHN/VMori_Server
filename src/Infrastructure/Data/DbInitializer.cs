@@ -20,6 +20,18 @@ namespace Infrastructure.Data
                 new VideoInfo() { ID = Guid.NewGuid().ToString(), Title = "新人Vtuber ヒトリコ"}
             );;
 
+            db.Accounts.Add(new Account()
+            {
+                ID = Guid.NewGuid().ToString(),
+                Name = "ant",
+                Mail = "vmori.test2@gmail.com",
+                Password = "test",
+                Icon = "aaa.png",
+                Gender = ApplicationCore.Enum.GenderKinds.Male,
+                Birthday = "20000101",
+                RegistDateTime = DateTime.Parse("19900101")
+            }); ;
+
             //遅延実行
             db.SaveChanges();
         }
