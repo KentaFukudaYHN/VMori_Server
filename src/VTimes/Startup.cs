@@ -1,8 +1,11 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services._RecommendVideos;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +39,8 @@ namespace Api
 
             app.UseCors(LocalAllowSpecificOrigins);
 
+            app.UseCookiePolicy();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -47,6 +52,18 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //Cookie認証の設定
+            services.Configure<CookiePolicyOptions>(o =>
+            {
+                o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
+                o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
+            });
+
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+            
+            //CORSの設定
             services.AddCors(options =>
             {
                 options.AddPolicy(name: LocalAllowSpecificOrigins,
