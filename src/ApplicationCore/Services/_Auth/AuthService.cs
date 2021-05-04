@@ -56,7 +56,7 @@ namespace ApplicationCore.Services
                 //認証セッションの有効期限を1日に設定
                 ExpiresUtc = DateTimeOffset.Now.AddDays(1),
                 //認証セッションの要求間の永続化
-                IsPersistent = true
+                IsPersistent = false
             };
 
             await context.SignInAsync(

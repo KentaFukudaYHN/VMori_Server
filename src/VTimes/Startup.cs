@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.Workers;
 
@@ -35,19 +36,27 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
             app.UseRouting();
 
             app.UseCors(LocalAllowSpecificOrigins);
 
-            app.UseCookiePolicy();
-
+            app.UseAuthentication();
             app.UseAuthorization();
+
+
+
+
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action}/{id?}");
             });
 
         }
@@ -55,15 +64,34 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             //Cookie認証の設定
-            services.Configure<CookiePolicyOptions>(o =>
-            {
-                o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
-                o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
-            });
+            //services.Configure<CookiePolicyOptions>(o =>
+            //{
+            //    o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
+            //    o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
+            //    o.
+            //});
 
             services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options => {
+                    options.SlidingExpiration = true;
+                    options.Events.OnRedirectToLogin = cxt =>
+                    {
+                        cxt.Response.StatusCode = 401;
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToAccessDenied = cxt =>
+                    {
+                        cxt.Response.StatusCode = 403;
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnRedirectToLogout = cxt => Task.CompletedTask;
+                });
             
             //CORSの設定
             services.AddCors(options =>
@@ -74,7 +102,8 @@ namespace Api
                         builder
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithOrigins(new string[] { "http://localhost", "https://vmireba-client-dev.azurewebsites.net" });
+                            .WithOrigins(new string[] { "http://localhost:3000", "https://localhost:3000" })
+                            .AllowCredentials();
                     });
             });
 

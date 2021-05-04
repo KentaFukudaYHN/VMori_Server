@@ -6,6 +6,8 @@ using VMori.ViewModel;
 
 namespace VMori.Controllers
 {
+    [Route("[controller]/{action}")]
+    [ApiController]
     public class AuthController : Controller
     {
         private readonly IAuthWorker _authWorker;
@@ -19,11 +21,17 @@ namespace VMori.Controllers
             _authWorker = authWorker;
         }
 
+        public IActionResult LoginTest()
+        {
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+
         /// <summary>
         /// ログイン
         /// </summary>
         /// <param name="vModel"></param>
         /// <returns></returns>
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vModel)
         {
             var isValid = await _authWorker.Login(vModel, HttpContext);

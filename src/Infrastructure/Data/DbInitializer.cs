@@ -29,7 +29,7 @@ namespace Infrastructure.Data
                 Icon = "aaa.png",
                 Gender = ApplicationCore.Enum.GenderKinds.Male,
                 Birthday = "20000101",
-                RegistDateTime = DateTime.Parse("19900101")
+                RegistDateTime = new DateTime(1994,4,15)
             }); ;
 
             //遅延実行
