@@ -64,12 +64,11 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             //Cookie認証の設定
-            //services.Configure<CookiePolicyOptions>(o =>
-            //{
-            //    o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
-            //    o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
-            //    o.
-            //});
+            services.Configure<CookiePolicyOptions>(o =>
+            {
+                o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
+                o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
+            });
 
             services
                 .AddAuthentication(options =>
