@@ -28,6 +28,8 @@ namespace Infrastructure.Data
         {
             modelBuilder.Entity<VideoInfo>().ToTable("VideoInfo");
             modelBuilder.Entity<Account>().ToTable("Account");
+            modelBuilder.Entity<Account>().HasKey(x => new { x.ID, x.Mail }); //Accountテーブルはmailとidで複合キー
+
         }
     }
 }

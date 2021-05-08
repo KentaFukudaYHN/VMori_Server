@@ -15,8 +15,6 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// メールアドレス
         /// </summary>
-        [Key]
-        [Column(Order = 0)]
         public string Mail { get; set; }
 
         /// <summary>
@@ -38,6 +36,11 @@ namespace ApplicationCore.Entities
         /// 誕生日 YYYYMMdd
         /// </summary>
         public string Birthday { get; set; }
+
+        /// <summary>
+        /// メールアドレスの本人確認済み
+        /// </summary>
+        public bool AppMail { get; set; }
 
         /// <summary>
         /// 登録日時

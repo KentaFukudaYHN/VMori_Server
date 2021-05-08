@@ -9,7 +9,6 @@ namespace ApplicationCore.Entities
     public abstract class BaseEntity
     {
         [Key]
-        [Column(Order = 0)]
         public virtual string ID { get; set; }
     }
 }
