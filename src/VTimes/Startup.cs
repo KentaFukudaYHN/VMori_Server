@@ -1,6 +1,5 @@
 using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Interfaces._DataServices;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -47,10 +46,6 @@ namespace Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-
-
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -101,7 +96,7 @@ namespace Api
                         builder
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithOrigins(new string[] { "http://localhost:3000", "https://localhost:3000" })
+                            .WithOrigins(new string[] { "http://localhost:3000" })
                             .AllowCredentials();
                     });
             });
@@ -122,10 +117,13 @@ namespace Api
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosService), typeof(RecommendVideosService));
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            services.AddScoped(typeof(IHashService), typeof(HashService));
+            services.AddScoped(typeof(IAccountService), typeof(AccountService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosWorker), typeof(RecommendVideosWorker));
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
+            services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
         }
     }
 }

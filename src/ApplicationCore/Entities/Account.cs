@@ -1,5 +1,7 @@
 ﻿using ApplicationCore.Enum;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationCore.Entities
 {
@@ -13,6 +15,8 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// メールアドレス
         /// </summary>
+        [Key]
+        [Column(Order = 0)]
         public string Mail { get; set; }
 
         /// <summary>

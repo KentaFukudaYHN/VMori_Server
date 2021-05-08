@@ -1,9 +1,11 @@
-﻿using ApplicationCore.Interfaces;
-using ApplicationCore.Interfaces._DataServices;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+using ApplicationCore.ReqRes;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

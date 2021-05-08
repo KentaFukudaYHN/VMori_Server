@@ -19,5 +19,12 @@ namespace ApplicationCore.Specifications
         /// <param name="ps"></param>
         public AccountSpecification(string mail, string ps)
             : base(a => a.Mail == mail && a.Password == ps) { }
+
+        /// <summary>
+        /// メールアドレスで検索
+        /// </summary>
+        /// <param name="mail"></param>
+        public AccountSpecification(string mail)
+            : base(a => a.Mail == mail) { }
     }
 }

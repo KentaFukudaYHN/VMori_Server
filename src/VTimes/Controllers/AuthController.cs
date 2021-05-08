@@ -7,7 +7,6 @@ using VMori.ViewModel;
 namespace VMori.Controllers
 {
     [Route("[controller]/{action}")]
-    [ApiController]
     public class AuthController : VMoriBaseController
     {
         private readonly IAuthWorker _authWorker;

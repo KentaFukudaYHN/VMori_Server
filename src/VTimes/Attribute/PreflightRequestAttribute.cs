@@ -31,7 +31,7 @@ namespace VMori.Attribute
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.Request.Headers.Keys.Contains(headerKey) == false)
+            if (context.HttpContext.Request.Method == "POST" && context.HttpContext.Request.Headers.Keys.Contains(headerKey) == false)
                 context.Result = new BadRequestObjectResult("許可されてない通信方法です");
         }
     }

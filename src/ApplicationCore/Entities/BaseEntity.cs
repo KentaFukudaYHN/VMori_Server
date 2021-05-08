@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationCore.Entities
 {
@@ -8,6 +9,7 @@ namespace ApplicationCore.Entities
     public abstract class BaseEntity
     {
         [Key]
+        [Column(Order = 0)]
         public virtual string ID { get; set; }
     }
 }

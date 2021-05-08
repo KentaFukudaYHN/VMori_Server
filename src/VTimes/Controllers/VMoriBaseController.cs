@@ -12,6 +12,9 @@ namespace VMori.Controllers
     /// Vtuberの森のBaseController
     /// </summary>
     [PreflightRequest]
+    [Consumes("application/json")]
+    [Route("[controller]/{action}")]
+    [ApiController]
     public abstract class VMoriBaseController : Controller
     {
 
