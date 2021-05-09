@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,6 +40,23 @@ namespace ApplicationCore.DataServices
                 return null;
 
             return account;
+        }
+
+        /// <summary>
+        /// メールアドレス本人認証の更新
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> UpdateAppMail(string id, bool appMail)
+        {
+            var account = new Account()
+            {
+                ID = id,
+                AppMail = appMail
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.AppMail) });
+
+            return true;
         }
 
         /// <summary>

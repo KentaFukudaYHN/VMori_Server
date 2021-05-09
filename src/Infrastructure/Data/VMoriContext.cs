@@ -24,11 +24,20 @@ namespace Infrastructure.Data
         /// </summary>
         public DbSet<Account> Accounts { get; set; }
 
+        /// <summary>
+        /// メールアドレス認証要求
+        /// </summary>
+        public DbSet<AppReqMail> AppReqMails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VideoInfo>().ToTable("VideoInfo");
+
             modelBuilder.Entity<Account>().ToTable("Account");
             modelBuilder.Entity<Account>().HasKey(x => new { x.ID, x.Mail }); //Accountテーブルはmailとidで複合キー
+            
+            modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
+            modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });
 
         }
     }
