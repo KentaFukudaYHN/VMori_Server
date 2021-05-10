@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,13 +9,19 @@ using System.Threading.Tasks;
 
 namespace VMori.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : Controller
     {
-        public string Get()
+        private readonly IMailService _mailService;
+        public ValuesController(IMailService mailService)
         {
+            _mailService = mailService;
+        }
+
+        public async Task<string> Get()
+        {
+            await _mailService.SendMail("kenterta0@gmail.com", "テスト", "こんにちは");
             return "Hello World 1";
         }
     }

@@ -2,6 +2,7 @@ using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
+using Infrastructure.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -120,6 +121,7 @@ namespace Api
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IHashService), typeof(HashService));
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
+            services.AddScoped(typeof(IMailService), typeof(SendGridService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosWorker), typeof(RecommendVideosWorker));
