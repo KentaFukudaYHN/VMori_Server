@@ -11,16 +11,16 @@ namespace ApplicationCore.Services
     {
         private readonly IAccountDataService _accountDataService;
         private readonly IAppReqMailDataService _appReqMailDataService;
-        private readonly IHashService _hashService;
+        private readonly IMailService _mailService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IHashService hashService)
+        public AccountService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IMailService mailService)
         {
             _accountDataService = accountDataService;
             _appReqMailDataService = appReqMailDataService;
-            _hashService = hashService;
+            _mailService = mailService;
         }
 
         /// <summary>
@@ -49,11 +49,19 @@ namespace ApplicationCore.Services
                 RegistDateTime = DateTime.Now
             };
 
-            await _accountDataService.RegistAsync(account);
+            //await _accountDataService.RegistAsync(account);
 
             //メールアドレスの本人認証要求情報を登録
-            await this.AppReqMail(req.Mail);
+            //await this.AppReqMail(req.Mail);
 
+            //本人認証用のメールを送信
+            var msg = "<h2>こんにちは、" + req.Name + "さん！</h2>"
+                    + "<div>Vtuberの森アカウントの登録ありがとうございます！ <br/>" +
+                    "登録したメールアドレスが本人のものか確認する必要があります。<br/>" +
+                    "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
+                    "<a href='https://www.google.com/'>メールアドレスを認証する</a>";
+
+            await _mailService.SendMail(req.Mail, "メールアドレスの本人確認", msg);
             return true;
         }
 
