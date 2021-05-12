@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -6,7 +7,7 @@ namespace Infrastructure.Data
     /// <summary>
     /// VMoriDbContext
     /// </summary>
-    public class VMoriContext : DbContext
+    public class VMoriContext : DbContext, IDbContext
     {
         /// <summary>
         /// コンストラクタ

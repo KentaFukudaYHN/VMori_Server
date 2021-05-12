@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,12 +7,16 @@
       "sslPort": 44341
     }
   },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
+        "キー": "値",
+        "Mail__SendMailAddress": "yhn18782@gmail.com",
+        "ASPNETCORE_Mail__SendGridApiKey": "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",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -21,10 +24,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }

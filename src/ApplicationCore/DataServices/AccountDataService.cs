@@ -46,7 +46,7 @@ namespace ApplicationCore.DataServices
         /// メールアドレス本人認証の更新
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> UpdateAppMail(string id, bool appMail)
+        public async Task<bool> UpdateAppMail(string id, bool appMail, IDbContext db)
         {
             var account = new Account()
             {
@@ -54,7 +54,7 @@ namespace ApplicationCore.DataServices
                 AppMail = appMail
             };
 
-            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.AppMail) });
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.AppMail) }, db);
 
             return true;
         }

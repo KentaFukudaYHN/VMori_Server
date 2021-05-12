@@ -27,6 +27,6 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> Delete(string id);
+        Task<bool> Delete(string id, IDbContext db);
     }
 }

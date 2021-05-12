@@ -10,13 +10,13 @@ namespace Infrastructure.Data
 {
     public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
-        private readonly VMoriContext _db;
+        private readonly IDbContext _db;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="db"></param>
-        public EfRepository(VMoriContext db)
+        public EfRepository(IDbContext db)
         {
             _db = db;
         }
@@ -57,13 +57,18 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task<T> AddAsync(T entity)
         {
+            return await this.AddAsync(entity, _db);
+        }
+
+        public async Task<T> AddAsync(T entity, IDbContext db)
+        {
             if (string.IsNullOrEmpty(entity.ID))
             {
                 entity.ID = Guid.NewGuid().ToString();
             }
 
-            _db.Set<T>().Add(entity);
-            await _db.SaveChangesAsync();
+            db.Set<T>().Add(entity);
+            await db.SaveChangesAsync();
 
             return entity;
         }
@@ -75,8 +80,19 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task UpdateAsync(T entity)
         {
-            _db.Entry(entity).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
+            await UpdateAsync(entity, _db);
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task UpdateAsync(T entity, IDbContext db)
+        {
+            db.Entry(entity).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -86,8 +102,13 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task DeleteAsync(T entity)
         {
-            _db.Set<T>().Remove(entity);
-            await _db.SaveChangesAsync();
+            await this.DeleteAsync(entity, _db);
+        }
+
+        public async Task DeleteAsync(T entity, IDbContext db)
+        {
+            db.Set<T>().Remove(entity);
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -97,9 +118,14 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task DeleteByIdAsync(string id)
         {
-            var target = await _db.Set<T>().SingleOrDefaultAsync(x => x.ID == id);
-            _db.Set<T>().Remove(target);
-            await _db.SaveChangesAsync();
+            await this.DeleteByIdAsync(id, _db);
+        }
+
+        public async Task DeleteByIdAsync(string id, IDbContext db)
+        {
+            var target = await db.Set<T>().SingleOrDefaultAsync(x => x.ID == id);
+            db.Set<T>().Remove(target);
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -129,12 +155,23 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task UpdateAsyncOnlyClumn(T entity, List<string> propertys)
         {
+            await this.UpdateAsyncNotUpdateColumn(entity, propertys, _db);
+        }
+
+        /// <summary>
+        /// 特定のカラムの更新
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="Propertys">更新するカラム</param>
+        /// <returns></returns>
+        public async Task UpdateAsyncOnlyClumn(T entity, List<string> propertys, IDbContext db)
+        {
 
             var props = entity.GetType().GetProperties();
             var excludeFields = props.Where(x => !propertys.Contains(x.Name)).Select(x => x.Name).ToList();
-            await this.UpdateAsyncNotUpdateColumn(entity, excludeFields);
-
+            await this.UpdateAsyncNotUpdateColumn(entity, excludeFields, db);
         }
+
         /// <summary>
         /// 特定のカラムの更新
         /// </summary>
@@ -142,6 +179,17 @@ namespace Infrastructure.Data
         /// <param name="ExcludeFields">更新しないカラム</param>
         /// <returns></returns>
         public async Task UpdateAsyncNotUpdateColumn(T entity, List<string> ExcludeFields)
+        {
+            await this.UpdateAsyncNotUpdateColumn(entity, ExcludeFields, _db);
+        }
+
+        /// <summary>
+        /// 特定のカラムの更新
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="ExcludeFields">更新しないカラム</param>
+        /// <returns></returns>
+        public async Task UpdateAsyncNotUpdateColumn(T entity, List<string> ExcludeFields, IDbContext db)
         {
 
             var original = await GetByIdAsync(entity.ID);
@@ -154,7 +202,7 @@ namespace Infrastructure.Data
                 }
             }
 
-            await _db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
     }
 }

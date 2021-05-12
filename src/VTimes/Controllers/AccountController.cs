@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.ViewModel;
 
@@ -21,6 +22,7 @@ namespace VMori.Controllers
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [HttpPost]
         public async Task<bool> Regist(RegistAccountViewModel vm)
         {
             return await _accountWorker.Regist(vm);
@@ -34,6 +36,27 @@ namespace VMori.Controllers
         public async Task<bool> NotExitsMail(string mail)
         {
             return await _accountWorker.NotExitsMail(mail);
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証の最中か
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> CheckAppReqMail(string token)
+        {
+            return await _accountWorker.InMiddleAppReqMail(token);
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<AppReqMailRes> AppReqMail(AppReqMailReq req)
+        {
+            return await _accountWorker.AppReqMail(req);
         }
     }
 }

@@ -52,9 +52,9 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id, IDbContext db)
         {
-            await _asyncRepository.DeleteByIdAsync(id);
+            await _asyncRepository.DeleteByIdAsync(id, db);
 
             return true;
         }

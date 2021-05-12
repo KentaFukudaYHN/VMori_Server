@@ -1,6 +1,8 @@
-﻿using ApplicationCore.Entities;
+﻿using ApplicationCore.Config;
+using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ReqRes;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -12,15 +14,19 @@ namespace ApplicationCore.Services
         private readonly IAccountDataService _accountDataService;
         private readonly IAppReqMailDataService _appReqMailDataService;
         private readonly IMailService _mailService;
+        private readonly ClientConfig _clientConfig;
+        private readonly IDbContext _db;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IMailService mailService)
+        public AccountService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IMailService mailService, IOptions<ClientConfig> clientConfig, IDbContext db)
         {
             _accountDataService = accountDataService;
             _appReqMailDataService = appReqMailDataService;
             _mailService = mailService;
+            _clientConfig = clientConfig.Value;
+            _db = db;
         }
 
         /// <summary>
@@ -49,36 +55,61 @@ namespace ApplicationCore.Services
                 RegistDateTime = DateTime.Now
             };
 
-            //await _accountDataService.RegistAsync(account);
+            await _accountDataService.RegistAsync(account);
 
             //メールアドレスの本人認証要求情報を登録
-            //await this.AppReqMail(req.Mail);
+            var token = this.CreateAppReqMailToken();
+            await this.AppReqMail(req.Mail, token);
 
             //本人認証用のメールを送信
             var msg = "<h2>こんにちは、" + req.Name + "さん！</h2>"
                     + "<div>Vtuberの森アカウントの登録ありがとうございます！ <br/>" +
                     "登録したメールアドレスが本人のものか確認する必要があります。<br/>" +
                     "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
-                    "<a href='https://www.google.com/'>メールアドレスを認証する</a>";
+                    "<a href='" + _clientConfig.Domain + "/AppReqMail?token=" + token + "'>メールアドレスを認証する</a>";
 
-            await _mailService.SendMail(req.Mail, "メールアドレスの本人確認", msg);
+            //await _mailService.SendMail(req.Mail, "メールアドレスの本人確認", msg);
             return true;
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証用のTokenを生成
+        /// </summary>
+        /// <returns></returns>
+        private string CreateAppReqMailToken()
+        {
+            return Guid.NewGuid().ToString().Replace("-", string.Empty);
         }
 
         /// <summary>
         /// メールアドレスの本人認証要求
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> AppReqMail(string mail)
+        private async Task<bool> AppReqMail(string mail, string token)
         {
+            if (string.IsNullOrEmpty(token))
+            {
+                token = this.CreateAppReqMailToken();
+            }
+
             var appReqMail = new AppReqMail()
             {
                 ID = Guid.NewGuid().ToString(),
-                Token = Guid.NewGuid().ToString().Replace("-", string.Empty),
+                Token = token,
                 Mail = mail,
                 RegistDateTime = DateTime.Now
             };
             return await _appReqMailDataService.Regist(appReqMail);
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証要求
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns></returns>
+        public async Task<bool> AppReqMail(string mail)
+        {
+            return await this.AppReqMail(mail, null);
         }
 
         /// <summary>
@@ -88,6 +119,9 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         public async Task<bool> InMiddleAppReqMail(string token)
         {
+            if (string.IsNullOrEmpty(token))
+                return false;
+
             var appReqMail = await _appReqMailDataService.GetByToken(token);
 
             if (appReqMail == null)
@@ -103,7 +137,7 @@ namespace ApplicationCore.Services
         /// <param name="password"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<(bool, string)> CertificationAppReqMail(string mail, string password, string token)
+        public async Task<(bool, string)> CertificationAppReqMail(string password, string token)
         {
             //AppReqMailの情報を取得
             var appReqMail = await _appReqMailDataService.GetByToken(token);
@@ -116,13 +150,27 @@ namespace ApplicationCore.Services
                 return (false, "認証期間を過ぎています。アカウント情報画面から再度メールアドレスの認証を行ってください。");
 
             //Account情報の取得
-            var account = await _accountDataService.GetAsync(mail, password);
+            var account = await _accountDataService.GetAsync(appReqMail.Mail, password);
 
             if (account == null)
                 return (false, "パスワードが間違っています。");
 
-            //AppReqの更新
-            await _accountDataService.UpdateAppMail(account.ID, true);
+            using(var tx = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    //AppReqの更新
+                    await _accountDataService.UpdateAppMail(account.ID, true, _db);
+
+                    //AppReqMailのレコードを削除
+                    await _appReqMailDataService.Delete(appReqMail.ID, _db);
+
+                    tx.Commit();
+                }catch(Exception ex)
+                {
+                    tx.Rollback();
+                }
+            }
 
             return (true, "");
         }

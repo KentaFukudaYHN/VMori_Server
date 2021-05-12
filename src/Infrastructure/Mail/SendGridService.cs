@@ -1,5 +1,7 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Config;
+using ApplicationCore.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
@@ -13,14 +15,15 @@ namespace Infrastructure.Mail
     /// </summary>
     public class SendGridService : IMailService
     {
-        private readonly string from = "system@vmori.com";
+        private readonly MailConfig _mailConfig;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="configuration"></param>
-        public SendGridService()
+        public SendGridService(IOptions<MailConfig> mailConfig)
         {
+            _mailConfig = mailConfig.Value;
         }
 
         /// <summary>
@@ -32,9 +35,9 @@ namespace Infrastructure.Mail
         /// <returns></returns>
         public async Task<bool> SendMail(string toAddress, string title, string msg)
         {
-            var apikey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
+            var apikey = _mailConfig.ApiKey;
             var client = new SendGridClient(apikey);
-            var from = new EmailAddress(Environment.GetEnvironmentVariable("SENDGRID_TO"));
+            var from = new EmailAddress(_mailConfig.SystemMailAddress);
             var to = new EmailAddress(toAddress);
             var content = MailHelper.CreateSingleEmail(from, to, title, "", msg);
             var res = await client.SendEmailAsync(content).ConfigureAwait(false);

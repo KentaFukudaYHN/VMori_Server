@@ -1,3 +1,4 @@
+using ApplicationCore.Config;
 using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
@@ -106,8 +107,11 @@ namespace Api
 
             //DIコンテナにDbContext登録 ※接続文字列はVMoriContextFactoryで設定
             string connectionString = Configration.GetConnectionString("DefaultConnection");
-            
-            services.AddDbContext<VMoriContext>( o => o.UseSqlServer(connectionString));
+
+            services.AddEntityFrameworkSqlServer().AddDbContext<VMoriContext>(o => {
+                o.UseSqlServer(Configration.GetConnectionString("DefaultConnection"));
+            });
+            services.AddScoped<IDbContext>(provider => provider.GetService<VMoriContext>());
 
             //DIコンテナにEfgRepositoryの登録
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
@@ -127,6 +131,10 @@ namespace Api
             services.AddScoped(typeof(IRecommendVideosWorker), typeof(RecommendVideosWorker));
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
             services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
+
+            //DIコンテナにConfigの設定
+            services.Configure<MailConfig>(this.Configration.GetSection("Mail"));
+            services.Configure<ClientConfig>(this.Configration.GetSection("Client"));
         }
     }
 }

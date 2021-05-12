@@ -97,7 +97,7 @@ namespace ApplicationCore.Services
             //ターゲットの値をハッシュ化して確認
             var hashTarget = this.Hashing(target, byteList.ToArray());
 
-            return hashVal == hashTarget.Split('/')[1];
+            return hashVal == hashTarget.Split('/')[0];
         }
     }
 }

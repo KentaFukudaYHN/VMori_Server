@@ -2,3 +2,4 @@
 bin/
 obj/
 VMori.csproj.user
+appsettings.Development.json

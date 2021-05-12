@@ -50,5 +50,33 @@ namespace VMori.Workers
         {
             return await _accountService.NotExistsMail(mail);
         }
+
+        /// <summary>
+        /// メールアドレスの本人認証の最中か
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> InMiddleAppReqMail(string token)
+        {
+            return await _accountService.InMiddleAppReqMail(token);
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="password"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<AppReqMailRes> AppReqMail(AppReqMailReq req)
+        {
+            var result = await _accountService.CertificationAppReqMail(req.Password, req.Token);
+
+            return new AppReqMailRes()
+            {
+                Success = result.Item1,
+                ErrMsg = result.Item2
+            };
+        }
     }
 }

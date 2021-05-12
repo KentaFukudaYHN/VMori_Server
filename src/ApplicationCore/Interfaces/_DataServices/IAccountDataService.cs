@@ -31,11 +31,12 @@ namespace ApplicationCore.Interfaces
         Task<bool> RegistAsync(Account account);
 
         /// <summary>
-        /// メールアドレス本人認証の更新
+        /// メールアドレスの本人認証の更新
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="appMail"></param>
+        /// <param name="AppMail"></param>
+        /// <param name="db"></param>
         /// <returns></returns>
-        Task<bool> UpdateAppMail(string id, bool appMail);
+        Task<bool> UpdateAppMail(string id, bool AppMail, IDbContext db);
     }
 }
