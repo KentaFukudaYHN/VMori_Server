@@ -1,9 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.ViewModel;
@@ -33,5 +29,34 @@ namespace VMori.Workers
         {
             return await _authService.Login(vModel.Mail, vModel.Password, context);
         }
+
+        /// <summary>
+        /// メールアドレスの本人認証の最中か
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<bool> InMiddleAppReqMail(string token)
+        {
+            return await _authService.InMiddleAppReqMail(token);
+        }
+
+        /// <summary>
+        /// メールアドレスの本人認証
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="password"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public async Task<AppReqMailRes> AppReqMail(AppReqMailReq req)
+        {
+            var result = await _authService.CertificationMail(req.Password, req.Token);
+
+            return new AppReqMailRes()
+            {
+                Success = result.Item1,
+                ErrMsg = result.Item2
+            };
+        }
+
     }
 }
