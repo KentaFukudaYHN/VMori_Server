@@ -60,6 +60,12 @@ namespace Infrastructure.Data
             return await this.AddAsync(entity, _db);
         }
 
+        /// <summary>
+        /// 追加
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public async Task<T> AddAsync(T entity, IDbContext db)
         {
             if (string.IsNullOrEmpty(entity.ID))
@@ -135,6 +141,15 @@ namespace Infrastructure.Data
         public async Task<int> CountAsync()
         {
             return await _db.Set<T>().CountAsync();
+        }
+
+        /// <summary>
+        /// 検索結果の総数をカウント
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await this.ApplySpecification(spec).CountAsync();
         }
 
         /// <summary>

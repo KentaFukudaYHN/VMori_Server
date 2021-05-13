@@ -43,6 +43,16 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 名前が一致するアカウントを全件取得
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<List<Account>> GetListByNameAsync(string name)
+        {
+            return (await _repository.ListAsync(new AccountWithNameSpecification(name))).ToList();
+        }
+
+        /// <summary>
         /// メールアドレス本人認証の更新
         /// </summary>
         /// <returns></returns>
@@ -82,6 +92,16 @@ namespace ApplicationCore.DataServices
             await _repository.AddAsync(account);
 
             return true;
+        }
+
+        /// <summary>
+        /// アカウントの名前で検索した結果の総数を取得
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<int> CountByName(string name)
+        {
+            return await _repository.CountAsync(new AccountWithNameSpecification(name));
         }
     }
 }

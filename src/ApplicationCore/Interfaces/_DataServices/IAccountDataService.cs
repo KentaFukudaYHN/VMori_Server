@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
@@ -24,6 +25,13 @@ namespace ApplicationCore.Interfaces
         Task<Account> GetAsync(string mail, string password);
 
         /// <summary>
+        /// 名前が一致するアカウント全件取得
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<List<Account>> GetListByNameAsync(string name);
+
+        /// <summary>
         /// アカウント情報登録
         /// </summary>
         /// <param name="account"></param>
@@ -38,5 +46,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="db"></param>
         /// <returns></returns>
         Task<bool> UpdateAppMail(string id, bool AppMail, IDbContext db);
+
+        /// <summary>
+        /// 名前が一致するレコードの件数を取得
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<int> CountByName(string name);
     }
 }

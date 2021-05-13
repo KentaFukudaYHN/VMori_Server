@@ -14,10 +14,17 @@ namespace VMori.Interfaces
         Task<bool> Regist(RegistAccountViewModel vm);
 
         /// <summary>
-        /// メールアドレスの使用チェック
+        /// 登録可能な名前かチェック
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        Task<bool> NotExitsMail(string mail);
+        Task<bool> CanRegistMail(string mail);
+
+        /// <summary>
+        /// 登録可能な名前かチェック
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<bool> CanRegistName(string name);
     }
 }

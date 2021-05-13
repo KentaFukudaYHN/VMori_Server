@@ -33,9 +33,19 @@ namespace VMori.Controllers
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        public async Task<bool> NotExitsMail(string mail)
+        public async Task<bool> CanRegistMail(string mail)
         {
-            return await _accountWorker.NotExitsMail(mail);
+            return await _accountWorker.CanRegistMail(mail);
+        }
+
+        /// <summary>
+        /// 登録可能な名前かチェック
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<bool> CanRegistname(string name)
+        {
+            return await _accountWorker.CanRegistName(name);
         }
     }
 }

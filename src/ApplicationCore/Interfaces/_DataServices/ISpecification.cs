@@ -29,5 +29,13 @@ namespace ApplicationCore.Interfaces
         /// 降順条件
         /// </summary>
         Expression<Func<T, object>> OrderByDescending { get; }
+        /// <summary>
+        /// 件数を絞る
+        /// </summary>
+        bool IsTake { get; }
+        /// <summary>
+        /// 取得件数
+        /// </summary>
+        int Take { get; }
     }
 }

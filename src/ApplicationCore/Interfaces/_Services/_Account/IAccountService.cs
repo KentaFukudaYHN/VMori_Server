@@ -16,10 +16,17 @@ namespace ApplicationCore.Interfaces
         Task<bool> Regist(RegistAccountReq req);
 
         /// <summary>
-        /// メールアドレスの使用チェック
+        /// 使用可能なメールアドレスかチェック
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        Task<bool> NotExistsMail(string mail);
+        Task<bool> CanRegistMail(string mail);
+
+        /// <summary>
+        /// 使用可能な名前かチェック
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        Task<bool> CanRegistName(string name);
     }
 }

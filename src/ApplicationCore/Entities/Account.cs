@@ -8,6 +8,11 @@ namespace ApplicationCore.Entities
     public class Account : BaseEntity
     {
         /// <summary>
+        /// 表示用ID
+        /// </summary>
+        public string DisplayID { get; set; }
+
+        /// <summary>
         /// ニックネーム
         /// </summary>
         public string Name { get; set; }

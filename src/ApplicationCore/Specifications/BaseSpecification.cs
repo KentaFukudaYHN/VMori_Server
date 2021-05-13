@@ -44,6 +44,16 @@ namespace ApplicationCore.Specifications
         public Expression<Func<T, object>> OrderByDescending { get; private set; }
 
         /// <summary>
+        /// 件数を絞る
+        /// </summary>
+        public bool IsTake { get; private set; }
+
+        /// <summary>
+        /// 件数
+        /// </summary>
+        public int Take { get; private set; }
+
+        /// <summary>
         /// Entityの結合
         /// </summary>
         /// <param name="includeExpression"></param>
@@ -77,6 +87,16 @@ namespace ApplicationCore.Specifications
         protected virtual void ApplyOrderByDescending(Expression<Func<T,object>> orderByDecExpression)
         {
             OrderByDescending = orderByDecExpression;
+        }
+
+        /// <summary>
+        /// 取得件数を設定
+        /// </summary>
+        /// <param name="take"></param>
+        protected virtual void ApplyTake(int take)
+        {
+            IsTake = true;
+            Take = take;
         }
     }
 }

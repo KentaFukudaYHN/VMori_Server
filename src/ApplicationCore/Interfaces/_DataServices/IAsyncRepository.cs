@@ -97,7 +97,14 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<int> CountAsync();
-        
+
+        /// <summary>
+        /// 検索結果の総数をカウント
+        /// </summary>
+        /// <param name="spec"></param>
+        /// <returns></returns>
+        Task<int> CountAsync(ISpecification<T> spec);
+
         /// <summary>
         /// 削除
         /// </summary>

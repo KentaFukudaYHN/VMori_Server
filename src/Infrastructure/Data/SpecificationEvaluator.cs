@@ -36,6 +36,12 @@ namespace Infrastructure.Data
 
             }
 
+            //Takeが設定されていれば取得件数を設定する
+            if (specification.IsTake)
+            {
+                query = query.Take(specification.Take);
+            }
+
             return query;
         }
     }
