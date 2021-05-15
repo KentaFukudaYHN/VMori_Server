@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VMori.Interfaces;
-using VMori.ViewModel;
+using VMori.ReqRes;
 
 namespace VMori.Controllers
 {
@@ -28,7 +28,7 @@ namespace VMori.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<RecommendVideoHeaderViewModel> Get()
+        public async Task<RecommendVideoHeaderRes> Get()
         {
             return await _worker.GetList();
         }

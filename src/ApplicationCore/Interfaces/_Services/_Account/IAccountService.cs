@@ -1,4 +1,5 @@
-﻿using ApplicationCore.ReqRes;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.ReqRes;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
@@ -8,6 +9,13 @@ namespace ApplicationCore.Interfaces
     /// </summary>
     public interface IAccountService
     {
+        /// <summary>
+        /// ログイン中のアカウントを取得
+        /// </summary>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<AccountRes> GetLoginAccount(ApplicationDataContainer adc);
+
         /// <summary>
         /// アカウントの登録
         /// </summary>

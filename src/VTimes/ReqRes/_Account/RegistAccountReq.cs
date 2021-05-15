@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace VMori.ViewModel
+namespace VMori.ReqRes
 {
     /// <summary>
     /// アカウント登録ViewModel
     /// </summary>
-    public class RegistAccountViewModel
+    public class RegistAccountReq
     {
         /// <summary>
         /// メールアドレス
@@ -40,6 +40,6 @@ namespace VMori.ViewModel
         /// <summary>
         ///コンストラクタ
         /// </summary>
-        public RegistAccountViewModel() { }
+        public RegistAccountReq() { }
     }
 }

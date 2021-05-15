@@ -1,5 +1,5 @@
 ﻿
-namespace VMori.ViewModel
+namespace VMori.ReqRes
 { 
     /// <summary>
     /// メールアドレス本人認証要求

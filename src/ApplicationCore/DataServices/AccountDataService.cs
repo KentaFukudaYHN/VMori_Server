@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,14 @@ namespace ApplicationCore.DataServices
         {
             _repository = repository;
             _hashService = hashService;
+        }
+
+        public async Task<Account> GetByIdAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("idが空です");
+
+            return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>

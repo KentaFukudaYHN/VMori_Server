@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using VMori.ViewModel;
+using VMori.ReqRes;
 
 namespace VMori.Interfaces
 {

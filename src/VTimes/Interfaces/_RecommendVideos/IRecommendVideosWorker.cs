@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using VMori.ViewModel;
+using VMori.ReqRes;
 
 namespace VMori.Interfaces
 {
@@ -12,6 +12,6 @@ namespace VMori.Interfaces
         /// おすすめ動画取得
         /// </summary>
         /// <returns></returns>
-        public Task<RecommendVideoHeaderViewModel> GetList();
+        public Task<RecommendVideoHeaderRes> GetList();
     }
 }

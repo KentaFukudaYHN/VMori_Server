@@ -1,8 +1,6 @@
-﻿using ApplicationCore.Config;
-using ApplicationCore.Entities;
+﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ReqRes;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -14,27 +12,43 @@ namespace ApplicationCore.Services
     {
         private readonly IAuthService _authService;
         private readonly IAccountDataService _accountDataService;
+        private readonly IDateTimeUtility _dateTimeUtility;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountService(IAuthService authService, IAccountDataService accountDataService)
+        public AccountService(IAuthService authService, IAccountDataService accountDataService, IDateTimeUtility dateTimeUtility)
         {
             _authService = authService;
             _accountDataService = accountDataService;
+            _dateTimeUtility = dateTimeUtility;
         }
 
-        ///// <summary>
-        ///// ログイン中のアカウント取得
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<Account> GetAccount(ApplicationDataContainer adc)
-        //{
-        //    if (string.IsNullOrEmpty(adc.LoginUser.Id))
-        //        throw new ArgumentException("ログインしてないのにアカウント情報にアクセスしようとしています");
+        /// <summary>
+        /// ログイン中のアカウント取得
+        /// </summary>
+        /// <returns></returns>
+        public async Task<AccountRes> GetLoginAccount(ApplicationDataContainer adc)
+        {
+            if (string.IsNullOrEmpty(adc.LoginUser.Id))
+                throw new ArgumentException("ログインしてないのにアカウント情報にアクセスしようとしています");
 
-            
-        //}
+            var account = await _accountDataService.GetByIdAsync(adc.LoginUser.Id);
+
+            if (account == null)
+                throw new ArgumentException("存在しないアカウントIDです");
+
+            return new AccountRes()
+            {
+                Name = account.Name,
+                DisplayID = account.DisplayID,
+                Mail = account.Mail,
+                Password = account.Password,
+                Gender = account.Gender,
+                Icon = account.Icon,
+                Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday)
+            };
+        }
 
         /// <summary>
         /// アカウントの登録

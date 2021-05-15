@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VMori.Interfaces;
-using VMori.ViewModel;
+using VMori.ReqRes;
+using VMori.ReqRes._Account;
 
 namespace VMori.Controllers
 {
@@ -18,12 +20,22 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// ログイン中のアカウント情報を取得
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<AccountRes> Get()
+        {
+            return await _accountWorker.Get(base.ADC);
+        }
+
+        /// <summary>
         /// アカウントの登録
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<bool> Regist(RegistAccountViewModel vm)
+        public async Task<bool> Regist(RegistAccountReq vm)
         {
             return await _accountWorker.Regist(vm);
         }

@@ -2,6 +2,7 @@ using ApplicationCore.Config;
 using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
+using ApplicationCore.Utility;
 using Infrastructure.Data;
 using Infrastructure.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -115,6 +116,9 @@ namespace Api
 
             //DIƒRƒ“ƒeƒi‚ÉEfgRepository‚Ì“o˜^
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+
+            //DIƒRƒ“ƒeƒi‚ÉUtilitu‚Ì“o˜^
+            services.AddScoped(typeof(IDateTimeUtility), typeof(DateTimeUtility));
 
             //DIƒRƒ“ƒeƒi‚ÉDataService‚Ì“o˜^
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));

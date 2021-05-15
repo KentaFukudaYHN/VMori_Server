@@ -1,9 +1,9 @@
-﻿using ApplicationCore.Interfaces;
-using ApplicationCore.ReqRes;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
 using System;
 using System.Threading.Tasks;
 using VMori.Interfaces;
-using VMori.ViewModel;
+using VMori.ReqRes._Account;
 
 namespace VMori.Workers
 {
@@ -23,14 +23,26 @@ namespace VMori.Workers
         }
 
         /// <summary>
+        /// ログイン中のアカウント情報を取得
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public async Task<AccountRes> Get(ApplicationDataContainer adc)
+        {
+            var res = await _accountService.GetLoginAccount(adc);
+
+            return new AccountRes(res);
+        }
+
+        /// <summary>
         /// アカウントの登録
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(RegistAccountViewModel vm)
+        public async Task<bool> Regist(ReqRes.RegistAccountReq vm)
         {
             //reqの生成
-            var req = new RegistAccountReq()
+            var req = new ApplicationCore.ReqRes.RegistAccountReq()
             {
                 Mail = vm.Mail,
                 Password = vm.Password,

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using VMori.Interfaces;
-using VMori.ViewModel;
+using VMori.ReqRes;
 
 namespace VMori.Controllers
 {

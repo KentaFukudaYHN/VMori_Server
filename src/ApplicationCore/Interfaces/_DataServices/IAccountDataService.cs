@@ -13,6 +13,13 @@ namespace ApplicationCore.Interfaces
         /// <summary>
         /// アカウント情報取得
         /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Account> GetByIdAsync(string id);
+
+        /// <summary>
+        /// アカウント情報取得
+        /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
         Task<Account> GetAsync(string mail);

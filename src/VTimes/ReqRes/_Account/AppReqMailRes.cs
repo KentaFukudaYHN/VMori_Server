@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace VMori.ViewModel
+namespace VMori.ReqRes
 {
     /// <summary>
     /// 　メールアドレスの本人認証結果

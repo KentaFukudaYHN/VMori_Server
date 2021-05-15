@@ -1,5 +1,5 @@
 ﻿
-namespace VMori.ViewModel
+namespace VMori.ReqRes
 {
     /// <summary>
     /// ログイン情報

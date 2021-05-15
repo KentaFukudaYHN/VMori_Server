@@ -1,7 +1,7 @@
 ﻿using ApplicationCore.Interfaces;
 using System.Threading.Tasks;
 using VMori.Interfaces;
-using VMori.ViewModel;
+using VMori.ReqRes;
 
 namespace VMori.Workers
 {
@@ -23,16 +23,16 @@ namespace VMori.Workers
         /// おすすめ動画の取得
         /// </summary>
         /// <returns></returns>
-        public async Task<RecommendVideoHeaderViewModel> GetList()
+        public async Task<RecommendVideoHeaderRes> GetList()
         {
             var resList = await _recommenVideosService.GetVideos();
 
             var vList = resList.ConvertAll(x =>
             {
-                return new RecommendVieoViewModel(x);
+                return new RecommendVieoRes(x);
             });
 
-            return new RecommendVideoHeaderViewModel()
+            return new RecommendVideoHeaderRes()
             {
                 Videos = vList
             };
