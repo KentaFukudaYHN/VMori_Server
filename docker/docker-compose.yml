@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  vmori:
+    image: ${DOCKER_REGISTRY-}vmori
+    build:
+      context: ../
+      dockerfile: ./src/VMori/Dockerfile
+  mssql:
+    image: mcr.microsoft.com/mssql/rhel/server:2019-latest
+    container_name: 'mssql2019'
+    environment:
+      - MSSQL_SA_PASSWORD=YEu23gA??WBYmNDN
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - MSSQL_LCID=1041
+      - MSSQL_COLLATION=Japanese_CI_AS
+    volumes:
+      - "./db/data:/var/opt/mssql/data"
+      - "./db/log:/var/opt/mssql/log"
+      - "./db/secrets:/var/opt/mssql/secrets"
+    ports:
+      - 1433:1433

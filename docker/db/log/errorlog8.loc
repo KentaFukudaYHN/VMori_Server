@@ -1,0 +1,70 @@
+2021-05-16 10:07:03.46 Server      Microsoft SQL Server 2019 (RTM-CU10) (KB5001090) - 15.0.4123.1 (X64) 
+	Mar 22 2021 18:10:24 
+	Copyright (C) 2019 Microsoft Corporation
+	Express Edition (64-bit) on Linux (Red Hat Enterprise Linux 8.3 (Ootpa)) <X64>
+2021-05-16 10:07:03.57 Server      UTC の調整: 0:00
+2021-05-16 10:07:03.63 Server      (C) Microsoft Corporation.
+2021-05-16 10:07:03.72 Server      All rights reserved.
+2021-05-16 10:07:03.73 Server      サーバー プロセス ID は 360 です。
+2021-05-16 10:07:03.75 Server      ファイル '/var/opt/mssql/log/errorlog.loc' に SQL Server メッセージを記録します。
+2021-05-16 10:07:03.76 Server      レジストリ スタートアップ時のパラメーター: 
+	 -d /var/opt/mssql/data/master.mdf
+	 -l /var/opt/mssql/data/mastlog.ldf
+	 -e /var/opt/mssql/log/errorlog
+2021-05-16 10:07:03.92 Server      2 個のソケットが検出されました (ソケットあたり 1 個のコア、ソケットあたり 1 個の論理プロセッサ、合計 2 個の論理プロセッサ。SQL Server のライセンスに基づいて 1 個の論理プロセッサを使用しています)。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:04.05 Server      SQL Server は、通常の優先度ベース (=7) で起動されています。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:04.10 Server      3149 MB の RAM を検出しました。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:04.15 Server      メモリ マネージャーでコンベンショナル メモリを使用しています。
+2021-05-16 10:07:04.23 Server      Page exclusion bitmap is enabled.
+2021-05-16 10:07:04.30 Server      バッファー プール拡張機能は、Linux プラットフォームではサポートされていません。
+2021-05-16 10:07:04.39 Server      バッファープール: 400926 hashPages に 524288 バイトを割り当てています。
+2021-05-16 10:07:04.56 Server      既定の照合順序: SQL_Latin1_General_CP1_CI_AS (日本語 1041)
+2021-05-16 10:07:05.31 Server      バッファー プール拡張機能は既に無効です。必要なアクションはありません。
+2021-05-16 10:07:07.02 Server      TLS 構成が正常に初期化されました。許可される TLS プロトコルのバージョンは ['1.0 1.1 1.2'] です。許可される TLS 暗号は ['ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA-AES128-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:!DHE-RSA-AES256-GCM-SHA384:!DHE-RSA-AES128-GCM-SHA256:!DHE-RSA-AES256-SHA:!DHE-RSA-AES128-SHA'] です。
+2021-05-16 10:07:07.22 Server      Query Store settings initialized with enabled = 1, 
+2021-05-16 10:07:07.34 Server      ノード構成: ノード 0: CPU マスク: 0x0000000000000001:0 アクティブな CPU マスク: 0x0000000000000001:0。このメッセージは、このコンピューターの NUMA 構成についての説明です。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:07.34 Server      このインスタンスの専用管理者接続の最大数: '1'
+2021-05-16 10:07:07.47 Server      動的ロック割り当てを使用しています。ノードごとに 2500 個のロック ブロックと 5000 個のロック所有者ブロックを最初に割り当てています。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:07.64 Server      In-Memory OLTP initialized on lowend machine.
+2021-05-16 10:07:08.09 Server      CLR version v4.0.30319 loaded.
+2021-05-16 10:07:08.43 Server      [INFO] Created Extended Events session 'hkenginexesession'
+2021-05-16 10:07:08.49 Server      データベース インスタント ファイルの初期化: enabled。セキュリティとパフォーマンスに関する考慮事項については、SQL Server オンライン ブックの「データベース インスタント ファイルの初期化」を参照してください。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:08.76 Server      ログ ライター スレッドの合計数: 1。これは情報メッセージです。ユーザー アクションは必要ありません。
+2021-05-16 10:07:09.05 Server      pmem フラッシュ操作に対して clflush が選択されています。
+2021-05-16 10:07:09.18 spid9s      [1]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1.
+2021-05-16 10:07:09.25 Server      ソフトウェアの使用状況メトリックは無効です。
+2021-05-16 10:07:09.27 spid9s      データベース 'master' を起動しています。
+2021-05-16 10:07:12.73 spid9s      データベース master のログの末尾が新しいセクター サイズの 4096 バイトに一致するように書き直されていません。ファイル /var/opt/mssql/data/mastlog.ldf のオフセット 393728 にある 3584 バイトが書き込まれます。
+2021-05-16 10:07:13.13 Server      共通言語ランタイム (CLR) 機能が初期化されました。
+2021-05-16 10:07:13.90 spid9s      Converting database 'master' from version 897 to the current version 904.
+2021-05-16 10:07:13.98 spid9s      Database 'master' running the upgrade step from version 897 to version 898.
+2021-05-16 10:07:14.15 spid9s      Database 'master' running the upgrade step from version 898 to version 899.
+2021-05-16 10:07:14.53 spid9s      Database 'master' running the upgrade step from version 899 to version 900.
+2021-05-16 10:07:14.67 spid9s      Database 'master' running the upgrade step from version 900 to version 901.
+2021-05-16 10:07:14.75 spid9s      Database 'master' running the upgrade step from version 901 to version 902.
+2021-05-16 10:07:15.15 spid9s      Database 'master' running the upgrade step from version 902 to version 903.
+2021-05-16 10:07:15.24 spid9s      Database 'master' running the upgrade step from version 903 to version 904.
+2021-05-16 10:07:16.15 spid9s      SQL Server Audit により、監査を開始しています。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:16.22 spid9s      SQL Server Audit により、監査が開始されました。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:17.62 spid9s      SQL トレース ID 1 がログイン "sa" により開始されました。
+2021-05-16 10:07:18.01 spid9s      サーバー名は '68f0c82e8627' です。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:18.32 spid9s      [4]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1.
+2021-05-16 10:07:18.37 spid46s     Always On: 可用性レプリカ マネージャーを起動しています。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:18.55 spid9s      データベース 'msdb' を起動しています。
+2021-05-16 10:07:18.62 spid46s     Always On: 可用性レプリカ マネージャーは、SQL Server インスタンスでクライアント接続が許可されるのを待機しています。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:18.87 spid10s     [32767]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1.
+2021-05-16 10:07:18.94 spid10s     データベース 'mssqlsystemresource' を起動しています。
+2021-05-16 10:07:19.07 spid43s     パスワード ポリシーは正常に更新されました。
+2021-05-16 10:07:19.34 spid10s     リソース データベースのビルド バージョンは 15.00.4123 です。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:20.07 spid10s     [3]. Feature Status: PVS: 0. CTR: 0. ConcurrentPFSUpdate: 1.
+2021-05-16 10:07:20.17 spid43s     自動生成された証明書が暗号化用に正常に読み込まれました。
+2021-05-16 10:07:20.19 spid10s     データベース 'model' を起動しています。
+2021-05-16 10:07:20.40 spid43s     サーバーは ['any' <ipv6> 1433] でリッスンしています。
+2021-05-16 10:07:20.47 spid43s     サーバーは ['any' <ipv4> 1433] でリッスンしています。
+2021-05-16 10:07:20.58 spid43s     専用管理者接続のサポートは、このエディションの SQL Server では無効なので、開始されませんでした。専用管理者接続を使用する場合は、トレース フラグ 7806 を使用して SQL Server を再起動してください。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:20.93 spid43s     サーバーは [::1 <ipv6> 1431] でリッスンしています。
+2021-05-16 10:07:20.97 spid43s     サーバーは [127.0.0.1 <ipv4> 1431] でリッスンしています。
+2021-05-16 10:07:21.03 spid43s     SQL Server はクライアントに接続できる状態になりました。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
+2021-05-16 10:07:21.52 spid46s     エラー: システム管理者のパスワードを設定できません: Password validation failed. The password does not meet SQL Server password policy requirements because it is too short. The password must be at least 8 characters.。
+2021-05-16 10:07:21.63 spid46s     サーバーのセットアップ中にエラーが発生しました。詳しくは、以前のエラーをご覧ください。
+2021-05-16 10:07:21.72 spid46s     サーバーのシャットダウンにより SQL トレースが停止しました。トレース ID = '1'。このメッセージは情報提供だけを目的としています。ユーザー操作は不要です。
