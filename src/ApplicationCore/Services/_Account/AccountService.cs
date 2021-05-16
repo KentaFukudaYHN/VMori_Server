@@ -1,8 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ReqRes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -13,15 +15,18 @@ namespace ApplicationCore.Services
         private readonly IAuthService _authService;
         private readonly IAccountDataService _accountDataService;
         private readonly IDateTimeUtility _dateTimeUtility;
+        private readonly IStorageService _storageService;
+        private const string USER_ICON_CONTAINER = "user-icons";
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountService(IAuthService authService, IAccountDataService accountDataService, IDateTimeUtility dateTimeUtility)
+        public AccountService(IAuthService authService, IAccountDataService accountDataService, IDateTimeUtility dateTimeUtility, IStorageService storageService)
         {
             _authService = authService;
             _accountDataService = accountDataService;
             _dateTimeUtility = dateTimeUtility;
+            _storageService = storageService;
         }
 
         /// <summary>
@@ -88,6 +93,35 @@ namespace ApplicationCore.Services
             await _authService.CreateAppReqMail(req.Mail, req.Name);
 
             return true;
+        }
+
+        /// <summary>
+        /// ユーザーアイコンの登録
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> RegistIcon(Stream stream, string extension,  ApplicationDataContainer adc)
+        {
+            var fileName = Guid.NewGuid().ToString().Replace("-", "") + extension;
+
+            //Blobに画像をアップロード
+            if (await _storageService.UploadImg(stream, USER_ICON_CONTAINER, fileName) == false)
+                return string.Empty;
+
+            //ファイル名をDBに保存
+            if (await _accountDataService.UpdateIcon(fileName, adc) == false)
+                return string.Empty;
+
+            return GetIconUrl(fileName);
+        }
+
+        /// <summary>
+        /// ユーザーアイコンの画像URLを生成
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private string GetIconUrl(string fileName)
+        {
+            return _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + fileName;
         }
 
         /// <summary>

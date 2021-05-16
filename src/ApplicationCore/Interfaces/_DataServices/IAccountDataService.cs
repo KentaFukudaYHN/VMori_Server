@@ -55,6 +55,14 @@ namespace ApplicationCore.Interfaces
         Task<bool> UpdateAppMail(string id, bool AppMail, IDbContext db);
 
         /// <summary>
+        /// ユーザーアイコンのファイル名を更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        Task<bool> UpdateIcon(string fileName, ApplicationDataContainer adc);
+
+        /// <summary>
         /// 名前が一致するレコードの件数を取得
         /// </summary>
         /// <param name="name"></param>

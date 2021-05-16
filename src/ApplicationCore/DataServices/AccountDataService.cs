@@ -79,6 +79,25 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// ユーザーアイコンを登録
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateIcon(string fileName, ApplicationDataContainer adc)
+        {
+            var account = new Account()
+            {
+                ID = adc.LoginUser.Id,
+                Icon = fileName
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.Icon) });
+
+            return true;
+        }
+
+        /// <summary>
         /// アカウント情報の取得
         /// </summary>
         /// <param name="mail"></param>

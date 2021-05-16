@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using VMori.ReqRes;
 using VMori.ReqRes._Account;
@@ -20,6 +21,14 @@ namespace VMori.Interfaces
         /// <param name="vm"></param>
         /// <returns></returns>
         Task<bool> Regist(RegistAccountReq vm);
+
+        /// <summary>
+        /// ユーザーアイコン登録
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<string> RegistIcon(string base64, string fileName, ApplicationDataContainer adc);
 
         /// <summary>
         /// 登録可能な名前かチェック

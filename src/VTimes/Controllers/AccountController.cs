@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -38,6 +39,18 @@ namespace VMori.Controllers
         public async Task<bool> Regist(RegistAccountReq vm)
         {
             return await _accountWorker.Regist(vm);
+        }
+
+        /// <summary>
+        /// ユーザーアイコンの登録
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<string> RegistIcon(string base64, string name)
+        {
+            return await _accountWorker.RegistIcon(base64, name, ADC);
         }
 
         /// <summary>

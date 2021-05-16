@@ -1,6 +1,8 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.ReqRes._Account;
@@ -51,6 +53,22 @@ namespace VMori.Workers
             };
 
             return await _accountService.Regist(req);
+        }
+
+        /// <summary>
+        /// ユーザーアイコンの登録
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<string> RegistIcon(string base64, string fileName, ApplicationDataContainer adc)
+        {
+            var byteData = Convert.FromBase64String(base64);
+            using (var ms = new MemoryStream(byteData, 0, byteData.Length))
+            {
+                ms.Write(byteData, 0, byteData.Length);
+                return await _accountService.RegistIcon(ms, Path.GetExtension(fileName), adc);
+            }
         }
 
         /// <summary>

@@ -120,6 +120,10 @@ namespace Api
             //DIコンテナにUtilituの登録
             services.AddScoped(typeof(IDateTimeUtility), typeof(DateTimeUtility));
 
+            //DIコンテナにStorageServiceの登録
+            services.AddScoped(typeof(IStorageService), typeof(AzureBlobService));
+            services.AddScoped(typeof(IAccountStorageService), typeof(AccountStorageService));
+
             //DIコンテナにDataServiceの登録
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
             services.AddScoped(typeof(IAppReqMailDataService), typeof(AppReqMailDataService));
@@ -139,6 +143,7 @@ namespace Api
             //DIコンテナにConfigの設定
             services.Configure<MailConfig>(this.Configration.GetSection("Mail"));
             services.Configure<ClientConfig>(this.Configration.GetSection("Client"));
+            services.Configure<StorageConfig>(this.Configration.GetSection("Storage"));
         }
     }
 }

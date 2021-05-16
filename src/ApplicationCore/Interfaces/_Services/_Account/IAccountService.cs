@@ -1,5 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.ReqRes;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
@@ -22,6 +24,14 @@ namespace ApplicationCore.Interfaces
         /// <param name="req"></param>
         /// <returns></returns>
         Task<bool> Regist(RegistAccountReq req);
+
+        /// <summary>
+        /// ユーザーアイコンの登録
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<string> RegistIcon(Stream stream, string fileName, ApplicationDataContainer adc);
 
         /// <summary>
         /// 使用可能なメールアドレスかチェック
