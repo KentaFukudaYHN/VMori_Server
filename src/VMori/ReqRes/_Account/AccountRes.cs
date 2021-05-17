@@ -26,12 +26,6 @@ namespace VMori.ReqRes._Account
         public string Mail => _original.Mail;
 
         /// <summary>
-        /// パスワード
-        /// </summary>
-
-        public string Password => _original.Password;
-
-        /// <summary>
         /// アイコン
         /// </summary>
         public string Icon => _original.Icon;
