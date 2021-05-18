@@ -47,7 +47,7 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
-            return await this.ApplySpecification(spec).ToListAsync();
+                return await this.ApplySpecification(spec).ToListAsync();
         }
 
         /// <summary>

@@ -36,10 +36,19 @@ namespace VMori.ReqRes._Account
         public GenderKinds Gender => _original.Gender;
 
         /// <summary>
-        /// 誕生日
+        /// 生年月日 年
         /// </summary>
+        public string BirthdayYear => _original.Birthday.ToString("yyyy");
 
-        public DateTime Birthday => _original.Birthday;
+        /// <summary>
+        /// 生年月日 月
+        /// </summary>
+        public string BirthdayMonth => _original.Birthday.ToString("MM");
+
+        /// <summary>
+        /// 生年月日 日
+        /// </summary>
+        public string BirthdayDate => _original.Birthday.ToString("dd");
 
         /// <summary>
         /// コンストラクタ

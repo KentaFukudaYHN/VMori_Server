@@ -6,6 +6,8 @@ services:
     build:
       context: ../
       dockerfile: ./src/VMori/Dockerfile
+    environment:
+        - Storage__ConnectionStrings=${Storage__ConnectionStrings}
   mssql:
     image: mcr.microsoft.com/mssql/rhel/server:2019-latest
     container_name: 'mssql2019'

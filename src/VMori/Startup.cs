@@ -99,7 +99,7 @@ namespace Api
                         builder
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithOrigins(new string[] { "http://localhost:3000" })
+                            .WithOrigins(new string[] { "https://localhost:3000" })
                             .AllowCredentials();
                     });
             });
