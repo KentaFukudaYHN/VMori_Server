@@ -1,11 +1,11 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ReqRes;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -74,6 +74,10 @@ namespace ApplicationCore.Services
             if (sameNameAccounts.Count >= 100)
                 return false;
 
+            //パスワードのチェック
+            if (CheckPassword(req.Password) == false)
+                return false;
+
             //アカウント情報登録
             var account = new Account()
             {
@@ -115,6 +119,45 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdatePassword(string password, ApplicationDataContainer adc)
+        {
+            if (CheckPassword(password) == false)
+                return false;
+
+            //パスワードの更新
+            return await _accountDataService.UpdatePassword(password, adc);
+        }
+
+        /// <summary>
+        /// メールアドレスの使用チェック
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns></returns>
+        public async Task<bool> CanRegistMail(string mail)
+        {
+            return await _accountDataService.GetAsync(mail) == null;
+        }
+
+        /// <summary>
+        /// 名前が登録可能かどうか
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<bool> CanRegistName(string name)
+        {
+            //100件以上同じ名前がいたらダメ
+            if ((await _accountDataService.CountByName(name)) >= 100)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
         /// ユーザーアイコンの画像URLを生成
         /// </summary>
         /// <param name="fileName"></param>
@@ -122,6 +165,28 @@ namespace ApplicationCore.Services
         private string GetIconUrl(string fileName)
         {
             return _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + fileName;
+        }
+
+        /// <summary>
+        /// パスワードが要件を満たしているかチェック
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        private bool CheckPassword(string password)
+        {
+            //パスワードは8文字から100文字以内
+            if(password.Length < 8 || password.Length >= 100)
+            {
+                return false;
+            }
+
+            //半角英数字大文字を含んでいるか
+            if (Regex.IsMatch(password, "^[a-zA-Z0-9]$") == false)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -154,30 +219,5 @@ namespace ApplicationCore.Services
 
             return id;
         }
-
-        /// <summary>
-        /// メールアドレスの使用チェック
-        /// </summary>
-        /// <param name="mail"></param>
-        /// <returns></returns>
-        public async Task<bool> CanRegistMail(string mail)
-        {
-            return await _accountDataService.GetAsync(mail) == null;
-        }
-
-        /// <summary>
-        /// 名前が登録可能かどうか
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public async Task<bool> CanRegistName(string name)
-        {
-            //100件以上同じ名前がいたらダメ
-            if ((await _accountDataService.CountByName(name)) >= 100)
-                return false;
-
-            return true;
-        }
-
     }
 }

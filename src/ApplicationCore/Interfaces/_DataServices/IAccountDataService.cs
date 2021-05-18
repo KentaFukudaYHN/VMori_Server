@@ -55,6 +55,14 @@ namespace ApplicationCore.Interfaces
         Task<bool> UpdateAppMail(string id, bool AppMail, IDbContext db);
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdatePassword(string password, ApplicationDataContainer adc);
+
+        /// <summary>
         /// ユーザーアイコンのファイル名を更新
         /// </summary>
         /// <param name="id"></param>

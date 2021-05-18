@@ -1,6 +1,5 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -69,6 +68,17 @@ namespace VMori.Workers
                 ms.Write(byteData, 0, byteData.Length);
                 return await _accountService.RegistIcon(ms, Path.GetExtension(fileName), adc);
             }
+        }
+
+        /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdatePassword(string password, ApplicationDataContainer adc)
+        {
+            return await _accountService.UpdatePassword(password, adc);
         }
 
         /// <summary>

@@ -34,6 +34,14 @@ namespace ApplicationCore.Interfaces
         Task<string> RegistIcon(Stream stream, string fileName, ApplicationDataContainer adc);
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdatePassword(string password, ApplicationDataContainer adc);
+
+        /// <summary>
         /// 使用可能なメールアドレスかチェック
         /// </summary>
         /// <param name="mail"></param>

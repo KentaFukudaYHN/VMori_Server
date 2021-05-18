@@ -98,6 +98,25 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdatePassword(string password, ApplicationDataContainer adc)
+        {
+            var account = new Account()
+            {
+                ID = adc.LoginUser.Id,
+                Password = _hashService.Hashing(password)
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.Password) });
+
+            return true;
+        }
+
+        /// <summary>
         /// アカウント情報の取得
         /// </summary>
         /// <param name="mail"></param>

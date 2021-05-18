@@ -54,6 +54,18 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<bool> UpdatePassword(string password)
+        {
+            return await _accountWorker.UpdatePassword(password, ADC);
+        }
+
+        /// <summary>
         /// メールの使用チェック
         /// </summary>
         /// <param name="mail"></param>
