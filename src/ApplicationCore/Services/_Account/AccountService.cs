@@ -51,7 +51,8 @@ namespace ApplicationCore.Services
                 Password = account.Password,
                 Gender = account.Gender,
                 Icon = account.Icon,
-                Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday)
+                Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday),
+                AppMail = account.AppMail
             };
         }
 
@@ -71,7 +72,7 @@ namespace ApplicationCore.Services
 
             //名前が既に100件以上登録されてないかチェック
             var sameNameAccounts = await _accountDataService.GetListByNameAsync(req.Name);
-            if (sameNameAccounts.Count >= 100)
+            if (this.CheckOverSameName(sameNameAccounts) == false)
                 return false;
 
             //パスワードのチェック
@@ -87,7 +88,7 @@ namespace ApplicationCore.Services
                 Name = req.Name,
                 AppMail = false,
                 Password = req.Password, //DataServiceでハッシュ化される
-                Birthday = req.BirthDay.ToString("yyyyMMdd"),
+                Birthday = _dateTimeUtility.ConvertDateToString(req.BirthDay),
                 RegistDateTime = DateTime.Now
             };
 
@@ -116,6 +117,52 @@ namespace ApplicationCore.Services
                 return string.Empty;
 
             return GetIconUrl(fileName);
+        }
+
+        /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateName(string name, ApplicationDataContainer adc)
+        {
+            //名前が既に100件以上登録されてないかチェック
+            var sameNameAccounts = await _accountDataService.GetListByNameAsync(name);
+            if (this.CheckOverSameName(sameNameAccounts) == false)
+                return false;
+
+            return await _accountDataService.UpdateName(name, adc);
+        }
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="birthday"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateBirthday(DateTime birthday, ApplicationDataContainer adc)
+        {
+            return await _accountDataService.UpdateBirthday(_dateTimeUtility.ConvertDateToString(birthday), adc);
+        }
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateMail(string mail, ApplicationDataContainer adc)
+        {
+            //メールアドレスのチェック ※形式が正しくない場合例外が発生
+            new MailAddress(mail);
+
+            //メールアドレスの重複チェック
+            if (await this.CanRegistMail(mail) == false)
+                return false;
+
+            return await _accountDataService.UpdateMail(mail, adc);
+
         }
 
         /// <summary>
@@ -168,6 +215,16 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
+        /// 名前が使われ過ぎてないかチェック
+        /// </summary>
+        /// <param name="sameNameList"></param>
+        /// <returns></returns>
+        private bool CheckOverSameName(List<Account> sameNameList)
+        {
+            return sameNameList.Count < 100;
+        }
+
+        /// <summary>
         /// パスワードが要件を満たしているかチェック
         /// </summary>
         /// <param name="password"></param>
@@ -181,7 +238,7 @@ namespace ApplicationCore.Services
             }
 
             //半角英数字大文字を含んでいるか
-            if (Regex.IsMatch(password, "^[a-zA-Z0-9]$") == false)
+            if (Regex.IsMatch(password, "(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)") == false)
             {
                 return false;
             }

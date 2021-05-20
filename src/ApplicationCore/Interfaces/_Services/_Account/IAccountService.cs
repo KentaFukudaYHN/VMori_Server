@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.ReqRes;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -32,6 +33,30 @@ namespace ApplicationCore.Interfaces
         /// <param name="adc"></param>
         /// <returns></returns>
         Task<string> RegistIcon(Stream stream, string fileName, ApplicationDataContainer adc);
+
+        /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateName(string name, ApplicationDataContainer adc);
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="birthday"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateBirthday(DateTime birthday, ApplicationDataContainer adc);
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateMail(string mail, ApplicationDataContainer adc);
 
         /// <summary>
         /// パスワードの更新

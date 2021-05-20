@@ -98,6 +98,63 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateName(string name, ApplicationDataContainer adc)
+        {
+            var accout = new Account()
+            {
+                ID = adc.LoginUser.Id,
+                Name = name
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(accout, new List<string> { nameof(Account.Name) });
+
+            return true;
+        }
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="birthday">yyyyMMdd</param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateBirthday(string birthday, ApplicationDataContainer adc)
+        {
+            var account = new Account()
+            {
+                ID = adc.LoginUser.Id,
+                Birthday = birthday
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string> { nameof(Account.Birthday) });
+
+            return true;
+        }
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateMail(string mail, ApplicationDataContainer adc)
+        {
+            var account = new Account()
+            {
+                ID = adc.LoginUser.Id,
+                Mail = mail
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string> { nameof(Account.Mail) });
+
+            return true;
+        }
+
+        /// <summary>
         /// パスワードの更新
         /// </summary>
         /// <param name="password"></param>

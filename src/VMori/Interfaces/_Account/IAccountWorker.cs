@@ -31,6 +31,30 @@ namespace VMori.Interfaces
         Task<string> RegistIcon(string base64, string fileName, ApplicationDataContainer adc);
 
         /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateName(ChangeNameReq req, ApplicationDataContainer adc);
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateBirthday(ChangebBrthdayReq req, ApplicationDataContainer adc);
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> UpdateMail(ChangeMailReq req, ApplicationDataContainer adc);
+
+        /// <summary>
         /// パスワードの更新
         /// </summary>
         /// <param name="password"></param>

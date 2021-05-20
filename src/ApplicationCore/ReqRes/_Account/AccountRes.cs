@@ -52,6 +52,11 @@ namespace ApplicationCore.ReqRes
         public DateTime RegistDateTime { get; set; }
 
         /// <summary>
+        /// メールアドレスの本人認証
+        /// </summary>
+        public bool AppMail { get; set; }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public AccountRes()

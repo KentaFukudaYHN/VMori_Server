@@ -51,6 +51,11 @@ namespace VMori.ReqRes._Account
         public string BirthdayDate => _original.Birthday.ToString("dd");
 
         /// <summary>
+        /// メールアドレスの本人認証
+        /// </summary>
+        public bool AppMail => _original.AppMail;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="original"></param>

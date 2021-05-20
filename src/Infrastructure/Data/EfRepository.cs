@@ -170,7 +170,7 @@ namespace Infrastructure.Data
         /// <returns></returns>
         public async Task UpdateAsyncOnlyClumn(T entity, List<string> propertys)
         {
-            await this.UpdateAsyncNotUpdateColumn(entity, propertys, _db);
+            await this.UpdateAsyncOnlyClumn(entity, propertys, _db);
         }
 
         /// <summary>

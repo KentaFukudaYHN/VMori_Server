@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -54,15 +53,52 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<bool> UpdateName(ChangeNameReq req)
+        {
+            return await _accountWorker.UpdateName(req, ADC);
+        }
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<bool> UpdateBirthday(ChangebBrthdayReq req)
+        {
+
+            return await _accountWorker.UpdateBirthday(req, ADC);
+        }
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<bool> UpdateMail(ChangeMailReq req)
+        {
+            return await _accountWorker.UpdateMail(req, ADC);
+        }
+
+        /// <summary>
         /// パスワードの更新
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public async Task<bool> UpdatePassword(string password)
+        public async Task<bool> UpdatePassword(ChangePasswordReq req)
         {
-            return await _accountWorker.UpdatePassword(password, ADC);
+            return await _accountWorker.UpdatePassword(req.Password, ADC);
         }
 
         /// <summary>

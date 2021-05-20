@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using VMori.Interfaces;
+using VMori.ReqRes;
 using VMori.ReqRes._Account;
 
 namespace VMori.Workers
@@ -14,13 +15,15 @@ namespace VMori.Workers
     public class AccountWorker : IAccountWorker
     {
         private readonly IAccountService _accountService;
+        private readonly IDateTimeUtility _dateTimeUtility;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountWorker(IAccountService accountService)
+        public AccountWorker(IAccountService accountService, IDateTimeUtility dateTimeUtility)
         {
             _accountService = accountService;
+            _dateTimeUtility = dateTimeUtility;
         }
 
         /// <summary>
@@ -68,6 +71,41 @@ namespace VMori.Workers
                 ms.Write(byteData, 0, byteData.Length);
                 return await _accountService.RegistIcon(ms, Path.GetExtension(fileName), adc);
             }
+        }
+
+        /// <summary>
+        /// 名前の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateName(ChangeNameReq req, ApplicationDataContainer adc)
+        {
+            return await _accountService.UpdateName(req.Name, adc);
+        }
+
+        /// <summary>
+        /// 誕生日の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateBirthday(ChangebBrthdayReq req, ApplicationDataContainer adc)
+        {
+            var birthday = _dateTimeUtility.ConvertStringToDate(req.Year, req.Month, req.Date);
+            return await _accountService.UpdateBirthday(birthday, adc);
+
+        }
+
+        /// <summary>
+        /// メールアドレスの更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateMail(ChangeMailReq req, ApplicationDataContainer adc)
+        {
+            return await _accountService.UpdateMail(req.Mail, adc);
         }
 
         /// <summary>
