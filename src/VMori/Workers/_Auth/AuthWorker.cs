@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -38,6 +39,16 @@ namespace VMori.Workers
         public async Task<bool> InMiddleAppReqMail(string token)
         {
             return await _authService.InMiddleAppReqMail(token);
+        }
+
+        /// <summary>
+        /// メールアドレス本人認証のメール要求
+        /// </summary>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateAppReqmail(ApplicationDataContainer adc)
+        {
+            return await _authService.CreateAppReqMail(adc.LoginUser.Id, adc.LoginUser.Mail, adc.LoginUser.Name, false);
         }
 
         /// <summary>

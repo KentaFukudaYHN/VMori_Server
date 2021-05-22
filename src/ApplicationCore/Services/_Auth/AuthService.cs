@@ -1,16 +1,13 @@
 ﻿using ApplicationCore.Config;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
-using ApplicationCore.ReqRes;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace ApplicationCore.Services
 {
@@ -104,7 +101,7 @@ namespace ApplicationCore.Services
             else
             {
                 msg = "<h2>こんにちは、" + userName + "さん！</h2>" +
-                        "更新したメールアドレスが本人のものか確認する必要があります。<br/>" +
+                        "メールアドレスが本人のものか確認する必要があります。<br/>" +
                         "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
                         "<a href='" + _clientConfig.Domain + "/AppReqMail?token=" + token + "'>メールアドレスを認証する</a>";
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -44,6 +45,16 @@ namespace VMori.Controllers
         public async Task<bool> CheckAppReqMail(string token)
         {
             return await _authWorker.InMiddleAppReqMail(token);
+        }
+
+        /// <summary>
+        /// メールアドレス本人確認のメールを要求
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<bool> CreateAppReqMail()
+        {
+            return await _authWorker.CreateAppReqmail(ADC);
         }
 
         /// <summary>

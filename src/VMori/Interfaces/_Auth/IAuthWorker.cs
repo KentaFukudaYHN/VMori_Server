@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ApplicationCore.Entities;
 using Microsoft.AspNetCore.Http;
 using VMori.ReqRes;
 
@@ -24,6 +25,13 @@ namespace VMori.Interfaces
         /// <param name="token"></param>
         /// <returns></returns>
         Task<bool> InMiddleAppReqMail(string token);
+
+        /// <summary>
+        /// メールアドレスの本人認証のメール要求
+        /// </summary>
+        /// <param name="adc"></param>
+        /// <returns></returns>
+        Task<bool> CreateAppReqmail(ApplicationDataContainer adc);
 
         /// <summary>
         /// メールアドレスの本人認証
