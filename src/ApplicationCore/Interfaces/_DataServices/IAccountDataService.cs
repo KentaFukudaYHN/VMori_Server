@@ -20,6 +20,14 @@ namespace ApplicationCore.Interfaces
         /// <summary>
         /// アカウント情報取得
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task<Account> GetByIdAsync(string id, string password);
+
+        /// <summary>
+        /// アカウント情報取得
+        /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
         Task<Account> GetAsync(string mail);
@@ -52,7 +60,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="AppMail"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        Task<bool> UpdateAppMail(string id, bool AppMail, IDbContext db);
+        Task<bool> UpdateAppMail(string id, string mail, bool AppMail, IDbContext db);
 
         /// <summary>
         /// 名前の更新

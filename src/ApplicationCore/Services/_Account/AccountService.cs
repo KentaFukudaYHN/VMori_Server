@@ -21,7 +21,7 @@ namespace ApplicationCore.Services
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountService(IAuthService authService, IAccountDataService accountDataService, IDateTimeUtility dateTimeUtility, IStorageService storageService)
+        public AccountService(IAuthService authService, IAccountDataService accountDataService, IDateTimeUtility dateTimeUtility, IStorageService storageService, IDbContext db)
         {
             _authService = authService;
             _accountDataService = accountDataService;
@@ -95,7 +95,7 @@ namespace ApplicationCore.Services
             await _accountDataService.RegistAsync(account);
 
             //メールアドレスの本人認証要求情報を登録
-            await _authService.CreateAppReqMail(req.Mail, req.Name);
+            await _authService.CreateAppReqMail(account.ID, req.Mail, req.Name, true);
 
             return true;
         }
@@ -161,8 +161,7 @@ namespace ApplicationCore.Services
             if (await this.CanRegistMail(mail) == false)
                 return false;
 
-            return await _accountDataService.UpdateMail(mail, adc);
-
+            return await _authService.CreateAppReqMail(adc.LoginUser.Id, mail, adc.LoginUser.Name, false);
         }
 
         /// <summary>

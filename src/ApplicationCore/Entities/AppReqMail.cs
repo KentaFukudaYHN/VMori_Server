@@ -8,6 +8,11 @@ namespace ApplicationCore.Entities
     public class AppReqMail : BaseEntity
     {
         /// <summary>
+        /// アカウントID
+        /// </summary>
+        public string AccountID { get; set; }
+
+        /// <summary>
         /// メールアドレス
         /// </summary>
         public string Mail { get; set; }

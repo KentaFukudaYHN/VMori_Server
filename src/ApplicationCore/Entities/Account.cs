@@ -1,10 +1,10 @@
 ﻿using ApplicationCore.Enum;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationCore.Entities
 {
+    [Index(nameof(Mail))]
     public class Account : BaseEntity
     {
         /// <summary>

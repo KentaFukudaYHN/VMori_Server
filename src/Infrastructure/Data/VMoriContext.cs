@@ -35,7 +35,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<VideoInfo>().ToTable("VideoInfo");
 
             modelBuilder.Entity<Account>().ToTable("Account");
-            modelBuilder.Entity<Account>().HasKey(x => new { x.ID, x.Mail }); //Accountテーブルはmailとidで複合キー
+            modelBuilder.Entity<Account>().HasKey(x => new { x.ID });
             
             modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });

@@ -10,6 +10,7 @@ using System;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ApplicationCore.Services
 {
@@ -85,17 +86,28 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        public async Task<bool> CreateAppReqMail(string mail, string userName)
+        public async Task<bool> CreateAppReqMail(string accountId, string mail, string userName, bool isNew)
         {
             var token = this.CreateAppReqMailToken();
-            await this.AppReqMail(mail, token);
+            await this.AppReqMail(accountId, mail, token);
 
             //本人認証用のメールを送信
-            var msg = "<h2>こんにちは、" + userName + "さん！</h2>"
-                    + "<div>Vtuberの森アカウントの登録ありがとうございます！ <br/>" +
-                    "登録したメールアドレスが本人のものか確認する必要があります。<br/>" +
-                    "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
-                    "<a href='" + _clientConfig.Domain + "/AppReqMail?token=" + token + "'>メールアドレスを認証する</a>";
+            var msg = "";
+            if (isNew)
+            {
+                msg = "<h2>こんにちは、" + userName + "さん！</h2>"
+                        + "<div>Vtuberの森アカウントの登録ありがとうございます！ <br/>" +
+                        "登録したメールアドレスが本人のものか確認する必要があります。<br/>" +
+                        "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
+                        "<a href='" + _clientConfig.Domain + "/AppReqMail?token=" + token + "'>メールアドレスを認証する</a>";
+            }
+            else
+            {
+                msg = "<h2>こんにちは、" + userName + "さん！</h2>" +
+                        "更新したメールアドレスが本人のものか確認する必要があります。<br/>" +
+                        "以下のリンクをクリックして、パスワードを入力して本人認証を行ってください。<br/></div>" +
+                        "<a href='" + _clientConfig.Domain + "/AppReqMail?token=" + token + "'>メールアドレスを認証する</a>";
+            }
 
             //await _mailService.SendMail(req.Mail, "メールアドレスの本人確認", msg);
 
@@ -140,7 +152,11 @@ namespace ApplicationCore.Services
                 return (false, "認証期間を過ぎています。アカウント情報画面から再度メールアドレスの認証を行ってください。");
 
             //Account情報の取得
-            var account = await _accountDataService.GetAsync(appReqMail.Mail, password);
+            var account = await _accountDataService.GetByIdAsync(appReqMail.AccountID, password);
+
+            //重複したメールがないかチェック
+            if (await this.CanRegistMail(appReqMail.Mail, appReqMail.AccountID) == false)
+                return (false, "既に同じメールアドレスを使用しているユーザーがいます。他のメールアドレスを登録してください。");
 
             if (account == null)
                 return (false, "パスワードが間違っています。");
@@ -150,7 +166,7 @@ namespace ApplicationCore.Services
                 try
                 {
                     //AppReqの更新
-                    await _accountDataService.UpdateAppMail(account.ID, true, _db);
+                    await _accountDataService.UpdateAppMail(account.ID, appReqMail.Mail, true, _db);
 
                     //AppReqMailのレコードを削除
                     await _appReqMailDataService.Delete(appReqMail.ID, _db);
@@ -160,10 +176,29 @@ namespace ApplicationCore.Services
                 catch (Exception ex)
                 {
                     tx.Rollback();
+                    return (false, "原因不明のエラーです。お手数ですが再度アカウント情報画面からメールアドレスの本人確認を行ってください。");
                 }
             }
 
             return (true, "");
+        }
+
+        /// <summary>
+        ///　登録可能なメールアドレスかチェック
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <param name="targetAccountId"></param>
+        /// <returns></returns>
+        private async Task<bool> CanRegistMail(string mail, string targetAccountId)
+        {
+            var accounts = await _accountDataService.GetAsync(mail);
+            if (accounts == null)
+                return true;
+
+            if (accounts.ID == targetAccountId)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -191,7 +226,7 @@ namespace ApplicationCore.Services
         /// メールアドレスの本人認証要求
         /// </summary>
         /// <returns></returns>
-        private async Task<bool> AppReqMail(string mail, string token)
+        private async Task<bool> AppReqMail(string accountId, string mail, string token)
         {
             if (string.IsNullOrEmpty(token))
             {
@@ -201,6 +236,7 @@ namespace ApplicationCore.Services
             var appReqMail = new AppReqMail()
             {
                 ID = Guid.NewGuid().ToString(),
+                AccountID = accountId,
                 Token = token,
                 Mail = mail,
                 RegistDateTime = DateTime.Now
@@ -213,9 +249,9 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        public async Task<bool> AppReqMail(string mail)
+        public async Task<bool> AppReqMail(string accountId, string mail)
         {
-            return await this.AppReqMail(mail, null);
+            return await this.AppReqMail(accountId, mail, null);
         }
     }
 }

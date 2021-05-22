@@ -23,12 +23,35 @@ namespace ApplicationCore.DataServices
             _hashService = hashService;
         }
 
+        /// <summary>
+        /// IDでアカウント情報取得
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Account> GetByIdAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("idが空です");
 
             return await _repository.GetByIdAsync(id);
+        }
+
+        /// <summary>
+        /// IDとパスワードでアカウント情報取得
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<Account> GetByIdAsync(string id, string password)
+        {
+            var account = await this.GetByIdAsync(id);
+            if (account == null)
+                return null;
+
+            if (_hashService.Verify(account.Password, password) == false)
+                return null;
+
+            return account;
         }
 
         /// <summary>
@@ -65,15 +88,16 @@ namespace ApplicationCore.DataServices
         /// メールアドレス本人認証の更新
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> UpdateAppMail(string id, bool appMail, IDbContext db)
+        public async Task<bool> UpdateAppMail(string id, string mail, bool appMail, IDbContext db)
         {
             var account = new Account()
             {
                 ID = id,
+                Mail = mail,
                 AppMail = appMail
             };
 
-            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.AppMail) }, db);
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.AppMail), nameof(Account.Mail) }, db);
 
             return true;
         }

@@ -19,7 +19,7 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="mail"></param>
         /// <returns></returns>
-        Task<bool> CreateAppReqMail(string mail, string userName);
+        Task<bool> CreateAppReqMail(string accountId, string mail, string userName, bool isNew);
 
         /// <summary>
         /// メールアドレスの本人認証の最中か
