@@ -14,6 +14,6 @@ namespace ApplicationCore.Interfaces
         /// <param name="stream"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        Task<bool> RegistUserIcon(Stream stream, string fileName);
+        Task<bool> RegistUserIcon(byte[] base64, string fileName);
     }
 }

@@ -42,11 +42,11 @@ namespace Infrastructure.Data
         /// <param name="stream"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public async Task<bool> UploadImg(Stream stream, string containername, string filename)
+        public async Task<bool> UploadImg(byte[] base64, string containername, string filename)
         {
             var container = _cloudBlobClient.GetContainerReference(containername);
             var cloudBloblBlob = container.GetBlockBlobReference(filename);
-            await cloudBloblBlob.UploadFromStreamAsync(stream);
+            await cloudBloblBlob.UploadFromByteArrayAsync(base64, 0, base64.Length);
 
             return true;
         }

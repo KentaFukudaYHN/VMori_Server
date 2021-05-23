@@ -9,17 +9,17 @@ namespace VMori.ReqRes
         /// <summary>
         /// 年
         /// </summary>
-        public string Year { get; set; }
+        public int Year { get; set; }
 
         /// <summary>
         /// 月
         /// </summary>
-        public string Month { get; set; }
+        public int Month { get; set; }
 
         /// <summary>
         /// 日
         /// </summary>
-        public string Date { get; set; }
+        public int Date { get; set; }
 
         /// <summary>
         /// コンストラクタ

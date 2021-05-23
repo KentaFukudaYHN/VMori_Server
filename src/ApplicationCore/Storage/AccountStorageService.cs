@@ -25,9 +25,9 @@ namespace ApplicationCore.Services
         /// ユーザーアイコンのアップロード
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> RegistUserIcon(Stream stream, string fileName)
+        public async Task<bool> RegistUserIcon(byte[] base64, string fileName)
         {
-            return await _storageService.UploadImg(stream, USER_ICON_CONATINER, fileName);
+            return await _storageService.UploadImg(base64, USER_ICON_CONATINER, fileName);
         } 
     }
 }

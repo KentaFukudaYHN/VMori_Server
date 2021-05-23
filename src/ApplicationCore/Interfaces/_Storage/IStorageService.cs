@@ -16,7 +16,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="containername"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        Task<bool> UploadImg(Stream stream, string containername, string filename);
+        Task<bool> UploadImg(byte[] base64, string containername, string filename);
 
         /// <summary>
         /// ストレージのドメインを取得

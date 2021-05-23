@@ -47,9 +47,9 @@ namespace VMori.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public async Task<string> RegistIcon(string base64, string name)
+        public async Task<string> RegistIcon(ChangeIconReq req)
         {
-            return await _accountWorker.RegistIcon(base64, name, ADC);
+            return await _accountWorker.RegistIcon(req, ADC);
         }
 
         /// <summary>

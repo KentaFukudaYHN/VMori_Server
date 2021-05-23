@@ -32,7 +32,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="file"></param>
         /// <param name="adc"></param>
         /// <returns></returns>
-        Task<string> RegistIcon(Stream stream, string fileName, ApplicationDataContainer adc);
+        Task<string> RegistIcon(byte[] base64, string fileName, ApplicationDataContainer adc);
 
         /// <summary>
         /// 名前の更新

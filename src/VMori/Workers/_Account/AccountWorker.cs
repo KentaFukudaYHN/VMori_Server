@@ -63,14 +63,10 @@ namespace VMori.Workers
         /// <param name="file"></param>
         /// <param name="adc"></param>
         /// <returns></returns>
-        public async Task<string> RegistIcon(string base64, string fileName, ApplicationDataContainer adc)
+        public async Task<string> RegistIcon(ChangeIconReq req, ApplicationDataContainer adc)
         {
-            var byteData = Convert.FromBase64String(base64);
-            using (var ms = new MemoryStream(byteData, 0, byteData.Length))
-            {
-                ms.Write(byteData, 0, byteData.Length);
-                return await _accountService.RegistIcon(ms, Path.GetExtension(fileName), adc);
-            }
+            var byteData = Convert.FromBase64String(req.base64);
+            return await _accountService.RegistIcon(byteData, Path.GetExtension(req.name), adc);
         }
 
         /// <summary>
@@ -92,7 +88,7 @@ namespace VMori.Workers
         /// <returns></returns>
         public async Task<bool> UpdateBirthday(ChangebBrthdayReq req, ApplicationDataContainer adc)
         {
-            var birthday = _dateTimeUtility.ConvertStringToDate(req.Year, req.Month, req.Date);
+            var birthday = new DateTime(req.Year, req.Month, req.Date);
             return await _accountService.UpdateBirthday(birthday, adc);
 
         }

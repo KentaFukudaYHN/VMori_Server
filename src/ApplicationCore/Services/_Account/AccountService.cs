@@ -50,7 +50,7 @@ namespace ApplicationCore.Services
                 Mail = account.Mail,
                 Password = account.Password,
                 Gender = account.Gender,
-                Icon = account.Icon,
+                Icon = _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + account.Icon,
                 Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday),
                 AppMail = account.AppMail
             };
@@ -104,12 +104,12 @@ namespace ApplicationCore.Services
         /// ユーザーアイコンの登録
         /// </summary>
         /// <returns></returns>
-        public async Task<string> RegistIcon(Stream stream, string extension,  ApplicationDataContainer adc)
+        public async Task<string> RegistIcon(byte[] base64, string extension,  ApplicationDataContainer adc)
         {
             var fileName = Guid.NewGuid().ToString().Replace("-", "") + extension;
 
             //Blobに画像をアップロード
-            if (await _storageService.UploadImg(stream, USER_ICON_CONTAINER, fileName) == false)
+            if (await _storageService.UploadImg(base64, USER_ICON_CONTAINER, fileName) == false)
                 return string.Empty;
 
             //ファイル名をDBに保存
