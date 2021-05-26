@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace VMori.Workers
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(ReqRes.RegistAccountReq vm)
+        public async Task<bool> Regist(ReqRes.RegistAccountReq vm, HttpContext context)
         {
             //reqの生成
             var req = new ApplicationCore.ReqRes.RegistAccountReq()
@@ -51,7 +52,8 @@ namespace VMori.Workers
                 Mail = vm.Mail,
                 Password = vm.Password,
                 BirthDay = new DateTime(int.Parse(vm.Year), int.Parse(vm.Month), int.Parse(vm.Day)),
-                Name = vm.Name
+                Name = vm.Name,
+                HttpContext = context
             };
 
             return await _accountService.Regist(req);

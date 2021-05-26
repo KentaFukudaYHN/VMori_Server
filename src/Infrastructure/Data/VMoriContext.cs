@@ -26,6 +26,11 @@ namespace Infrastructure.Data
         public DbSet<Account> Accounts { get; set; }
 
         /// <summary>
+        /// パスワード変更要求
+        /// </summary>
+        public DbSet<ChangeReqPassword> ChangeReqPasswords { get; set; }
+
+        /// <summary>
         /// メールアドレス認証要求
         /// </summary>
         public DbSet<AppReqMail> AppReqMails { get; set; }
@@ -36,7 +41,9 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<Account>().ToTable("Account");
             modelBuilder.Entity<Account>().HasKey(x => new { x.ID });
-            
+
+            modelBuilder.Entity<ChangeReqPassword>().ToTable("ChangeReqPassword");
+
             modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });
 

@@ -3,7 +3,6 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.ReqRes;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -43,6 +42,9 @@ namespace ApplicationCore.Services
             if (account == null)
                 throw new ArgumentException("存在しないアカウントIDです");
 
+            var icon = string.Empty;
+            if (string.IsNullOrEmpty(account.Icon) == false)
+                icon = _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + account.Icon;
             return new AccountRes()
             {
                 Name = account.Name,
@@ -50,7 +52,7 @@ namespace ApplicationCore.Services
                 Mail = account.Mail,
                 Password = account.Password,
                 Gender = account.Gender,
-                Icon = _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + account.Icon,
+                Icon = icon,
                 Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday),
                 AppMail = account.AppMail
             };
@@ -76,7 +78,7 @@ namespace ApplicationCore.Services
                 return false;
 
             //パスワードのチェック
-            if (CheckPassword(req.Password) == false)
+            if (_authService.CheckPassword(req.Password) == false)
                 return false;
 
             //アカウント情報登録
@@ -96,6 +98,9 @@ namespace ApplicationCore.Services
 
             //メールアドレスの本人認証要求情報を登録
             await _authService.CreateAppReqMail(account.ID, req.Mail, req.Name, true);
+
+            //ログイン
+            await _authService.Login(req.Mail, req.Password, req.HttpContext);
 
             return true;
         }
@@ -172,7 +177,7 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         public async Task<bool> UpdatePassword(string password, ApplicationDataContainer adc)
         {
-            if (CheckPassword(password) == false)
+            if (_authService.CheckPassword(password) == false)
                 return false;
 
             //パスワードの更新
@@ -221,28 +226,6 @@ namespace ApplicationCore.Services
         private bool CheckOverSameName(List<Account> sameNameList)
         {
             return sameNameList.Count < 100;
-        }
-
-        /// <summary>
-        /// パスワードが要件を満たしているかチェック
-        /// </summary>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        private bool CheckPassword(string password)
-        {
-            //パスワードは8文字から100文字以内
-            if(password.Length < 8 || password.Length >= 100)
-            {
-                return false;
-            }
-
-            //半角英数字大文字を含んでいるか
-            if (Regex.IsMatch(password, "(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)") == false)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         /// <summary>

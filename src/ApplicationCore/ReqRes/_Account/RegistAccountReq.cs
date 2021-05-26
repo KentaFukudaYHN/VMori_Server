@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace ApplicationCore.ReqRes
 {
@@ -25,6 +22,11 @@ namespace ApplicationCore.ReqRes
         /// 名前
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// HttpContext ※ログイン処理用
+        /// </summary>
+        public HttpContext HttpContext { get; set; }
 
         /// <summary>
         /// 誕生日

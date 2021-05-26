@@ -1,8 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.ReqRes;
-using Microsoft.AspNetCore.Http;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces

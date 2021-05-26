@@ -198,6 +198,25 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdatePassword(string id, string password, IDbContext db)
+        {
+            var account = new Account()
+            {
+                ID = id,
+                Password = password
+            };
+
+            await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.Password) }, db);
+
+            return true;
+        }
+
+        /// <summary>
         /// アカウント情報の取得
         /// </summary>
         /// <param name="mail"></param>

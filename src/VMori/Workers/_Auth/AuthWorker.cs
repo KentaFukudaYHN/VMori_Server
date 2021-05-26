@@ -52,6 +52,50 @@ namespace VMori.Workers
         }
 
         /// <summary>
+        /// パスワード変更の認証コードチェック
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
+        {
+            var result = await _authService.CheckChangeReqPasswordToken(req.Token, req.Mail);
+
+            var res = new CheckChangeReqPasswordRes()
+            {
+                Success = result.Item1,
+                ErrMsg = result.Item2
+            };
+
+            return res;
+        }
+
+        /// <summary>
+        /// パスワードの変更要求作成
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateChangeReqPassword(CreateChangeReqPasswordReq req)
+        {
+            return await _authService.CreateChangeReqPassoword(req.mail);
+        }
+
+        /// <summary>
+        /// パスワードの変更要求
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req)
+        {
+            var result = await _authService.ChangeReqPassword(req.Mail, req.Token, req.Password);
+
+            return new ChangeReqPasswordRes()
+            {
+                Success = result.Item1,
+                ErrMsg = result.Item2
+            };
+        }
+
+        /// <summary>
         /// メールアドレスの本人認証
         /// </summary>
         /// <param name="mail"></param>

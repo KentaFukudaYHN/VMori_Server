@@ -67,5 +67,37 @@ namespace VMori.Controllers
         {
             return await _authWorker.AppReqMail(req);
         }
+
+        /// <summary>
+        /// パスワードの変更要求作成
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> CreateChangeReqPassword(CreateChangeReqPasswordReq req)
+        {
+            return await _authWorker.CreateChangeReqPassword(req);
+        }
+
+        /// <summary>
+        /// パスワードの変更認証コードのチェック
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
+        {
+            return await _authWorker.CheckChangeReqPassword(req);
+        }
+
+        /// <summary>
+        /// パスワードの変更要求実行
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req)
+        {
+            return await _authWorker.ChangeReqPassword(req);
+        }
     }
 }

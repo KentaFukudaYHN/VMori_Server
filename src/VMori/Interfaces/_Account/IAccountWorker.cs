@@ -20,7 +20,7 @@ namespace VMori.Interfaces
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task<bool> Regist(RegistAccountReq vm);
+        Task<bool> Regist(RegistAccountReq vm, HttpContext context);
 
         /// <summary>
         /// ユーザーアイコン登録

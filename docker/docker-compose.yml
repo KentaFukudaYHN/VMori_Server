@@ -9,6 +9,9 @@ services:
     environment:
         - Storage__ConnectionStrings=${Storage__ConnectionStrings}
         - Storage__Domain=${Storage__Domain}
+        - Mail__ApiKey=${Mail__ApiKey}
+        - Mail__SystemMailAddress=${Mail__SystemMailAddress}
+        - Client__Domain=${Client__Domain}
   mssql:
     image: mcr.microsoft.com/mssql/rhel/server:2019-latest
     container_name: 'mssql2019'

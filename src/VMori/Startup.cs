@@ -127,6 +127,7 @@ namespace Api
             //DIƒRƒ“ƒeƒi‚ÉDataService‚Ì“o˜^
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
             services.AddScoped(typeof(IAppReqMailDataService), typeof(AppReqMailDataService));
+            services.AddScoped(typeof(IChangeReqPasswordDataService), typeof(ChangeReqPasswordDataService));
 
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
             services.AddScoped(typeof(IRecommendVideosService), typeof(RecommendVideosService));

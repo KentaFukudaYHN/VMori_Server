@@ -20,6 +20,13 @@ namespace VMori.Interfaces
         Task<bool> Login(LoginViewModel vModel, HttpContext context);
 
         /// <summary>
+        /// パスワード変更の認証コードチェック
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req);
+
+        /// <summary>
         /// メールアドレス本人認証の最中かどうか
         /// </summary>
         /// <param name="token"></param>
@@ -42,5 +49,19 @@ namespace VMori.Interfaces
         /// <returns></returns>
 
         Task<AppReqMailRes> AppReqMail(AppReqMailReq req);
+
+        /// <summary>
+        /// パスワードの変更要求作成
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<bool> CreateChangeReqPassword(CreateChangeReqPasswordReq req);
+        
+        /// <summary>
+        /// パスワードの変更要求
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req);
     }
 }

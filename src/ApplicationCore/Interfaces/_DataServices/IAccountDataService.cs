@@ -95,6 +95,14 @@ namespace ApplicationCore.Interfaces
         Task<bool> UpdatePassword(string password, ApplicationDataContainer adc);
 
         /// <summary>
+        /// パスワードの更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task<bool> UpdatePassword(string id, string password, IDbContext db);
+
+        /// <summary>
         /// ユーザーアイコンのファイル名を更新
         /// </summary>
         /// <param name="id"></param>

@@ -37,7 +37,7 @@ namespace VMori.Controllers
         [HttpPost]
         public async Task<bool> Regist(RegistAccountReq vm)
         {
-            return await _accountWorker.Regist(vm);
+            return await _accountWorker.Regist(vm, HttpContext);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace VMori.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public async Task<bool> UpdatePassword(ChangePasswordReq req)
+        public async Task<bool> UpdatePassword(ChangeReqPasswordReq req)
         {
             return await _accountWorker.UpdatePassword(req.Password, ADC);
         }

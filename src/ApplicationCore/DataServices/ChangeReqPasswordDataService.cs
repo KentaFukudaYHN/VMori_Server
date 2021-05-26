@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 namespace ApplicationCore.DataServices
 {
     /// <summary>
-    /// メールアドレス承認要求DataService
+    /// パスワード変更要求DataService
     /// </summary>
-    public class AppReqMailDataService : IAppReqMailDataService
+    public class ChangeReqPasswordDataService : IChangeReqPasswordDataService
     {
-        private readonly IAsyncRepository<AppReqMail> _asyncRepository;
+        private readonly IAsyncRepository<ChangeReqPassword> _repository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AppReqMailDataService(IAsyncRepository<AppReqMail> asyncRepository)
+        /// <param name="asyncRepository"></param>
+        public ChangeReqPasswordDataService(IAsyncRepository<ChangeReqPassword> asyncRepository)
         {
-            _asyncRepository = asyncRepository;
+            _repository = asyncRepository;
         }
 
         /// <summary>
@@ -27,26 +28,27 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(AppReqMail entity)
+        public async Task<bool> Regist(ChangeReqPassword entity)
         {
             if (string.IsNullOrEmpty(entity.ID))
                 throw new ArgumentException("IDが設定されていません");
 
-            await _asyncRepository.AddAsync(entity);
+            await _repository.AddAsync(entity);
 
             return true;
         }
 
         /// <summary>
-        /// Tokenで情報参照
+        /// Tokenで検索
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<AppReqMail> GetByToken(string token)
+        public async Task<ChangeReqPassword> GetByToken(string token)
         {
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentException("Tokenが空です");
-            return (await _asyncRepository.ListAsync(new AppReqMailSpecification(token))).FirstOrDefault();
+
+            return (await _repository.ListAsync(new ChangeReqPasswordWithCodeSpecification(token))).FirstOrDefault();
         }
 
         /// <summary>
@@ -54,12 +56,12 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> Delete(string id, IDbContext db)
+        public async Task<bool> DeleteById(string id, IDbContext db)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("idが空です");
 
-            await _asyncRepository.DeleteByIdAsync(id, db);
+            await _repository.DeleteByIdAsync(id, db);
 
             return true;
         }
