@@ -1,6 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
-using ApplicationCore.ReqRes;
+using ApplicationCore.ServiceReqRes;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
@@ -31,7 +31,7 @@ namespace ApplicationCore.Services
         /// ログイン中のアカウント取得
         /// </summary>
         /// <returns></returns>
-        public async Task<AccountRes> GetLoginAccount(ApplicationDataContainer adc)
+        public async Task<AccountServiceRes> GetLoginAccount(ApplicationDataContainer adc)
         {
             if (string.IsNullOrEmpty(adc.LoginUser.Id))
                 throw new ArgumentException("ログインしてないのにアカウント情報にアクセスしようとしています");
@@ -50,7 +50,7 @@ namespace ApplicationCore.Services
                 var mime = MimeTypes.GetMimeType(account.Icon);
                 icon = "data:" + mime + ";base64," + base64;
             }
-            return new AccountRes()
+            return new AccountServiceRes()
             {
                 Name = account.Name,
                 DisplayID = account.DisplayID,
@@ -68,7 +68,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(RegistAccountReq req)
+        public async Task<bool> Regist(RegistAccountServiceReq req)
         {
             //メールアドレスのチェック ※形式が正しくない場合例外が発生
             new MailAddress(req.Mail);

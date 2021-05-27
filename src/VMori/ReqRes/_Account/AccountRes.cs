@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Enum;
+using ApplicationCore.ServiceReqRes;
 using System;
 
 namespace VMori.ReqRes._Account
@@ -8,7 +9,7 @@ namespace VMori.ReqRes._Account
     /// </summary>
     public class AccountRes
     {
-        private ApplicationCore.ReqRes.AccountRes _original;
+        private AccountServiceRes _original;
 
         /// <summary>
         /// 名前
@@ -59,7 +60,7 @@ namespace VMori.ReqRes._Account
         /// コンストラクタ
         /// </summary>
         /// <param name="original"></param>
-        public AccountRes(ApplicationCore.ReqRes.AccountRes original)
+        public AccountRes(AccountServiceRes original)
         {
             _original = original;
         }

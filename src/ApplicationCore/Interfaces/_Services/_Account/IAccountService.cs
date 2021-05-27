@@ -1,5 +1,5 @@
 ﻿using ApplicationCore.Entities;
-using ApplicationCore.ReqRes;
+using ApplicationCore.ServiceReqRes;
 using System;
 using System.Threading.Tasks;
 
@@ -15,14 +15,14 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="adc"></param>
         /// <returns></returns>
-        Task<AccountRes> GetLoginAccount(ApplicationDataContainer adc);
+        Task<AccountServiceRes> GetLoginAccount(ApplicationDataContainer adc);
 
         /// <summary>
         /// アカウントの登録
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        Task<bool> Regist(RegistAccountReq req);
+        Task<bool> Regist(RegistAccountServiceReq req);
 
         /// <summary>
         /// ユーザーアイコンの登録

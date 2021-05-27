@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace ApplicationCore.ReqRes
+namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
     /// アカウント情報登録リクエスト
     /// </summary>
-    public class RegistAccountReq
+    public class RegistAccountServiceReq
     {
         /// <summary>
         /// メールアドレス

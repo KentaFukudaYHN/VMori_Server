@@ -1,12 +1,12 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Enum;
 using System;
-namespace ApplicationCore.ReqRes
+namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
     /// アカウント情報レスポンスクラス
     /// </summary>
-    public class AccountRes
+    public class AccountServiceRes
     {
         /// <summary>
         /// 名前
@@ -59,7 +59,7 @@ namespace ApplicationCore.ReqRes
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public AccountRes()
+        public AccountServiceRes()
         {
         }
     }

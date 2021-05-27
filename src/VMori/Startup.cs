@@ -130,14 +130,12 @@ namespace Api
             services.AddScoped(typeof(IChangeReqPasswordDataService), typeof(ChangeReqPasswordDataService));
 
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
-            services.AddScoped(typeof(IRecommendVideosService), typeof(RecommendVideosService));
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IHashService), typeof(HashService));
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
             services.AddScoped(typeof(IMailService), typeof(SendGridService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
-            services.AddScoped(typeof(IRecommendVideosWorker), typeof(RecommendVideosWorker));
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
             services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
 

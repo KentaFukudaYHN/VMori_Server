@@ -47,7 +47,7 @@ namespace VMori.Workers
         public async Task<bool> Regist(ReqRes.RegistAccountReq vm, HttpContext context)
         {
             //reqの生成
-            var req = new ApplicationCore.ReqRes.RegistAccountReq()
+            var req = new ApplicationCore.ServiceReqRes.RegistAccountServiceReq()
             {
                 Mail = vm.Mail,
                 Password = vm.Password,

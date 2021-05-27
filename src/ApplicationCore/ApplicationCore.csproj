@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\_Config\" />
+    <Folder Include="Interfaces\_Services\_Video\" />
   </ItemGroup>
 
 </Project>
