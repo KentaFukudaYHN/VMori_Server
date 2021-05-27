@@ -10,7 +10,6 @@ namespace ApplicationCore.Services
     public class AccountStorageService : IAccountStorageService
     {
         private readonly IStorageService _storageService;
-        private const string USER_ICON_CONATINER = "user-icons";
 
         /// <summary>
         /// コンストラクタ
@@ -25,9 +24,20 @@ namespace ApplicationCore.Services
         /// ユーザーアイコンのアップロード
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> RegistUserIcon(byte[] base64, string fileName)
+        public async Task<bool> RegistUserIcon(byte[] base64, string containerName, string fileName)
         {
-            return await _storageService.UploadImg(base64, USER_ICON_CONATINER, fileName);
+            return await _storageService.UploadImg(base64, containerName, fileName);
         } 
+
+        /// <summary>
+        /// 画像の取得
+        /// </summary>
+        /// <param name="containerName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public async Task<string> GetUserIcon(string containerName, string fileName)
+        {
+            return await _storageService.DownloadImg(containerName, fileName);
+        }
     }
 }

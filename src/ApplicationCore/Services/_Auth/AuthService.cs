@@ -62,6 +62,7 @@ namespace ApplicationCore.Services
                 new Claim(ClaimTypes.NameIdentifier, account.ID), //ユニーク
                 new Claim(ClaimTypes.Name, account.Name),
                 new Claim("Mail", account.Mail),
+                new Claim("StorageID", account.StorageID)
             };
 
             //一意のID情報

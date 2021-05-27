@@ -31,6 +31,7 @@ namespace VMori.Attribute
                     Id = id.Value,
                     Name = claimPricial.FindFirst(ClaimTypes.Name).Value,
                     Mail = claimPricial.FindFirst("Mail").Value,
+                    StorageID = claimPricial.FindFirst("StorageID").Value
                 }
             };
         }

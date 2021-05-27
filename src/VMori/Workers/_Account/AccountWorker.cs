@@ -65,7 +65,7 @@ namespace VMori.Workers
         /// <param name="file"></param>
         /// <param name="adc"></param>
         /// <returns></returns>
-        public async Task<string> RegistIcon(ChangeIconReq req, ApplicationDataContainer adc)
+        public async Task<bool> RegistIcon(ChangeIconReq req, ApplicationDataContainer adc)
         {
             var byteData = Convert.FromBase64String(req.base64);
             return await _accountService.RegistIcon(byteData, Path.GetExtension(req.name), adc);

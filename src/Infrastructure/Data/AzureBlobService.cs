@@ -42,17 +42,49 @@ namespace Infrastructure.Data
         /// <param name="stream"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public async Task<bool> UploadImg(byte[] base64, string containername, string filename)
+        public async Task<bool> UploadImg(byte[] base64, string containerName, string filename)
         {
-            try
+            var container = _cloudBlobClient.GetContainerReference(containerName);
+            //コンテナが無ければ作る
+            await container.CreateIfNotExistsAsync();
+            var cloudBlockBlob = container.GetBlockBlobReference(filename);
+            await cloudBlockBlob.UploadFromByteArrayAsync(base64, 0, base64.Length);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 画像のダウンロード
+        /// </summary>
+        /// <param name="containerName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public async Task<string> DownloadImg(string containerName, string fileName)
+        {
+            var container = _cloudBlobClient.GetContainerReference(containerName);
+            var cloudBlockBlob = container.GetBlockBlobReference(fileName);
+            using (var stream = await cloudBlockBlob.OpenReadAsync())
             {
-                var container = _cloudBlobClient.GetContainerReference(containername);
-                var cloudBloblBlob = container.GetBlockBlobReference(filename);
-                await cloudBloblBlob.UploadFromByteArrayAsync(base64, 0, base64.Length);
-            }catch(Exception e)
-            {
-                throw e;
+                using (var ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    return  Convert.ToBase64String(ms.ToArray());
+                }
             }
+
+        }
+
+        /// <summary>
+        /// 画像の削除
+        /// </summary>
+        /// <param name="containerName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteImg(string containerName, string fileName)
+        {
+            var container = _cloudBlobClient.GetContainerReference(containerName);
+            var cloudBlockBlob = container.GetBlockBlobReference(fileName);
+            await cloudBlockBlob.DeleteAsync();
 
             return true;
         }

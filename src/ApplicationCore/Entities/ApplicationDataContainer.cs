@@ -33,5 +33,10 @@ namespace ApplicationCore.Entities
         /// </summary>
 
         public string Mail { get; set; }
+
+        /// <summary>
+        /// ストレージID
+        /// </summary>
+        public string StorageID { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace VMori.Interfaces
         /// <param name="file"></param>
         /// <param name="adc"></param>
         /// <returns></returns>
-        Task<string> RegistIcon(ChangeIconReq req, ApplicationDataContainer adc);
+        Task<bool> RegistIcon(ChangeIconReq req, ApplicationDataContainer adc);
 
         /// <summary>
         /// 名前の更新

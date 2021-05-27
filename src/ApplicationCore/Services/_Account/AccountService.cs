@@ -15,7 +15,6 @@ namespace ApplicationCore.Services
         private readonly IAccountDataService _accountDataService;
         private readonly IDateTimeUtility _dateTimeUtility;
         private readonly IStorageService _storageService;
-        private const string USER_ICON_CONTAINER = "user-icons";
 
         /// <summary>
         /// コンストラクタ
@@ -43,8 +42,14 @@ namespace ApplicationCore.Services
                 throw new ArgumentException("存在しないアカウントIDです");
 
             var icon = string.Empty;
+            //画像の取得
             if (string.IsNullOrEmpty(account.Icon) == false)
-                icon = _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + account.Icon;
+            {
+                var base64 = await _storageService.DownloadImg(account.StorageID, account.Icon);
+                //MIMEタイプ取得
+                var mime = MimeTypes.GetMimeType(account.Icon);
+                icon = "data:" + mime + ";base64," + base64;
+            }
             return new AccountRes()
             {
                 Name = account.Name,
@@ -54,7 +59,7 @@ namespace ApplicationCore.Services
                 Gender = account.Gender,
                 Icon = icon,
                 Birthday = _dateTimeUtility.ConvertStringToDate(account.Birthday),
-                AppMail = account.AppMail
+                AppMail = account.AppMail,
             };
         }
 
@@ -91,7 +96,8 @@ namespace ApplicationCore.Services
                 AppMail = false,
                 Password = req.Password, //DataServiceでハッシュ化される
                 Birthday = _dateTimeUtility.ConvertDateToString(req.BirthDay),
-                RegistDateTime = DateTime.Now
+                RegistDateTime = DateTime.Now,
+                StorageID = Guid.NewGuid().ToString()
             };
 
             await _accountDataService.RegistAsync(account);
@@ -109,19 +115,22 @@ namespace ApplicationCore.Services
         /// ユーザーアイコンの登録
         /// </summary>
         /// <returns></returns>
-        public async Task<string> RegistIcon(byte[] base64, string extension,  ApplicationDataContainer adc)
+        public async Task<bool> RegistIcon(byte[] base64, string extension,  ApplicationDataContainer adc)
         {
             var fileName = Guid.NewGuid().ToString().Replace("-", "") + extension;
 
             //Blobに画像をアップロード
-            if (await _storageService.UploadImg(base64, USER_ICON_CONTAINER, fileName) == false)
-                return string.Empty;
+            if (await _storageService.UploadImg(base64, adc.LoginUser.StorageID, fileName) == false)
+                return false;
 
             //ファイル名をDBに保存
+            var beforeIconName = (await _accountDataService.GetByIdAsync(adc.LoginUser.Id)).Icon;
             if (await _accountDataService.UpdateIcon(fileName, adc) == false)
-                return string.Empty;
+                return false;
 
-            return GetIconUrl(fileName);
+            //元のファイルを削除
+            await _storageService.DeleteImg(adc.LoginUser.StorageID, beforeIconName);
+            return true;
         }
 
         /// <summary>
@@ -206,16 +215,6 @@ namespace ApplicationCore.Services
                 return false;
 
             return true;
-        }
-
-        /// <summary>
-        /// ユーザーアイコンの画像URLを生成
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        private string GetIconUrl(string fileName)
-        {
-            return _storageService.GetStorageDomain() + "/" + USER_ICON_CONTAINER + "/" + fileName;
         }
 
         /// <summary>

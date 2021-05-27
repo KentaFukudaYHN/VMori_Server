@@ -48,6 +48,11 @@ namespace ApplicationCore.Entities
         public bool AppMail { get; set; }
 
         /// <summary>
+        /// ストレージのID
+        /// </summary>
+        public string StorageID { get; set; }
+
+        /// <summary>
         /// 登録日時
         /// </summary>
         public DateTime RegistDateTime { get; set; }
