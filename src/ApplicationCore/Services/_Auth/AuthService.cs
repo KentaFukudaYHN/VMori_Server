@@ -24,19 +24,21 @@ namespace ApplicationCore.Services
         private readonly IDbContext _db;
         private readonly IChangeReqPasswordDataService _changeReqPasswordDataService;
         private readonly ClientConfig _clientConfig;
+        private readonly MailConfig _mailConfig;
 
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="accountDataService"></param>
-        public AuthService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IChangeReqPasswordDataService changeReqPasswordDataService,IMailService mailService, IOptions<ClientConfig> clientConfig, IDbContext db)
+        public AuthService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IChangeReqPasswordDataService changeReqPasswordDataService,IMailService mailService, IOptions<ClientConfig> clientConfig, IOptions<MailConfig> mailConfig, IDbContext db)
         {
             _accountDataService = accountDataService;
             _appReqMailDataService = appReqMailDataService;
             _mailService = mailService;
             _changeReqPasswordDataService = changeReqPasswordDataService;
             _clientConfig = clientConfig.Value;
+            _mailConfig = mailConfig.Value;
             _db = db;
         }
 
@@ -123,172 +125,6 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
-        /// パスワードの変更要求作成
-        /// </summary>
-        /// <param name="mail"></param>
-        /// <returns></returns>
-        public async Task<bool> CreateChangeReqPassoword(string mail)
-        {
-            //アカウント情報を取得
-            var account = await _accountDataService.GetAsync(mail);
-
-            var title = "[Vtuberの森]パスワードの変更";
-            if (account == null)
-            {
-                //メールアドレスチェック
-                new MailAddress(mail);
-                var noAccountMsg = "Vtuberの森をご利用いただきありがとうございます！<br>" +
-                                    "このメールはVtuberの森のパスワードリセットを行う為に、入力されたメールアドレスに自動送信されています。<br>" +
-                                    "こちらのメールアドレスはVtuberの森への登録がありません！<br>" +
-                                    "再度ご確認をお願いします";
-
-                var htmlNoAccountMsg =
-                    "<div>" +
-                        this.CreateHtmlMailContent(title, noAccountMsg) +
-                    "</div>";
-
-                await _mailService.SendMail(mail, title, htmlNoAccountMsg);
-                return false;
-            }
-
-            //6文字の認証コードを生成
-            var code = new Random().Next(0, 9999).ToString();
-            var changeReqPassword = new ChangeReqPassword()
-            {
-                ID = Guid.NewGuid().ToString(),
-                AccountID = account.ID,
-                Code = code,
-                RegistDateTime = DateTime.Now
-            };
-
-            //パスワード認証用のメールを送信
-            var titleMsg = "こんにちは！" + account.Name + "さん！";
-            var msg =
-                "このメールはVtuberの森のパスワードリセットを行う為に、入力されたメールアドレスに自動送信されています。<br>" +
-                "こちらの認証コードを入力してパスワードのリセットを行ってください<br><br>" +
-                code;
-
-            var htmlMsg =
-                "<div>" +
-                    this.CreateHtmlMailContent(titleMsg, msg) +
-                "</div>";
-            await _mailService.SendMail(mail, title, htmlMsg);
-
-
-            return await _changeReqPasswordDataService.Regist(changeReqPassword);
-        }
-
-        /// <summary>
-        /// パスワード変更Tokenが有効か確認
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="mail"></param>
-        /// <returns></returns>
-        public async Task<(bool, string)> CheckChangeReqPasswordToken(string token, string mail)
-        {
-            if (token == null || mail == null)
-                throw new ArgumentException("Tokenまたはメールアドレスが空です");
-
-            //Token情報を取得
-            var target = await _changeReqPasswordDataService.GetByToken(token);
-
-            if (target == null)
-                return (false, "原因不明のエラーです。変更可能期間を過ぎている可能性があります、再度パスワードのリセットを行ってください。");
-
-            //Tokenが該当のメールアドレスのものかチェック
-            var targetAccount = await _accountDataService.GetByIdAsync(target.AccountID);
-
-            if (targetAccount == null)
-                return (false, "認証コードが間違っています");
-
-            if (targetAccount.Mail != mail)
-                return (false, "パスワードリセット要求時と現在のアカウントのメールアドレスが異なっています。再度パスワードリセットを行ってください。");
-
-            //期間内かチェック
-            if (this.CheckPeriodChangeReqPassword(target.RegistDateTime) == false)
-                return (false, "認証コードの期限が過ぎています。お手数ですが再度パスワードリセットを行ってください。");
-
-            return (true, "");
-        }
-
-        /// <summary>
-        /// パスワードの変更要求実行
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public async Task<(bool, string)> ChangeReqPassword(string mail, string token, string password)
-        {
-            //パスワードが要件を見たいしてるかチェック
-            if (this.CheckPassword(password) == false)
-                return (false, "パスワードの要件を満たしていません。8文字以上で半角英数字大文字を含む必要があります");
-
-            //ChangeReqPassword1の情報を取得
-            var changeReqPassword = await _changeReqPasswordDataService.GetByToken(token);
-
-            if (changeReqPassword == null)
-                return (false, "原因不明のエラーです。変更可能時間を過ぎている可能性があります。再度パスワードのリセット申請を行ってください");
-
-            //期間内か確認
-            if (this.CheckPeriodChangeReqPassword(changeReqPassword.RegistDateTime) == false)
-                return (false, "パスワード変更可能時間を過ぎてきます。再度パスワードのリセット申請を行ってください。");
-
-            //アカウント情報を取得
-            var account = await _accountDataService.GetByIdAsync(changeReqPassword.AccountID);
-
-            if (account == null)
-                return (false, "原因不明のエラーです。お手数ですが再度パスワードのリセット申請を行ってください。");
-
-            //該当のアカウントのメールアドレスと一致するか確認
-            if(account.Mail != mail)
-                return (false, "原因不明のエラーです。お手数ですが再度パスワードのリセット申請を行ってください。");
-
-            using (var tx = _db.Database.BeginTransaction())
-            {
-                try
-                {
-                    //アカウント情報の更新
-                    await _accountDataService.UpdatePassword(account.ID, password, _db);
-
-                    //AppReqMailのレコードを削除
-                    await _changeReqPasswordDataService.DeleteById(account.ID, _db);
-
-                    tx.Commit();
-                }
-                catch (Exception ex)
-                {
-                    tx.Rollback();
-                    return (false, "原因不明のエラーです。お手数ですが再度アカウント情報画面からメールアドレスの本人確認を行ってください。");
-                }
-            }
-
-            return (true, "");
-        }
-
-        /// <summary>
-        /// パスワードが要件を満たしているかチェック
-        /// </summary>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public bool CheckPassword(string password)
-        {
-            //パスワードは8文字から100文字以内
-            if (password.Length < 8 || password.Length >= 100)
-            {
-                return false;
-            }
-
-            //半角英数字大文字を含んでいるか
-            if (Regex.IsMatch(password, "(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)") == false)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-
-        /// <summary>
         /// メールアドレスの本人認証の最中
         /// </summary>
         /// <param name="token"></param>
@@ -358,6 +194,200 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
+        /// パスワードの変更要求作成
+        /// </summary>
+        /// <param name="mail"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateChangeReqPassoword(string mail)
+        {
+            //アカウント情報を取得
+            var account = await _accountDataService.GetAsync(mail);
+
+            var title = "[Vtuberの森]パスワードの変更";
+            if (account == null)
+            {
+                //メールアドレスチェック
+                new MailAddress(mail);
+                var noAccountMsg = "Vtuberの森をご利用いただきありがとうございます！<br>" +
+                                    "このメールはVtuberの森のパスワードリセットを行う為に、入力されたメールアドレスに自動送信されています。<br>" +
+                                    "こちらのメールアドレスはVtuberの森への登録がありません！<br>" +
+                                    "再度ご確認をお願いします";
+
+                var htmlNoAccountMsg =
+                    "<div>" +
+                        this.CreateHtmlMailContent("", noAccountMsg) +
+                    "</div>";
+
+                await _mailService.SendMail(mail, title, htmlNoAccountMsg);
+                return false;
+            }
+
+            //6文字の認証コードを生成
+            var code = new Random().Next(0, 9999).ToString();
+            var changeReqPassword = new ChangeReqPassword()
+            {
+                ID = Guid.NewGuid().ToString(),
+                AccountID = account.ID,
+                Code = code,
+                RegistDateTime = DateTime.Now
+            };
+
+            //パスワード認証用のメールを送信
+            var titleMsg = "こんにちは！" + account.Name + "さん！";
+            var msg =
+                "このメールはVtuberの森のパスワードリセットを行う為に、入力されたメールアドレスに自動送信されています。<br>" +
+                "こちらの認証コードを入力してパスワードのリセットを行ってください<br><br>" +
+                code;
+
+            var htmlMsg =
+                "<div>" +
+                    this.CreateHtmlMailContent(titleMsg, msg) +
+                "</div>";
+            await _mailService.SendMail(mail, title, htmlMsg);
+
+            //既にアカウントに対してメールアドレス変更要求がある場合は削除
+            var exitChangeReqpassword = await _changeReqPasswordDataService.GetByAccountID(account.ID);
+            if(exitChangeReqpassword != null)
+            {
+                await _changeReqPasswordDataService.DeleteById(exitChangeReqpassword.ID);
+            }
+
+            return await _changeReqPasswordDataService.Regist(changeReqPassword);
+        }
+
+        /// <summary>
+        /// パスワード変更Tokenが有効か確認
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="mail"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> CheckChangeReqPasswordToken(string code, string mail)
+        {
+            if (code == null || mail == null)
+                throw new ArgumentException("Tokenまたはメールアドレスが空です");
+
+            //メールアドレスからアカウント情報を取得
+            var account = await _accountDataService.GetAsync(mail);
+
+            //不正なアクセスな可能性があるので、メールアドレスに該当するアカウントがいないことはいわない
+            if (account == null)
+                return (false, "原因不明のエラーです。再度パスワードのリセットを行ってください");
+
+            //Token情報を取得
+            var target = await _changeReqPasswordDataService.GetByAccountID(account.ID);
+
+            if (target == null)
+                return (false, "認証コードの期間が過ぎている可能性があります\r\n、再度パスワードのリセットを行ってください。");
+
+            //期間内かチェック
+            if (this.CheckPeriodChangeReqPassword(target.RegistDateTime) == false)
+                return (false, "認証コードの期限が過ぎています。お手数ですが再度パスワードリセットを行ってください。");
+
+            //codeが正しいかチェック
+            if (target.Code != code)
+            {
+                //セキュリティの観点から間違ったコードの情報を削除する
+                await _changeReqPasswordDataService.DeleteById(target.ID);
+                await this.CreateChangeReqPassoword(mail);
+                return (false, "認証コードが違います。該当のメールアドレスに再度認証コードを送りましたので、メールに記載されている認証コードを入力してください");
+            }
+
+            return (true, "");
+        }
+
+        /// <summary>
+        /// パスワードの変更要求実行
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<(bool, string)> ChangeReqPassword(string mail, string code, string password)
+        {
+            //パスワードが要件を見たいしてるかチェック
+            if (this.CheckPassword(password) == false)
+                return (false, "パスワードの要件を満たしていません。8文字以上で半角英数字大文字を含む必要があります");
+
+            //アカウント情報を取得
+            var account = await _accountDataService.GetAsync(mail);
+
+            if (account == null)
+                return (false, "原因不明のエラーです。再度パスワードのリセットを申請してください");
+
+            //ChangeReqPassword1の情報を取得
+            var changeReqPassword = await _changeReqPasswordDataService.GetByAccountID(account.ID);
+
+            if (changeReqPassword == null)
+                return (false, "認証コードの期限が過ぎている可能性があります。再度パスワードのリセット申請を行ってください");
+
+            //期間内か確認
+            if (this.CheckPeriodChangeReqPassword(changeReqPassword.RegistDateTime) == false)
+                return (false, "認証コードの期限が過ぎてきます。再度パスワードのリセット申請を行ってください。");
+
+            //コードが正しいか確認
+            if (code != changeReqPassword.Code)
+            {
+                //セキュリティの観点から間違ったコードの情報を削除する
+                await _changeReqPasswordDataService.DeleteById(changeReqPassword.ID);
+                return (false, "原因不明のエラーです。再度パスワードのリセットを申請してください");
+            }
+
+
+            using (var tx = _db.Database.BeginTransaction())
+            {
+                try
+                {
+                    //アカウント情報の更新
+                    await _accountDataService.UpdatePassword(account.ID, password, _db);
+
+                    //AppReqMailのレコードを削除
+                    await _changeReqPasswordDataService.DeleteById(changeReqPassword.ID, _db);
+
+                    tx.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    return (false, "原因不明のエラーです。お手数ですが再度アカウント情報画面からメールアドレスの本人確認を行ってください。");
+                }
+            }
+
+            //パスワードが変更された事を通知
+            var msg = "パスワードの変更が完了しました！<br>" +
+                    "もしパスワードの変更に身に覚えがない場合は下記のサポートメールアドレスにメールをください。<br><br>" +
+                    _mailConfig.SupportMailAddress;
+            var htmlMsg =
+                "<div>" +
+                    this.CreateHtmlMailContent("", msg) +
+                "</div>";
+
+            await _mailService.SendMail(mail, "[Vtuberの森]パスワードの変更", htmlMsg);
+
+            return (true, "");
+        }
+
+        /// <summary>
+        /// パスワードが要件を満たしているかチェック
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool CheckPassword(string password)
+        {
+            //パスワードは8文字から100文字以内
+            if (password.Length < 8 || password.Length >= 100)
+            {
+                return false;
+            }
+
+            //半角英数字大文字を含んでいるか
+            if (Regex.IsMatch(password, "(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)") == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// HTMLメールの内容を生成
         /// </summary>
         /// <param name="title"></param>
@@ -365,18 +395,30 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         private string CreateHtmlMailContent(string title, string msg)
         {
+            var h1Tag = "";
+            if(string.IsNullOrEmpty(title) == false)
+            {
+                h1Tag = 
+                "<h1 style=\"margin-bottom:40px;font-size:22px;size:22px;\">" +
+                    title +
+                "</h1>";
+            }
+            else
+            {
+                h1Tag =
+                    "<div style=\"margin-bottom:20px\"></div>";
+            }
+                 
             return 
                 "<div>" +
                     "<div style=\"margin-top:60px;\">" +
                         "<img style=\"width:150px;\" src=\"https://vmoridev.blob.core.windows.net/public/title_icon.png\"/>" +
                     "</div>" +
                     "<div style=\"margin:50px 30px;\">" +
-                        "<h1 style=\"margin-bottom:40px;font-size:22px;size:22px;\">" +
-                            title +
-                        "</h1>" +
-                        "<div style=\"font-size:16px;size:16px;\">" +
-                            msg +
-                        "</div>" +
+                        h1Tag +
+                    "<div style=\"font-size:16px;size:16px;\">" +
+                        msg +
+                    "</div>" +
                 "</div>";
         }
 

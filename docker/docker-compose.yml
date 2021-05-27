@@ -11,6 +11,7 @@ services:
         - Storage__Domain=${Storage__Domain}
         - Mail__ApiKey=${Mail__ApiKey}
         - Mail__SystemMailAddress=${Mail__SystemMailAddress}
+        - Mail__SupportMailAddress=${Mail__SupportMailAddress}
         - Client__Domain=${Client__Domain}
   mssql:
     image: mcr.microsoft.com/mssql/rhel/server:2019-latest

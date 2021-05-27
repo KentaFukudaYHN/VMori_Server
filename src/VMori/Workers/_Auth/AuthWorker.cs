@@ -56,11 +56,11 @@ namespace VMori.Workers
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
+        public async Task<LetterAndSuccessRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
         {
             var result = await _authService.CheckChangeReqPasswordToken(req.Token, req.Mail);
 
-            var res = new CheckChangeReqPasswordRes()
+            var res = new LetterAndSuccessRes()
             {
                 Success = result.Item1,
                 ErrMsg = result.Item2
@@ -84,11 +84,11 @@ namespace VMori.Workers
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req)
+        public async Task<LetterAndSuccessRes> ChangeReqPassword(ChangeReqPasswordReq req)
         {
             var result = await _authService.ChangeReqPassword(req.Mail, req.Token, req.Password);
 
-            return new ChangeReqPasswordRes()
+            return new LetterAndSuccessRes()
             {
                 Success = result.Item1,
                 ErrMsg = result.Item2

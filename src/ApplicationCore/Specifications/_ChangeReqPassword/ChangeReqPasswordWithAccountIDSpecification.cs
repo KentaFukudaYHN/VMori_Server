@@ -5,13 +5,13 @@ namespace ApplicationCore.Specifications
     /// <summary>
     /// パスワード変更要求検索条件
     /// </summary>
-    public class ChangeReqPasswordWithCodeSpecification : BaseSpecification<ChangeReqPassword>
+    public class ChangeReqPasswordWithAccountIDSpecification : BaseSpecification<ChangeReqPassword>
     {
         /// <summary>
         /// tokenで検索
         /// </summary>
         /// <param name="token"></param>
-        public ChangeReqPasswordWithCodeSpecification(string token)
-            : base( (x) => x.Code == token) { }
+        public ChangeReqPasswordWithAccountIDSpecification(string accountID)
+            : base( (x) => x.AccountID == accountID) { }
     }
 }

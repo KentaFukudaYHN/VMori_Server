@@ -43,6 +43,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Account>().HasKey(x => new { x.ID });
 
             modelBuilder.Entity<ChangeReqPassword>().ToTable("ChangeReqPassword");
+            modelBuilder.Entity<ChangeReqPassword>().HasKey(x => new { x.ID, x.AccountID });
 
             modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });

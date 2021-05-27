@@ -84,7 +84,7 @@ namespace VMori.Controllers
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
+        public async Task<LetterAndSuccessRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req)
         {
             return await _authWorker.CheckChangeReqPassword(req);
         }
@@ -95,7 +95,7 @@ namespace VMori.Controllers
         /// <param name="req"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req)
+        public async Task<LetterAndSuccessRes> ChangeReqPassword(ChangeReqPasswordReq req)
         {
             return await _authWorker.ChangeReqPassword(req);
         }

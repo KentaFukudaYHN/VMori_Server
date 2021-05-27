@@ -20,5 +20,10 @@ namespace ApplicationCore.Config
         /// システム用送信メールアドレス
         /// </summary>
         public string SystemMailAddress { get; set; }
+
+        /// <summary>
+        /// サポートメールアドレス
+        /// </summary>
+        public string SupportMailAddress { get; set; }
     }
 }

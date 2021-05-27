@@ -24,7 +24,7 @@ namespace VMori.Interfaces
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        Task<CheckChangeReqPasswordRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req);
+        Task<LetterAndSuccessRes> CheckChangeReqPassword(CheckChangeReqPasswordReq req);
 
         /// <summary>
         /// メールアドレス本人認証の最中かどうか
@@ -62,6 +62,6 @@ namespace VMori.Interfaces
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        Task<ChangeReqPasswordRes> ChangeReqPassword(ChangeReqPasswordReq req);
+        Task<LetterAndSuccessRes> ChangeReqPassword(ChangeReqPasswordReq req);
     }
 }

@@ -20,7 +20,7 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        Task<ChangeReqPassword> GetByToken(string token);
+        Task<ChangeReqPassword> GetByAccountID(string accountID);
 
         /// <summary>
         /// 削除
@@ -28,5 +28,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<bool> DeleteById(string id, IDbContext db);
+
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> DeleteById(string id);
     }
 }

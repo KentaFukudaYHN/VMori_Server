@@ -208,7 +208,7 @@ namespace ApplicationCore.DataServices
             var account = new Account()
             {
                 ID = id,
-                Password = password
+                Password = _hashService.Hashing(password)
             };
 
             await _repository.UpdateAsyncOnlyClumn(account, new List<string>() { nameof(Account.Password) }, db);

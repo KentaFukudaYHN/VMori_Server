@@ -43,12 +43,12 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<ChangeReqPassword> GetByToken(string token)
+        public async Task<ChangeReqPassword> GetByAccountID(string accountid)
         {
-            if (string.IsNullOrEmpty(token))
-                throw new ArgumentException("Tokenが空です");
+            if (string.IsNullOrEmpty(accountid))
+                throw new ArgumentException("idが空です");
 
-            return (await _repository.ListAsync(new ChangeReqPasswordWithCodeSpecification(token))).FirstOrDefault();
+            return (await _repository.ListAsync(new ChangeReqPasswordWithAccountIDSpecification(accountid))).FirstOrDefault();
         }
 
         /// <summary>
@@ -62,6 +62,21 @@ namespace ApplicationCore.DataServices
                 throw new ArgumentException("idが空です");
 
             await _repository.DeleteByIdAsync(id, db);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("idが空です");
+
+            await _repository.DeleteByIdAsync(id);
 
             return true;
         }
