@@ -1,10 +1,5 @@
 ﻿using ApplicationCore.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace VMori.Controllers
@@ -14,13 +9,16 @@ namespace VMori.Controllers
     public class ValuesController : Controller
     {
         private readonly IMailService _mailService;
-        public ValuesController(IMailService mailService)
+        private readonly IYoutubeVideoService _youtubeVideoService;
+        public ValuesController(IMailService mailService, IYoutubeVideoService youtubeVideoService)
         {
             _mailService = mailService;
+            _youtubeVideoService = youtubeVideoService;
         }
 
         public async Task<string> Get()
         {
+            await _youtubeVideoService.GetVideo("OoZKiYZEO9c");
             await _mailService.SendMail("kenterta0@gmail.com", "テスト", "こんにちは");
             return "Hello World 1";
         }

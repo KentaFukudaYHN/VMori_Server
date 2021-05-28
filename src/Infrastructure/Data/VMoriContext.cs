@@ -31,6 +31,16 @@ namespace Infrastructure.Data
         public DbSet<ChangeReqPassword> ChangeReqPasswords { get; set; }
 
         /// <summary>
+        /// Youtube動画
+        /// </summary>
+        public DbSet<YoutubeVideo> YoutubeVideos { get; set; }
+
+        /// <summary>
+        /// Youtube動画統計情報
+        /// </summary>
+        public DbSet<YoutubeVideoStatistics> YoutubeVideoStatistics { get; set; }
+
+        /// <summary>
         /// メールアドレス認証要求
         /// </summary>
         public DbSet<AppReqMail> AppReqMails { get; set; }
@@ -48,6 +58,14 @@ namespace Infrastructure.Data
             modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });
 
+            modelBuilder.Entity<YoutubeVideo>().ToTable("YoutubeVideo");
+
+            //リレーションの設定
+            modelBuilder.Entity<YoutubeVideoStatistics>()
+                .HasOne(x => x.YoutubeVideo)
+                .WithMany(x => x.Statistics);
+
+            modelBuilder.Entity<YoutubeVideoStatistics>().ToTable("YoutubeVideoStatistics");
         }
     }
 }

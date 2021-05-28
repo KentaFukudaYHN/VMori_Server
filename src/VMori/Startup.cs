@@ -134,6 +134,7 @@ namespace Api
             services.AddScoped(typeof(IHashService), typeof(HashService));
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
             services.AddScoped(typeof(IMailService), typeof(SendGridService));
+            services.AddScoped(typeof(IYoutubeVideoService), typeof(YoutubeVideoService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
@@ -143,6 +144,7 @@ namespace Api
             services.Configure<MailConfig>(this.Configration.GetSection("Mail"));
             services.Configure<ClientConfig>(this.Configration.GetSection("Client"));
             services.Configure<StorageConfig>(this.Configration.GetSection("Storage"));
+            services.Configure<YoutubeConfig>(this.Configration.GetSection("Youtube"));
         }
     }
 }

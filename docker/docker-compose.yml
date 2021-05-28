@@ -13,6 +13,7 @@ services:
         - Mail__SystemMailAddress=${Mail__SystemMailAddress}
         - Mail__SupportMailAddress=${Mail__SupportMailAddress}
         - Client__Domain=${Client__Domain}
+        - Youtube__ApiKey=${Youtube__ApiKey}
   mssql:
     image: mcr.microsoft.com/mssql/rhel/server:2019-latest
     container_name: 'mssql2019'

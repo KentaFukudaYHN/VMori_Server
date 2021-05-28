@@ -10,6 +10,7 @@ namespace Infrastructure.Data
         {
             //データベースにテーブルがない場合は作成
             db.Database.EnsureCreated();
+
             //既にデータがあれば作成しない
             if (db.VideoInfos.Any())
                 return;
