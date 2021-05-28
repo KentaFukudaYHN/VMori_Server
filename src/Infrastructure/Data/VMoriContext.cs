@@ -31,6 +31,11 @@ namespace Infrastructure.Data
         public DbSet<ChangeReqPassword> ChangeReqPasswords { get; set; }
 
         /// <summary>
+        /// メールアドレス認証要求
+        /// </summary>
+        public DbSet<AppReqMail> AppReqMails { get; set; }
+
+        /// <summary>
         /// Youtube動画
         /// </summary>
         public DbSet<YoutubeVideo> YoutubeVideos { get; set; }
@@ -41,9 +46,9 @@ namespace Infrastructure.Data
         public DbSet<YoutubeVideoStatistics> YoutubeVideoStatistics { get; set; }
 
         /// <summary>
-        /// メールアドレス認証要求
+        /// Youtube動画のuploadリクエスト情報
         /// </summary>
-        public DbSet<AppReqMail> AppReqMails { get; set; }
+        public DbSet<UpReqYoutubeVideo> UpReqYoutubeVideos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,6 +71,8 @@ namespace Infrastructure.Data
                 .WithMany(x => x.Statistics);
 
             modelBuilder.Entity<YoutubeVideoStatistics>().ToTable("YoutubeVideoStatistics");
+
+            modelBuilder.Entity<UpReqYoutubeVideo>().ToTable("UploadReqYoutubeVideo");
         }
     }
 }
