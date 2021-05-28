@@ -5,7 +5,7 @@ namespace ApplicationCore.Entities
     /// <summary>
     /// Youtube動画統計情報
     /// </summary>
-    public  class YoutubeVideoStatistics
+    public  class YoutubeVideoStatistics : BaseEntity
     {
         /// <summary>
         /// 元動画のID

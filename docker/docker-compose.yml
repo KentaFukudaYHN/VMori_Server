@@ -15,12 +15,12 @@ services:
         - Client__Domain=${Client__Domain}
         - Youtube__ApiKey=${Youtube__ApiKey}
   mssql:
-    image: mcr.microsoft.com/mssql/rhel/server:2019-latest
-    container_name: 'mssql2019'
+    image: vmori.azurecr.io/vmori-mssql
+    container_name: 'mssql'
     environment:
       - MSSQL_SA_PASSWORD=YEu23gA??WBYmNDN
       - ACCEPT_EULA=Y
-      - MSSQL_PID=Express
+      - MSSQL_PID=Developer
       - MSSQL_LCID=1041
       - MSSQL_COLLATION=Japanese_CI_AS
     volumes:
