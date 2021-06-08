@@ -8,7 +8,6 @@ namespace Infrastructure.Data
     {
         public static void Initialize(VMoriContext db)
         {
-            return;
             //データベースにテーブルがない場合は作成
             db.Database.EnsureCreated();
             //既にデータがあれば作成しない

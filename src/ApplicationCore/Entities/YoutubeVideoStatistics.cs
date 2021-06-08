@@ -10,7 +10,7 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// 元動画のID
         /// </summary>
-        public string YoutubeVideoID { get; set; }
+        public string VideoId { get; set; }
 
         /// <summary>
         /// 再生回数
@@ -26,6 +26,11 @@ namespace ApplicationCore.Entities
         /// コメント数
         /// </summary>
         public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// リレーションされるEntityの外部キー
+        /// </summary>
+        public string YoutubeVideoId { get; set; }
 
         /// <summary>
         /// リレーションされるEntity

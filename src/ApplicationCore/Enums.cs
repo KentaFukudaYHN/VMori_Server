@@ -6,14 +6,18 @@ namespace ApplicationCore.Enum
     /// <summary>
     /// 動画プラットフォームの種類
     /// </summary>
-    public enum PlatFormKinds
+    public enum VideoPlatFormKinds
     {
+        UnKnown = 0,
         Youtube = 10,
         NikoNiko = 20,
         Twitch = 30,
         TwitchCasting = 40,
     }
 
+    /// <summary>
+    /// 性別種類
+    /// </summary>
     public enum GenderKinds
     {
         /// <summary>
@@ -33,4 +37,139 @@ namespace ApplicationCore.Enum
         /// </summary>
         Other = 300
     }
+
+    /// <summary>
+    /// 動画の言語種類
+    /// </summary>
+    public enum VideoLanguageKinds
+    {
+        /// <summary>
+        /// 不明
+        /// </summary>
+        UnKnown = 0,
+        /// <summary>
+        /// 日本語
+        /// </summary>
+        JP = 10,
+        /// <summary>
+        /// 英語
+        /// </summary>
+        English = 20,
+        /// <summary>
+        /// その他
+        /// </summary>
+        Other = 30
+    }
+
+    /// <summary>
+    /// アップロード動画取得の際のエラー種類
+    /// </summary>
+    public enum RegistVideoErrKinds
+    {
+        /// <summary>
+        /// エラー情報なし
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// URLの形式が間違っている
+        /// </summary>
+        UrlFormat = 10,
+        /// <summary>
+        /// 対応してないplatform
+        /// </summary>
+        UnSupportPlatform = 20,
+        /// <summary>
+        /// 既に登録済み
+        /// </summary>
+        IsExits = 30,
+        /// <summary>
+        /// Youtubeの動画IDが取得できなかった
+        /// </summary>
+        NotIdByYoutube = 100,
+    }
+
+    /// <summary>
+    /// 動画のジャンル種類
+    /// </summary>
+    public enum VideoGenreKinds
+    {
+        /// <summary>
+        /// 未設定
+        /// </summary>
+        UnKnown = 0,
+        /// <summary>
+        ///雑談
+        /// <summary>
+        SmallTalk = 10,
+        /// <summary>
+        ///ショートムービー
+        /// <summary>
+        Short = 20,
+        /// <summary>
+        ///エンターテイメント
+        /// <summary>
+        Entertainment = 30,
+        /// <summary>
+        ///game
+        /// <summary>
+        Game = 40,
+        /// <summary>
+        ///音楽
+        /// <summary>
+        Music = 50,
+        /// <summary>
+        ///ダンス
+        /// <summary>
+        Dance = 60,
+        /// <summary>
+        ///ラジオ
+        /// <summary>
+        Radio = 70,
+        /// <summary>
+        ///動物
+        /// <summary>
+        Animal = 80,
+        /// <summary>
+        ///自然
+        /// <summary>
+        Nature = 90,
+        /// <summary>
+        ///料理
+        /// <summary>
+        Cooking = 100,
+        /// <summary>
+        ///旅行
+        /// <summary>
+        Travel = 110,
+        /// <summary>
+        ///アウトドア
+        /// <summary>
+        Outdoor = 120,
+        /// <summary>
+        ///スポーツ
+        /// <summary>
+        Sports = 120,
+        /// <summary>
+        ///政治・社会・時事
+        /// <summary>
+        Politics = 130,
+        /// <summary>
+        ///技術・工作
+        /// <summary>
+        Craft = 140,
+        /// <summary>
+        ///解説・講座
+        /// <summary>
+        Course = 150,
+        /// <summary>
+        ///MMD
+        /// <summary>
+        MMD = 160,
+        /// <summary>
+        ///その他
+        /// <summary>
+
+        Other = 999
+    }
 }
+

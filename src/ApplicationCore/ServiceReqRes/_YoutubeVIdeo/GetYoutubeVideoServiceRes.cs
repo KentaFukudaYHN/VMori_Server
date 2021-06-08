@@ -1,4 +1,5 @@
 ﻿
+using ApplicationCore.Enum;
 using System;
 
 namespace ApplicationCore.ServiceReqRes
@@ -8,6 +9,16 @@ namespace ApplicationCore.ServiceReqRes
     /// </summary>
     public class GetYoutubeVideoServiceRes
     {
+        /// <summary>
+        /// 成功の有無
+        /// </summary>
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// エラー種類
+        /// </summary>
+        public RegistVideoErrKinds ErrKinds { get; set; }
+
         /// <summary>
         /// 動画タイトル
         /// </summary>
@@ -34,14 +45,9 @@ namespace ApplicationCore.ServiceReqRes
         public string Description { get; set; }
 
         /// <summary>
-        /// 再生回数
+        /// 動画作成リクエストToken
         /// </summary>
-        public ulong ViewCount { get; set; }
-
-        /// <summary>
-        /// いいね回数
-        /// </summary>
-        public ulong LikeCount { get; set; }
+        public string UpReqYoutubeVideoToken { get; set; }
 
         /// <summary>
         /// 投稿日時

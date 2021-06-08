@@ -14,6 +14,8 @@ services:
         - Mail__SupportMailAddress=${Mail__SupportMailAddress}
         - Client__Domain=${Client__Domain}
         - Youtube__ApiKey=${Youtube__ApiKey}
+    ports:
+        - 5678:443
   mssql:
     image: vmori.azurecr.io/vmori-mssql
     container_name: 'mssql'

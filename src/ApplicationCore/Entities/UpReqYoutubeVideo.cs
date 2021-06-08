@@ -12,6 +12,11 @@ namespace ApplicationCore.Entities
     public class UpReqYoutubeVideo : BaseEntity
     {
         /// <summary>
+        /// 動画ID
+        /// </summary>
+        public string VideoId { get; set; }
+
+        /// <summary>
         /// 動画タイトル
         /// </summary>
         public string VideoTitle { get; set; }
@@ -32,9 +37,9 @@ namespace ApplicationCore.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// 動画リンク
+        /// サムネイルリンク
         /// </summary>
-        public string VideoLink { get; set; }
+        public string ThumbnailLink { get; set; }
 
         /// <summary>
         /// 統計情報

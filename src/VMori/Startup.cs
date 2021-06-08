@@ -99,7 +99,7 @@ namespace Api
                         builder
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithOrigins(new string[] { "https://localhost:3000" })
+                            .WithOrigins(new string[] { "https://" + this.Configration.GetSection("Client").GetValue(typeof(string), "Domain") as string })
                             .AllowCredentials();
                     });
             });
@@ -128,6 +128,9 @@ namespace Api
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
             services.AddScoped(typeof(IAppReqMailDataService), typeof(AppReqMailDataService));
             services.AddScoped(typeof(IChangeReqPasswordDataService), typeof(ChangeReqPasswordDataService));
+            services.AddScoped(typeof(IYoutubeVideoDataService), typeof(YoutubeVideoDataService));
+            services.AddScoped(typeof(IYoutubeVideoStatisticsDataService), typeof(YoutubeVideoStatisticsDataService));
+            services.AddScoped(typeof(IUpReqYoutubeVideoDataService), typeof(UpReqYoutubeVideoDataService));
 
             //DIコンテナにServiceの登録
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -139,6 +142,7 @@ namespace Api
             //DIコンテナにWorkerの登録
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
             services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
+            services.AddScoped(typeof(IUploadVideoWorker), typeof(UploadVideoWorker));
 
             //DIコンテナにConfigの設定
             services.Configure<MailConfig>(this.Configration.GetSection("Mail"));

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ApplicationCore.Enum;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,11 @@ namespace ApplicationCore.Entities
     /// </summary>
     public class YoutubeVideo : BaseEntity
     {
+        /// <summary>
+        /// 動画ID
+        /// </summary>
+        public string VideoId { get; set; }
+
         /// <summary>
         /// 動画タイトル
         /// </summary>
@@ -32,9 +39,9 @@ namespace ApplicationCore.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// 動画リンク
+        /// サムネイルリンク
         /// </summary>
-        public string VideoLink { get; set; }
+        public string ThumbnailLink { get; set; }
 
         /// <summary>
         /// 統計情報
@@ -42,8 +49,80 @@ namespace ApplicationCore.Entities
         public List<YoutubeVideoStatistics> Statistics { get; set; }
 
         /// <summary>
+        /// 動画ジャンル
+        /// </summary>
+        public VideoGenreKinds Genre { get; set; }
+
+        /// <summary>
+        /// タグ
+        /// </summary>
+        [NotMapped]
+        public List<string> Tags { get; set; }
+
+        public string TagsData
+        {
+            get
+            {
+                return string.Join(',', this.Tags);
+            }
+            set
+            {
+                if(!string.IsNullOrEmpty(value))
+                    this.Tags = value.Split(',').ToList();
+            }
+        }
+
+        /// <summary>
+        /// 動画の話している言語
+        /// </summary>
+        [NotMapped]
+        public List<VideoLanguageKinds> Langes { get; set; }
+
+        public string LangesData
+        {
+            get
+            {
+                return string.Join(',', this.Langes.ConvertAll(x => (int)x));
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    this.Langes = value.Split(',').ToList().ConvertAll(x => (VideoLanguageKinds)System.Enum.ToObject(typeof(VideoLanguageKinds), int.Parse(x)));
+            }
+        }
+
+        /// <summary>
+        /// 翻訳の有無
+        /// </summary>
+        public bool IsTranslation { get; set; }
+
+        /// <summary>
+        /// 翻訳している言語
+        /// </summary>
+        [NotMapped]
+        public List<VideoLanguageKinds> LangForTranslation { get; set; }
+
+        public string LangForTranslationData
+        {
+            get
+            {
+                return string.Join(',', this.LangForTranslation.ConvertAll(x => (int)x));
+            }
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    this.LangForTranslation = value.Split(',').ToList().ConvertAll(x => (VideoLanguageKinds)System.Enum.ToObject(typeof(VideoLanguageKinds), int.Parse(x)));
+            }
+        }
+
+        /// <summary>
         /// 投稿日時
         /// </summary>
         public DateTime PublishDateTime { get; set; }
+
+        /// <summary>
+        /// Vtuberの森に登録した日時
+        /// </summary>
+        public DateTime RegistDateTime { get; set; }
     }
 }
