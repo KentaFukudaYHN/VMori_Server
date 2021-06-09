@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 namespace ApplicationCore.DataServices
 {
     /// <summary>
-    /// Youtube動画統計情報DataService
+    /// Outsource動画統計情報DataService
     /// </summary>
-    public class YoutubeVideoStatisticsDataService : IYoutubeVideoStatisticsDataService
+    public class OutsourceVideoStatisticsDataService : IOutsourceVideoStatisticsDataService
     {
-        private readonly IAsyncRepository<YoutubeVideoStatistics> _repository;
+        private readonly IAsyncRepository<OutsourceVideoStatistics> _repository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public YoutubeVideoStatisticsDataService(IAsyncRepository<YoutubeVideoStatistics> repository)
+        public OutsourceVideoStatisticsDataService(IAsyncRepository<OutsourceVideoStatistics> repository)
         {
             _repository = repository;
         }
@@ -26,7 +26,7 @@ namespace ApplicationCore.DataServices
         /// <param name="entity"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(YoutubeVideoStatistics entity, IDbContext db)
+        public async Task<bool> Regist(OutsourceVideoStatistics entity, IDbContext db)
         {
             if (string.IsNullOrEmpty(entity.ID))
                 throw new ArgumentException("IDが設定されていません");

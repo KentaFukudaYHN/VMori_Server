@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 namespace ApplicationCore.DataServices
 {
     /// <summary>
-    /// Youtube動画DataService
+    /// Outsource動画DataService
     /// </summary>
-    public class YoutubeVideoDataService : IYoutubeVideoDataService
+    public class OutsourceVideoDataService : IOutsourceVideoDataService
     {
-        private readonly IAsyncRepository<YoutubeVideo> _repository;
+        private readonly IAsyncRepository<OutsourceVideo> _repository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="repository"></param>
-        public YoutubeVideoDataService(IAsyncRepository<YoutubeVideo> repository)
+        public OutsourceVideoDataService(IAsyncRepository<OutsourceVideo> repository)
         {
             _repository = repository;
         }
@@ -30,7 +30,7 @@ namespace ApplicationCore.DataServices
         /// <param name="video"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(YoutubeVideo video, IDbContext db)
+        public async Task<bool> Regist(OutsourceVideo video, IDbContext db)
         {
             if (string.IsNullOrEmpty(video.ID))
                 throw new ArgumentException("IDが設定されていません");
@@ -45,12 +45,12 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="videoId"></param>
         /// <returns></returns>
-        public async Task<YoutubeVideo> GetByVideoID( string videoId)
+        public async Task<OutsourceVideo> GetByVideoID( string videoId)
         {
             if (string.IsNullOrEmpty(videoId))
                 throw new ArgumentException("IDが設定されていません");
 
-            return (await _repository.ListAsync(new YoutubeVideoWithVideoIdSpecification(videoId))).FirstOrDefault();
+            return (await _repository.ListAsync(new OutsourceVideoWithVideoIdSpecification(videoId))).FirstOrDefault();
         }
 
     }

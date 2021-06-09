@@ -3,9 +3,9 @@
 namespace ApplicationCore.Entities
 {
     /// <summary>
-    /// Youtube動画統計情報
+    /// 外部動画統計情報
     /// </summary>
-    public  class YoutubeVideoStatistics : BaseEntity
+    public  class OutsourceVideoStatistics : BaseEntity
     {
         /// <summary>
         /// 元動画のID
@@ -30,12 +30,12 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// リレーションされるEntityの外部キー
         /// </summary>
-        public string YoutubeVideoId { get; set; }
+        public string OutsourceVideoId { get; set; }
 
         /// <summary>
         /// リレーションされるEntity
         /// </summary>
-        public YoutubeVideo YoutubeVideo { get; set; }
+        public OutsourceVideo OutsourceVideo { get; set; }
 
         /// <summary>
         /// 統計取得日時

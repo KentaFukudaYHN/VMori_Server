@@ -9,14 +9,19 @@ using System.Threading.Tasks;
 namespace ApplicationCore.Entities
 {
     /// <summary>
-    /// Youtube動画Entity
+    /// 外部動画Entity
     /// </summary>
-    public class YoutubeVideo : BaseEntity
+    public class OutsourceVideo : BaseEntity
     {
         /// <summary>
         /// 動画ID
         /// </summary>
         public string VideoId { get; set; }
+
+        /// <summary>
+        /// 動画プラットフォームの種類
+        /// </summary>
+        public VideoPlatFormKinds PlatFormKinds { get; set; }
 
         /// <summary>
         /// 動画タイトル
@@ -46,7 +51,7 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// 統計情報
         /// </summary>
-        public List<YoutubeVideoStatistics> Statistics { get; set; }
+        public List<OutsourceVideoStatistics> Statistics { get; set; }
 
         /// <summary>
         /// 動画ジャンル
@@ -63,6 +68,8 @@ namespace ApplicationCore.Entities
         {
             get
             {
+                if (this.Tags == null)
+                    return "";
                 return string.Join(',', this.Tags);
             }
             set
@@ -82,6 +89,8 @@ namespace ApplicationCore.Entities
         {
             get
             {
+                if (this.Langes == null)
+                    return "";
                 return string.Join(',', this.Langes.ConvertAll(x => (int)x));
             }
             set
@@ -106,6 +115,8 @@ namespace ApplicationCore.Entities
         {
             get
             {
+                if (this.LangForTranslation == null)
+                    return "";
                 return string.Join(',', this.LangForTranslation.ConvertAll(x => (int)x));
             }
             set

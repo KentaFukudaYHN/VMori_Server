@@ -41,19 +41,19 @@ namespace Infrastructure.Data
         public DbSet<AppReqMail> AppReqMails { get; set; }
 
         /// <summary>
-        /// Youtube動画
+        /// Outsource動画
         /// </summary>
-        public DbSet<YoutubeVideo> YoutubeVideos { get; set; }
+        public DbSet<OutsourceVideo> OutsourceVideos { get; set; }
 
         /// <summary>
-        /// Youtube動画統計情報
+        /// Outsource動画統計情報
         /// </summary>
-        public DbSet<YoutubeVideoStatistics> YoutubeVideoStatistics { get; set; }
+        public DbSet<OutsourceVideoStatistics> OutsourceVideoStatistics { get; set; }
 
         /// <summary>
-        /// Youtube動画のuploadリクエスト情報
+        /// Outsource動画のuploadリクエスト情報
         /// </summary>
-        public DbSet<UpReqYoutubeVideo> UpReqYoutubeVideos { get; set; }
+        public DbSet<UpReqOutsourceVideo> UpReqOutsourceVideos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -69,9 +69,9 @@ namespace Infrastructure.Data
             modelBuilder.Entity<AppReqMail>().ToTable("AppReqMail");
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });
 
-            //Youtube動画
-            var youtubeVideoBuilder = modelBuilder.Entity<YoutubeVideo>().ToTable("YoutubeVideo");
-            //youtubeVideoBuilder
+            //Outsource動画
+            var OutsourceVideoBuilder = modelBuilder.Entity<OutsourceVideo>().ToTable("OutsourceVideo");
+            //OutsourceVideoBuilder
             //    .Property(x => x.Tags)
             //    .HasConversion(
             //        x => string.Join(',', x),
@@ -79,26 +79,26 @@ namespace Infrastructure.Data
             ////.HasConversion(
             ////    x => this.ConvertEnumArrayToString(x),
             ////    x => this.ConvertStringToEnumArray<string>(x));
-            //youtubeVideoBuilder
+            //OutsourceVideoBuilder
             //    .Property(x => x.Langes)
             //    .HasConversion(
             //        x => string.Join(',', x),
             //        x => x.Split(',').ToList().ConvertAll(j => (VideoLanguageKinds)Enum.Parse(typeof(VideoLanguageKinds),j));
-            //youtubeVideoBuilder
+            //OutsourceVideoBuilder
             //    .Property(x => x.LangForTranslation)
             //    .HasConversion(this.ConvertEnumArrayToString<VideoLanguageKinds[]>(),
             //        x => this.ConvertStringToEnumArray<VideoLanguageKinds>(x));
 
-            //Youtube動画統計情報
-            var youtubeVideoStatisticsBuilder = modelBuilder.Entity<YoutubeVideoStatistics>().ToTable("YoutubeVideoStatistics");
+            //Outsource動画統計情報
+            var OutsourceVideoStatisticsBuilder = modelBuilder.Entity<OutsourceVideoStatistics>().ToTable("OutsourceVideoStatistics");
             //リレーションの設定
-            youtubeVideoStatisticsBuilder
-                .HasOne(x => x.YoutubeVideo)
+            OutsourceVideoStatisticsBuilder
+                .HasOne(x => x.OutsourceVideo)
                 .WithMany(x => x.Statistics);
 
            
-            //Youtube動画のアップロードリクエスト情報
-            modelBuilder.Entity<UpReqYoutubeVideo>().ToTable("UploadReqYoutubeVideo");
+            //Outsource動画のアップロードリクエスト情報
+            modelBuilder.Entity<UpReqOutsourceVideo>().ToTable("UploadReqOutsourceVideo");
         }
         
         /// <summary>

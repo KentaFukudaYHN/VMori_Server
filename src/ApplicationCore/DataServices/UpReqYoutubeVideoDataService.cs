@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.DataServices
 {
-    public class UpReqYoutubeVideoDataService : IUpReqYoutubeVideoDataService
+    public class UpReqOutsourceVideoDataService : IUpReqOutsourceVideoDataService
     {
-        private readonly IAsyncRepository<UpReqYoutubeVideo> _repository;
+        private readonly IAsyncRepository<UpReqOutsourceVideo> _repository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="repository"></param>
-        public UpReqYoutubeVideoDataService(IAsyncRepository<UpReqYoutubeVideo> repository)
+        public UpReqOutsourceVideoDataService(IAsyncRepository<UpReqOutsourceVideo> repository)
         {
             _repository = repository;
         }
@@ -23,7 +23,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UpReqYoutubeVideo> GetById(string id)
+        public async Task<UpReqOutsourceVideo> GetById(string id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("IDが空です");
@@ -36,7 +36,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(UpReqYoutubeVideo entity)
+        public async Task<bool> Regist(UpReqOutsourceVideo entity)
         {
             if (string.IsNullOrEmpty(entity.ID))
                 throw new ArgumentException("IDが空です");

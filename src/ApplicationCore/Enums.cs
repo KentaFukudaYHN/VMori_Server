@@ -83,7 +83,7 @@ namespace ApplicationCore.Enum
         /// </summary>
         IsExits = 30,
         /// <summary>
-        /// Youtubeの動画IDが取得できなかった
+        /// Youtube動画IDが取得できなかった
         /// </summary>
         NotIdByYoutube = 100,
     }
@@ -118,53 +118,57 @@ namespace ApplicationCore.Enum
         /// <summary>
         Music = 50,
         /// <summary>
+        /// MAD
+        /// </summary>
+        MAD = 60,
+        /// <summary>
         ///ダンス
         /// <summary>
-        Dance = 60,
+        Dance = 70,
         /// <summary>
         ///ラジオ
         /// <summary>
-        Radio = 70,
+        Radio = 80,
         /// <summary>
         ///動物
         /// <summary>
-        Animal = 80,
+        Animal = 90,
         /// <summary>
         ///自然
         /// <summary>
-        Nature = 90,
+        Nature = 100,
         /// <summary>
         ///料理
         /// <summary>
-        Cooking = 100,
+        Cooking = 110,
         /// <summary>
         ///旅行
         /// <summary>
-        Travel = 110,
+        Travel = 120,
         /// <summary>
         ///アウトドア
         /// <summary>
-        Outdoor = 120,
+        Outdoor = 130,
         /// <summary>
         ///スポーツ
         /// <summary>
-        Sports = 120,
+        Sports = 140,
         /// <summary>
         ///政治・社会・時事
         /// <summary>
-        Politics = 130,
+        Politics = 150,
         /// <summary>
         ///技術・工作
         /// <summary>
-        Craft = 140,
+        Craft = 160,
         /// <summary>
         ///解説・講座
         /// <summary>
-        Course = 150,
+        Course = 170,
         /// <summary>
         ///MMD
         /// <summary>
-        MMD = 160,
+        MMD = 180,
         /// <summary>
         ///その他
         /// <summary>

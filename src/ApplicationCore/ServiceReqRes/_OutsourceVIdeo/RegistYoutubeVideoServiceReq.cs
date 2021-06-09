@@ -1,15 +1,14 @@
 ﻿using ApplicationCore.Enum;
-using System.Collections.Generic;
 
 namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
     /// 動画情報の登録要求Req
     /// </summary>
-    public class RegistYoutubeVideoServiceReq
+    public class RegistOutsourceVideoServiceReq
     {
         /// <summary>
-        /// 登録動画ID ※UpReqYoutubeVideoのID
+        /// 登録動画ID ※UpReqOutsourceVideoのID
         /// </summary>
         public string upReqVideoId { get; set; }
 

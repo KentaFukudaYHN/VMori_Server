@@ -1,22 +1,23 @@
-﻿using ApplicationCore.ServiceReqRes;
+﻿using ApplicationCore.Enum;
+using ApplicationCore.ServiceReqRes;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IYoutubeVideoService
+    public interface IOutsourceVideoService
     {
         /// <summary>
         /// 動画情報を取得
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public Task<GetYoutubeVideoServiceRes> GetVideo(string videoId);
+        public Task<GetOutsourceVideoServiceRes> GetVideo(string url);
 
         /// <summary>
         /// 動画情報の登録
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        Task<RegistYoutubeVideoServiceRes> RegistVideo(RegistYoutubeVideoServiceReq req);
+        Task<RegistOutsourceVideoServiceRes> RegistVideo(RegistOutsourceVideoServiceReq req);
     }
 }

@@ -106,6 +106,9 @@ namespace Api
 
             services.AddControllers();
 
+            //HTTpClientÇÃí«â¡
+            services.AddHttpClient();
+
             //DIÉRÉìÉeÉiÇ…DbContextìoò^ Å¶ê⁄ë±ï∂éöóÒÇÕVMoriContextFactoryÇ≈ê›íË
             string connectionString = Configration.GetConnectionString("DefaultConnection");
 
@@ -128,16 +131,18 @@ namespace Api
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
             services.AddScoped(typeof(IAppReqMailDataService), typeof(AppReqMailDataService));
             services.AddScoped(typeof(IChangeReqPasswordDataService), typeof(ChangeReqPasswordDataService));
-            services.AddScoped(typeof(IYoutubeVideoDataService), typeof(YoutubeVideoDataService));
-            services.AddScoped(typeof(IYoutubeVideoStatisticsDataService), typeof(YoutubeVideoStatisticsDataService));
-            services.AddScoped(typeof(IUpReqYoutubeVideoDataService), typeof(UpReqYoutubeVideoDataService));
+            services.AddScoped(typeof(IOutsourceVideoDataService), typeof(OutsourceVideoDataService));
+            services.AddScoped(typeof(IOutsourceVideoStatisticsDataService), typeof(OutsourceVideoStatisticsDataService));
+            services.AddScoped(typeof(IUpReqOutsourceVideoDataService), typeof(UpReqOutsourceVideoDataService));
 
             //DIÉRÉìÉeÉiÇ…ServiceÇÃìoò^
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
             services.AddScoped(typeof(IHashService), typeof(HashService));
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
             services.AddScoped(typeof(IMailService), typeof(SendGridService));
-            services.AddScoped(typeof(IYoutubeVideoService), typeof(YoutubeVideoService));
+            services.AddScoped(typeof(IOutsourceVideoService), typeof(OutsourceVideoService));
+            services.AddScoped(typeof(IYoutubeService), typeof(YoutubeService));
+            services.AddScoped(typeof(INikoNikoService), typeof(NikoNikoService));
 
             //DIÉRÉìÉeÉiÇ…WorkerÇÃìoò^
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));

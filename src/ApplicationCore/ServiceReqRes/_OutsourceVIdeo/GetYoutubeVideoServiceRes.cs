@@ -5,9 +5,9 @@ using System;
 namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
-    /// Youtube動画取得情報
+    /// Outsource動画取得情報
     /// </summary>
-    public class GetYoutubeVideoServiceRes
+    public class GetOutsourceVideoServiceRes
     {
         /// <summary>
         /// 成功の有無
@@ -18,6 +18,11 @@ namespace ApplicationCore.ServiceReqRes
         /// エラー種類
         /// </summary>
         public RegistVideoErrKinds ErrKinds { get; set; }
+
+        /// <summary>
+        /// 動画のプラットフォーム種類
+        /// </summary>
+        public VideoPlatFormKinds PlatFormKinds { get; set; }
 
         /// <summary>
         /// 動画タイトル
@@ -47,7 +52,7 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// 動画作成リクエストToken
         /// </summary>
-        public string UpReqYoutubeVideoToken { get; set; }
+        public string UpReqOutsourceVideoToken { get; set; }
 
         /// <summary>
         /// 投稿日時

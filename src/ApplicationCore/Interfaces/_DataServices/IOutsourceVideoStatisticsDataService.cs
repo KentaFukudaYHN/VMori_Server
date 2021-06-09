@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace ApplicationCore.Interfaces
 {
     /// <summary>
-    /// Youtube動画統計情報DataService
+    /// Outsource動画統計情報DataService
     /// </summary>
-    public interface IYoutubeVideoStatisticsDataService
+    public interface IOutsourceVideoStatisticsDataService
     {
         /// <summary>
         /// 登録
@@ -14,6 +14,6 @@ namespace ApplicationCore.Interfaces
         /// <param name="entity"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public Task<bool> Regist(YoutubeVideoStatistics entity, IDbContext db);
+        public Task<bool> Regist(OutsourceVideoStatistics entity, IDbContext db);
     }
 }

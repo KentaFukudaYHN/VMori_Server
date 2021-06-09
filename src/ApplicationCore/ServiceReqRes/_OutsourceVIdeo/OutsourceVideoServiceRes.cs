@@ -1,41 +1,37 @@
-﻿using ApplicationCore.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace ApplicationCore.Entities
+using System;
+
+namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
-    /// Outsourceのuploadリクエスト
+    /// Youtube動画情報
     /// </summary>
-    public class UpReqOutsourceVideo : BaseEntity
+    public class OutsourceVideoServiceRes : IOutsourveVideoServiceRes
     {
         /// <summary>
         /// 動画ID
         /// </summary>
         public string VideoId { get; set; }
-
         /// <summary>
         /// 動画タイトル
         /// </summary>
         public string VideoTitle { get; set; }
 
         /// <summary>
-        /// 動画チャンネルID
+        /// 動画リンク
         /// </summary>
-        public string ChanelId { get; set; }
+        public string VideoLink { get; set; }
 
         /// <summary>
-        /// チャンネル名
+        /// チャンネルID
         /// </summary>
-        public string ChanelTitle { get; set; }
+        public string ChannelId { get; set; }
 
         /// <summary>
-        /// 説明
+        /// チャンネルタイトル
         /// </summary>
-        public string Description { get; set; }
+        public string ChannelTitle { get; set; }
 
         /// <summary>
         /// サムネイルリンク
@@ -43,14 +39,9 @@ namespace ApplicationCore.Entities
         public string ThumbnailLink { get; set; }
 
         /// <summary>
-        /// 動画プラットフォームの種類
+        /// 説明欄
         /// </summary>
-        public VideoPlatFormKinds PlatFormKinds { get; set; }
-
-        /// <summary>
-        /// 統計情報
-        /// </summary>
-        public List<OutsourceVideoStatistics> Statistics { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// 投稿日時

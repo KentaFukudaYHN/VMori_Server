@@ -15,11 +15,6 @@ namespace VMori.ReqRes
         public bool Success { get; set; }
 
         /// <summary>
-        /// エラーメッセージ
-        /// </summary>
-        public string ErrMsg { get; set; }
-
-        /// <summary>
         /// エラー種類
         /// </summary>
         public RegistVideoErrKinds ErrKinds { get; set; }
@@ -57,7 +52,7 @@ namespace VMori.ReqRes
         /// <summary>
         /// 動画作成リクエストToken
         /// </summary>
-        public string UpReqYoutubeVideoToken { get; set; }
+        public string UpReqOutsourceVideoToken { get; set; }
 
         /// <summary>
         /// 投稿日時

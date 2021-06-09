@@ -4,9 +4,9 @@
 namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
-    /// Youtube動画登録Serviceレスポンス
+    /// Outsource動画登録Serviceレスポンス
     /// </summary>
-    public class RegistYoutubeVideoServiceRes
+    public class RegistOutsourceVideoServiceRes
     {
         /// <summary>
         /// 成功の有無

@@ -3,15 +3,15 @@
 namespace ApplicationCore.Specifications
 {
     /// <summary>
-    /// VideoIDでYoutube動画検索
+    /// VideoIDでOutsource動画検索
     /// </summary>
-    public class YoutubeVideoWithVideoIdSpecification : BaseSpecification<YoutubeVideo>
+    public class OutsourceVideoWithVideoIdSpecification : BaseSpecification<OutsourceVideo>
     {
         /// <summary>
         /// VideoIDで検索
         /// </summary>
         /// <param name="videoId"></param>
-        public YoutubeVideoWithVideoIdSpecification(string videoId)
+        public OutsourceVideoWithVideoIdSpecification(string videoId)
             :base(x => x.VideoId == videoId) { }
     }
 }
