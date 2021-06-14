@@ -1,11 +1,12 @@
 ﻿
 
+using ApplicationCore.Enum;
 using System;
 
 namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
-    /// Youtube動画情報
+    /// 動画情報
     /// </summary>
     public class OutsourceVideoServiceRes : IOutsourveVideoServiceRes
     {
@@ -44,9 +45,24 @@ namespace ApplicationCore.ServiceReqRes
         public string Description { get; set; }
 
         /// <summary>
+        /// 再生回数
+        /// </summary>
+        public ulong ViewCount { get; set; }
+
+        /// <summary>
+        /// 動画プラットフォーム種類
+        /// </summary>
+        public VideoPlatFormKinds PlatFormKinds { get; set; }
+
+        /// <summary>
         /// 投稿日時
         /// </summary>
         public DateTime PublishDateTime { get; set; }
+
+        /// <summary>
+        /// Vの森登録日時
+        /// </summary>
+        public DateTime RegistDateTime { get; set; }
 
     }
 }

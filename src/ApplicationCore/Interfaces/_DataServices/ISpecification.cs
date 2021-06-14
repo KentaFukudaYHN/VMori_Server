@@ -37,5 +37,13 @@ namespace ApplicationCore.Interfaces
         /// 取得件数
         /// </summary>
         int Take { get; }
+        /// <summary>
+        /// x件目のデータ取得(ページングに使用)
+        /// </summary>
+        int Skip { get;  }
+        /// <summary>
+        /// ページングの利用有無
+        /// </summary>
+        bool IsPagingEnabled { get; }
     }
 }

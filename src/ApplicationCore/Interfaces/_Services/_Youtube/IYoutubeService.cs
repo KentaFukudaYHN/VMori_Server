@@ -30,5 +30,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="youtubeVideoId"></param>
         /// <returns></returns>
         Task<IOutsourveVideoServiceRes> GetVideo(string youtubeVideoId);
+
+        /// <summary>
+        /// 動画のリンクを生成
+        /// </summary>
+        /// <param name="youtubeVideoId"></param>
+        /// <returns></returns>
+        string CreateVideoLink(string youtubeVideoId);
     }
 }

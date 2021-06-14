@@ -4,9 +4,9 @@ using ApplicationCore.Enum;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace ApplicationCore.Services
 {
@@ -37,32 +37,41 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
-        /// 動画の統計情報取得
+        /// 動画情報の取得
         /// </summary>
-        /// <param name="videoId"></param>
+        /// <param name="page"></param>
         /// <returns></returns>
-        private async Task<OutsourceVideoStatistics> CreateVideoStatistics(string vmOutsourceVideoId, string videoId, VideoPlatFormKinds kinds)
+        public async Task<List<OutsourceVideoServiceRes>> GetList(int page, int displayNum)
         {
-            IOutsourceVideoStatisticsServiceRes res;
-            switch (kinds)
-            {
-                case VideoPlatFormKinds.Youtube:
-                    res = await _youtubeService.GetVideoStatistics(videoId);
-                    break;
-                default:
-                    throw new ArgumentException("想定されてない動画プラットフォームです");
-            }
+            if (page == 0)
+                throw new ArgumentException("pageを0で指定することはできません");
 
-            return new OutsourceVideoStatistics()
+            var result = await _videoDataService.GetList(page, displayNum);
+
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x =>
             {
-                ID = Guid.NewGuid().ToString(),
-                CommentCount = res.CommentCount,
-                LikeCount = res.LikeCount,
-                ViewCount = res.ViewCount,
-                VideoId = videoId,
-                OutsourceVideoId = vmOutsourceVideoId,
-                GetDateTime = DateTime.Now,
-            };
+                var service = this.GetOutsourcePlatFormVideoService(x.PlatFormKinds);
+
+                var latestStatics = x.Statistics.OrderByDescending(x => x.GetDateTime).FirstOrDefault();
+
+                return new OutsourceVideoServiceRes()
+                {
+                    VideoId = x.VideoId,
+                    VideoTitle = x.VideoTitle,
+                    VideoLink = service.CreateVideoLink(x.VideoId),
+                    ThumbnailLink = x.ThumbnailLink,
+                    ChannelId = x.ChanelId,
+                    ChannelTitle = x.ChanelTitle,
+                    Description = x.Description,
+                    PlatFormKinds = x.PlatFormKinds,
+                    PublishDateTime = x.PublishDateTime,
+                    RegistDateTime = x.RegistDateTime,
+                    ViewCount = latestStatics.ViewCount,
+                };
+            });
         }
 
 
@@ -71,7 +80,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<GetOutsourceVideoServiceRes> GetVideo(string url)
+        public async Task<GetOutsourceVideoServiceRes> GetVideoByLink(string url)
         {
             Uri uri;
             try

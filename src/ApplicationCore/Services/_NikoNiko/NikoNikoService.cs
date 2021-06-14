@@ -45,7 +45,7 @@ namespace ApplicationCore.Services
                 VideoId = nikonikoVideoId,
                 VideoTitle = nikonikoData.title,
                 ThumbnailLink = nikonikoData.thumbnailUrl,
-                VideoLink = "https://nico.ms/ " + nikonikoVideoId,
+                VideoLink = this.CreateVideoLink(nikonikoVideoId),
                 PublishDateTime = DateTime.Parse(nikonikoData.startTime)
             };
         }
@@ -65,6 +65,16 @@ namespace ApplicationCore.Services
             {
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// ニコニコ動画のリンクを生成
+        /// </summary>
+        /// <param name="nikonikoVideoId"></param>
+        /// <returns></returns>
+        public string CreateVideoLink(string nikonikoVideoId)
+        {
+            return "https://nico.ms/ " + nikonikoVideoId;
         }
 
         /// <summary>
@@ -124,6 +134,9 @@ namespace ApplicationCore.Services
                     {
                         return null;
                     }
+
+                    //サムネイルのリンクがそのままだと低画質なので.Lを付けて高画質に
+                    nikonikoRes.data[0].thumbnailUrl += ".L";
 
                     return  nikonikoRes.data[0];
                 }

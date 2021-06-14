@@ -144,7 +144,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="videoId"></param>
         /// <returns></returns>
-        private string CreateVideoLink(string youtubeVideoId)
+        public string CreateVideoLink(string youtubeVideoId)
         {
             return YOUTUBE_DOMAIN + "/watch?v=" + youtubeVideoId;
         }

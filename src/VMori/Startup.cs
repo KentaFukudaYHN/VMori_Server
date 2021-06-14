@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.Workers;
+using VMori.Workers._Video;
 
 namespace Api
 {
@@ -148,6 +149,7 @@ namespace Api
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
             services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
             services.AddScoped(typeof(IUploadVideoWorker), typeof(UploadVideoWorker));
+            services.AddScoped(typeof(IVideoWorker), typeof(VideoWorker));
 
             //DIÉRÉìÉeÉiÇ…ConfigÇÃê›íË
             services.Configure<MailConfig>(this.Configration.GetSection("Mail"));

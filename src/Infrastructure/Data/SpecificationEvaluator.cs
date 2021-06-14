@@ -42,6 +42,13 @@ namespace Infrastructure.Data
                 query = query.Take(specification.Take);
             }
 
+            //Pageingが設定されていれば適用
+            if (specification.IsPagingEnabled)
+            {
+                query = query.Skip(specification.Skip)
+                    .Take(specification.Take);
+            }
+
             return query;
         }
     }

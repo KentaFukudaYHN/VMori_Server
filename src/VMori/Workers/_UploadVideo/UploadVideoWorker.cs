@@ -51,7 +51,7 @@ namespace VMori.Workers
         /// <param name="req"></param>
         public  async Task<GetUploadVideoInfoRes> GetUploadVideoInfo(string url)
         {
-            var serviceRes = await _OutsourceVideoService.GetVideo(url);
+            var serviceRes = await _OutsourceVideoService.GetVideoByLink(url);
 
             if (serviceRes.Success)
             {

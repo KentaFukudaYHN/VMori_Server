@@ -33,5 +33,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="uri"></param>
         /// <returns></returns>
         string GetVideoId(Uri uri);
+
+        /// <summary>
+        /// 動画のリンクを生成
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        string CreateVideoLink(string videoId);
     }
 }

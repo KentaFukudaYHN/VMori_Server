@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
@@ -8,6 +9,14 @@ namespace ApplicationCore.Interfaces
     /// </summary>
     public interface IOutsourceVideoDataService
     {
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <returns></returns>
+        Task<List<OutsourceVideo>> GetList(int page, int displayNum);
+
         /// <summary>
         /// 動画情報を登録
         /// </summary>

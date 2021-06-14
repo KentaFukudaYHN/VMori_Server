@@ -54,6 +54,16 @@ namespace ApplicationCore.Specifications
         public int Take { get; private set; }
 
         /// <summary>
+        /// x件目のデータ取得(主にページングに使用)
+        /// </summary>
+        public int Skip { get; set; }
+
+        /// <summary>
+        /// ページの利用有無
+        /// </summary>
+        public bool IsPagingEnabled { get; set; }
+
+        /// <summary>
         /// Entityの結合
         /// </summary>
         /// <param name="includeExpression"></param>
@@ -97,6 +107,18 @@ namespace ApplicationCore.Specifications
         {
             IsTake = true;
             Take = take;
+        }
+
+        /// <summary>
+        /// ページング(部分的にデータを取得)
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        protected virtual void ApplyPaging(int skip, int take)
+        {
+            Skip = skip;
+            Take = take;
+            IsPagingEnabled = true;
         }
     }
 }

@@ -3,6 +3,7 @@ using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,24 @@ namespace ApplicationCore.DataServices
         public OutsourceVideoDataService(IAsyncRepository<OutsourceVideo> repository)
         {
             _repository = repository;
+        }
+
+        /// <summary>
+        /// 動画を取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum)
+        {
+            if (page == 0 || displayNum == 0)
+                throw new ArgumentException("pageとdisplayNumは0で指定できません");
+
+            var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum));
+            if (result == null)
+                return null;
+
+            return result.ToList();
         }
 
         /// <summary>

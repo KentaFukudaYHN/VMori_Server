@@ -18,8 +18,6 @@ namespace VMori.Controllers
 
         public async Task<string> Get()
         {
-            await _OutsourceVideoService.GetVideo("OoZKiYZEO9c");
-            await _mailService.SendMail("kenterta0@gmail.com", "テスト", "こんにちは");
             return "Hello World 1";
         }
     }
