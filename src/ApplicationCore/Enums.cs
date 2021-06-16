@@ -62,7 +62,7 @@ namespace ApplicationCore.Enum
     }
 
     /// <summary>
-    /// アップロード動画取得の際のエラー種類
+    /// 動画アップロードの際のエラー種類
     /// </summary>
     public enum RegistVideoErrKinds
     {
@@ -82,6 +82,18 @@ namespace ApplicationCore.Enum
         /// 既に登録済み
         /// </summary>
         IsExits = 30,
+        /// <summary>
+        /// 動画が見つからなかった
+        /// </summary>
+        NotFound = 40,
+        /// <summary>
+        /// youtube動画が見つからなかった
+        /// </summary>
+        NotFoundByYoutube = 50,
+        /// <summary>
+        /// ニコニコ動画が見つからなかった
+        /// </summary>
+        NotFoundByNikoNiko = 60,
         /// <summary>
         /// Youtube動画IDが取得できなかった
         /// </summary>

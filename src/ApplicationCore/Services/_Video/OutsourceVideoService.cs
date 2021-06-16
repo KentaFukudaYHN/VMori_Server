@@ -137,6 +137,26 @@ namespace ApplicationCore.Services
             //動画情報の取得
             var res = await outsourtcePlatFormVideoService.GetVideo(videoId);
 
+            if(res == null)
+            {
+                RegistVideoErrKinds notFoundErrKinds = RegistVideoErrKinds.NotFound;
+                switch (platformKinds)
+                {
+                    case VideoPlatFormKinds.Youtube:
+                        notFoundErrKinds = RegistVideoErrKinds.NotFoundByYoutube;
+                        break;
+                    case VideoPlatFormKinds.NikoNiko:
+                        notFoundErrKinds = RegistVideoErrKinds.NotFoundByNikoNiko;
+                        break;
+                }
+
+                return new GetOutsourceVideoServiceRes()
+                {
+                    Success = false,
+                    ErrKinds = notFoundErrKinds
+                };
+            }
+
             //動画情報をアップロードリクエストとしてDBに保存
             var upReqData = new UpReqOutsourceVideo()
             {
