@@ -19,11 +19,6 @@ namespace Infrastructure.Data
         /// </summary>
         /// <param name="options"></param>
         public VMoriContext(DbContextOptions options) : base(options){}
-
-        /// <summary>
-        /// 動画情報
-        /// </summary>
-        public DbSet<VideoInfo> VideoInfos { get; set; }
         
         /// <summary>
         /// アカウント情報

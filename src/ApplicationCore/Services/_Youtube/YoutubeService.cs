@@ -3,8 +3,10 @@ using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -36,24 +38,22 @@ namespace ApplicationCore.Services
         {
             var youtubeService = this.CreateYoutubeSearvice();
 
-            //ネストされているプロパティを取得する場合はsnippet,そうでなければid
-            var searchReq = youtubeService.Search.List("snippet");
-            //Outsource動画IDで検索
-            var searchId = youtubeVideoId;
-            if (searchId.Substring(0, 1) == "-")
-            {
-                searchId = searchId.Substring(1, searchId.Length - 1);
-            }
-            searchReq.Q = searchId;
+            var videoSearchRequest = youtubeService.Videos.List("snippet");
+            videoSearchRequest.Id = youtubeVideoId;
+
 
             try
             {
-                var searchRes = await searchReq.ExecuteAsync();
+                //var searchRes = await searchReq.ExecuteAsync();
+               var searchRes = await videoSearchRequest.ExecuteAsync();
 
                 if (searchRes.Items == null || searchRes.Items.Count == 0)
                     return null;
 
-                var result = searchRes.Items[0];
+                var  result = searchRes.Items.Where(x => x.Id == youtubeVideoId).FirstOrDefault();
+
+                if (result == null)
+                    return null;
 
                 return new OutsourceVideoServiceRes()
                 {

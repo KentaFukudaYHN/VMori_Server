@@ -14,9 +14,23 @@ namespace Infrastructure.Data
         {
             var query = inputQuery;
 
-            //条件式が設定されていたら、IQueryableを書き換える
-            if (specification.Criteria != null)
-                query = query.Where(specification.Criteria);
+            //条件式が設定されていたら、IQueryableに追加
+            if (specification.Criterias != null)
+            {
+                foreach(var item in specification.Criterias)
+                {
+                    query = query.Where(item);
+                }
+            }
+
+            //フルテキスト検索の条件式が設定されていたら、IQuerybleに追加
+            if(specification.FullTextCriteria != null)
+            {
+                foreach(var item in specification.FullTextCriteria)
+                {
+                    query = query.Where(item);
+                }
+            }
 
             //結合
             query = specification.Includes.Aggregate(query,

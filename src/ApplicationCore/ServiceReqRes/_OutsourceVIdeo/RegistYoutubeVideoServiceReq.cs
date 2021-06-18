@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Enum;
+using System.Collections.Generic;
 
 namespace ApplicationCore.ServiceReqRes
 {
@@ -25,7 +26,7 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// 動画の話している言語
         /// </summary>
-        public VideoLanguageKinds[] Langes { get; set; }
+        public List<VideoLanguageKinds> Langes { get; set; }
 
         /// <summary>
         /// 翻訳の有無
@@ -35,6 +36,6 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// 翻訳している言語
         /// </summary>
-        public VideoLanguageKinds[] LangForTranslation { get; set; }
+        public List<VideoLanguageKinds> LangForTranslation { get; set; }
     }
 }

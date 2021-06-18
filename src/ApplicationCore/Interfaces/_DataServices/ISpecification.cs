@@ -12,7 +12,7 @@ namespace ApplicationCore.Interfaces
         /// <summary>
         /// 判定基準
         /// </summary>
-        Expression<Func<T, bool>> Criteria { get; }
+        List<Expression<Func<T, bool>>> Criterias { get; }
         /// <summary>
         /// 結合情報
         /// </summary>
@@ -29,6 +29,10 @@ namespace ApplicationCore.Interfaces
         /// 降順条件
         /// </summary>
         Expression<Func<T, object>> OrderByDescending { get; }
+        /// <summary>
+        /// フルテキスト検索
+        /// </summary>
+        List<Expression<Func<T, bool>>> FullTextCriteria { get; }
         /// <summary>
         /// 件数を絞る
         /// </summary>

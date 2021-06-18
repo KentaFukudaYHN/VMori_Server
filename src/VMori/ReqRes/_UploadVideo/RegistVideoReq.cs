@@ -26,7 +26,7 @@ namespace VMori.ReqRes
         /// <summary>
         /// 動画の話している言語
         /// </summary>
-        public VideoLanguageKinds[] Langes { get; set; }
+        public List<VideoLanguageKinds> Langes { get; set; }
 
         /// <summary>
         /// 翻訳の有無
@@ -36,7 +36,7 @@ namespace VMori.ReqRes
         /// <summary>
         /// 翻訳している言語
         /// </summary>
-        public VideoLanguageKinds[] LangForTranslation { get; set; }
+        public List<VideoLanguageKinds> LangForTranslation { get; set; }
 
         /// <summary>
         /// 動画プラットフォーム種類

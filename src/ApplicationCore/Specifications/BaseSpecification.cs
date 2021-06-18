@@ -15,13 +15,19 @@ namespace ApplicationCore.Specifications
     {
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
-            Criteria = criteria;
+            if (criteria != null)
+                Criterias = new List<Expression<Func<T, bool>>>() { criteria };
         }
 
         /// <summary>
         /// 判定基準
         /// </summary>
-        public Expression<Func<T, bool>> Criteria { get; }
+        public List<Expression<Func<T, bool>>> Criterias { get; private set; }
+
+        /// <summary>
+        /// フルテキスト検索条件
+        /// </summary>
+        public List<Expression<Func<T, bool>>> FullTextCriteria { get; private set; }
 
         /// <summary>
         /// 結合情報
@@ -79,6 +85,35 @@ namespace ApplicationCore.Specifications
         protected virtual void AppIncludes(string includeString)
         {
             IncludeStrings.Add(includeString);
+        }
+
+        /// <summary>
+        /// 検索条件追加
+        /// </summary>
+        /// <param name="fullTextExpression"></param>
+        protected virtual void AddCriteria(Expression<Func<T, bool>> criteriaExpression)
+        {
+            if(Criterias == null)
+            {
+                Criterias = new List<Expression<Func<T, bool>>>();
+            }
+
+            Criterias.Add(criteriaExpression);
+        }
+
+        /// <summary>
+        /// フルテキスト検索条件追加
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <param name="val"></param>
+        protected virtual void AddFullTextCriteria(Expression<Func<T, bool>> fullTextExpression)
+        {
+            if(FullTextCriteria == null)
+            {
+                FullTextCriteria = new List<Expression<Func<T, bool>>>();
+            }
+
+            FullTextCriteria.Add(fullTextExpression);
         }
 
         /// <summary>

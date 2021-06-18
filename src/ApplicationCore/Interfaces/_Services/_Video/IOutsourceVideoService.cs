@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Enum;
-using ApplicationCore.ServiceReqRes;
+﻿using ApplicationCore.ServiceReqRes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,6 +14,15 @@ namespace ApplicationCore.Interfaces
         /// <param name="displayNum"></param>
         /// <returns></returns>
         Task<List<OutsourceVideoServiceRes>> GetList(int page, int displayNum);
+
+        /// <summary>
+        /// 動画情報をリストで取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        Task<List<OutsourceVideoServiceRes>> GetList(SearchCriteriaVideoServiceReq req);
 
         /// <summary>
         /// 動画情報を取得

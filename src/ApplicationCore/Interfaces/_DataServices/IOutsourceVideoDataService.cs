@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Enum;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,6 +17,21 @@ namespace ApplicationCore.Interfaces
         /// <param name="displayNum"></param>
         /// <returns></returns>
         Task<List<OutsourceVideo>> GetList(int page, int displayNum);
+
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        /// <param name="genre"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <returns></returns>
+        Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+            string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs);
 
         /// <summary>
         /// 動画情報を登録

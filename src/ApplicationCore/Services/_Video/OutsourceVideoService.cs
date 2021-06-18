@@ -43,37 +43,60 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         public async Task<List<OutsourceVideoServiceRes>> GetList(int page, int displayNum)
         {
-            if (page == 0)
-                throw new ArgumentException("pageを0で指定することはできません");
+            if (page <= 0 || displayNum <= 0)
+                throw new ArgumentException("pageと表示数を0以下にすることはできません");
 
             var result = await _videoDataService.GetList(page, displayNum);
 
             if (result == null)
                 return null;
 
-            return result.ConvertAll(x =>
-            {
-                var service = this.GetOutsourcePlatFormVideoService(x.PlatFormKinds);
-
-                var latestStatics = x.Statistics.OrderByDescending(x => x.GetDateTime).FirstOrDefault();
-
-                return new OutsourceVideoServiceRes()
-                {
-                    VideoId = x.VideoId,
-                    VideoTitle = x.VideoTitle,
-                    VideoLink = service.CreateVideoLink(x.VideoId),
-                    ThumbnailLink = x.ThumbnailLink,
-                    ChannelId = x.ChanelId,
-                    ChannelTitle = x.ChanelTitle,
-                    Description = x.Description,
-                    PlatFormKinds = x.PlatFormKinds,
-                    PublishDateTime = x.PublishDateTime,
-                    RegistDateTime = x.RegistDateTime,
-                    ViewCount = latestStatics.ViewCount,
-                };
-            });
+            return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
         }
 
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideoServiceRes>> GetList(SearchCriteriaVideoServiceReq req)
+        {
+            if (req.Page <= 0 || req.DisplayNum <= 0)
+                throw new ArgumentException("pageと表示数を0以下にすることはできません");
+
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs);
+
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+        }
+
+        /// <summary>
+        /// OutsourceVideoServiceResの生成
+        /// </summary>
+        /// <returns></returns>
+        private OutsourceVideoServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
+        {
+            var service = this.GetOutsourcePlatFormVideoService(entity.PlatFormKinds);
+
+            var latestStatics = entity.Statistics.OrderByDescending(entity => entity.GetDateTime).FirstOrDefault();
+
+            return new OutsourceVideoServiceRes()
+            {
+                VideoId = entity.VideoId,
+                VideoTitle = entity.VideoTitle,
+                VideoLink = service.CreateVideoLink(entity.VideoId),
+                ThumbnailLink = entity.ThumbnailLink,
+                ChannelId = entity.ChanelId,
+                ChannelTitle = entity.ChanelTitle,
+                Description = entity.Description,
+                PlatFormKinds = entity.PlatFormKinds,
+                PublishDateTime = entity.PublishDateTime,
+                RegistDateTime = entity.RegistDateTime,
+                ViewCount = latestStatics.ViewCount,
+            };
+        }
 
         /// <summary>
         /// 動画情報を取得
@@ -200,10 +223,10 @@ namespace ApplicationCore.Services
             if (req.Genre == Enum.VideoGenreKinds.UnKnown)
                 throw new ArgumentException("ジャンルの設定は必須です");
 
-            if (req.Langes == null || req.Langes.Length == 0)
+            if (req.Langes == null || req.Langes.Count == 0)
                 throw new ArgumentException("言語の選択は必須です");
 
-            if (req.IsTranslation && (req.LangForTranslation == null || req.LangForTranslation.Length == 0))
+            if (req.IsTranslation && (req.LangForTranslation == null || req.LangForTranslation.Count == 0))
                 throw new ArgumentException("『翻訳あり』の場合、翻訳言語の設定は必須です");
 
             //動画アップロードリクエスト情報を検索
@@ -240,6 +263,49 @@ namespace ApplicationCore.Services
             };
 
             //動画アップロードリクエスト情報を動画情報に保存
+            var speakJp = false;
+            var speakEnglish = false;
+            var speakOther = false;
+            if(req.Langes != null)
+            {
+                req.Langes.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            speakJp = true;
+                            break;
+                        case VideoLanguageKinds.English:
+                            speakEnglish = true;
+                            break;
+                        case VideoLanguageKinds.Other:
+                            speakOther = true;
+                            break;
+                    }
+                });
+            }
+            var transitionJp = false;
+            var transitionEnglish = false;
+            var transtionOther = false;
+            if (req.LangForTranslation != null)
+            {
+                req.LangForTranslation.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            transitionJp = true;
+                            break;
+                        case VideoLanguageKinds.English:
+                            transitionEnglish = true;
+                            break;
+                        case VideoLanguageKinds.Other:
+                            transtionOther = true;
+                            break;
+                    }
+                });
+            }
+
             var video = new OutsourceVideo()
             {
                 ID = OutsourceVideoId,
@@ -253,9 +319,13 @@ namespace ApplicationCore.Services
                 PlatFormKinds = upReqVideo.PlatFormKinds,
                 Genre = req.Genre,
                 Tags = req.Tags.ToList(),
-                Langes = req.Langes.ToList(),
+                SpeakJP = speakJp,
+                SpeakEnglish = speakEnglish,
+                SpeakOther = speakOther,
                 IsTranslation = req.IsTranslation,
-                LangForTranslation = req.LangForTranslation.ToList(),
+                TranslationJP = transitionJp,
+                TranslationEnglish = transitionEnglish,
+                TranslationOther = transtionOther,
                 RegistDateTime = DateTime.Now
             };
 

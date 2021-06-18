@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace VMori.Controllers
@@ -16,7 +17,7 @@ namespace VMori.Controllers
             _OutsourceVideoService = OutsourceVideoService;
         }
 
-        public async Task<string> Get()
+        public async Task<string> Get([FromQuery]List<string> test)
         {
             return "Hello World 1";
         }

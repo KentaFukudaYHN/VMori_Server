@@ -1,7 +1,9 @@
 ﻿
 using ApplicationCore.Entities;
+using ApplicationCore.Enum;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +43,36 @@ namespace ApplicationCore.DataServices
                 return null;
 
             return result.ToList();
+        }
+
+        /// <summary>
+        /// 動画を取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        /// <param name="genre"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+            string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs)
+        {
+            if (page == 0 || displayNum == 0)
+                throw new ArgumentException("pageとdisplayNumは0で指定できません");
+
+            try
+            {
+                var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum,
+                            text, genre, langs, isTranslatioon, translationLangs));
+
+                return result.ToList();
+            }catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>

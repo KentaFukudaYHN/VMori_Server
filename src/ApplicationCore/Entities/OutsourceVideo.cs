@@ -78,25 +78,19 @@ namespace ApplicationCore.Entities
         }
 
         /// <summary>
-        /// 動画の話している言語
+        /// 日本語を話しているか
         /// </summary>
-        [NotMapped]
-        public List<VideoLanguageKinds> Langes { get; set; }
+        public bool SpeakJP { get; set; }
 
-        public string LangesData
-        {
-            get
-            {
-                if (this.Langes == null)
-                    return "";
-                return string.Join(',', this.Langes.ConvertAll(x => (int)x));
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                    this.Langes = value.Split(',').ToList().ConvertAll(x => (VideoLanguageKinds)System.Enum.ToObject(typeof(VideoLanguageKinds), int.Parse(x)));
-            }
-        }
+        /// <summary>
+        /// 英語を話しているか
+        /// </summary>
+        public bool SpeakEnglish { get; set; }
+
+        /// <summary>
+        /// その他の言葉を話しているか
+        /// </summary>
+        public bool SpeakOther { get; set; }
 
         /// <summary>
         /// 翻訳の有無
@@ -104,25 +98,19 @@ namespace ApplicationCore.Entities
         public bool IsTranslation { get; set; }
 
         /// <summary>
-        /// 翻訳している言語
+        /// 日本語の翻訳がされてるか
         /// </summary>
-        [NotMapped]
-        public List<VideoLanguageKinds> LangForTranslation { get; set; }
+        public bool TranslationJP { get; set; }
 
-        public string LangForTranslationData
-        {
-            get
-            {
-                if (this.LangForTranslation == null)
-                    return "";
-                return string.Join(',', this.LangForTranslation.ConvertAll(x => (int)x));
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                    this.LangForTranslation = value.Split(',').ToList().ConvertAll(x => (VideoLanguageKinds)System.Enum.ToObject(typeof(VideoLanguageKinds), int.Parse(x)));
-            }
-        }
+        /// <summary>
+        /// 英語の翻訳がされてるか
+        /// </summary>
+        public bool TranslationEnglish { get; set; }
+
+        /// <summary>
+        /// その他の翻訳がされてるか
+        /// </summary>
+        public bool TranslationOther { get; set; }
 
         /// <summary>
         /// 投稿日時
