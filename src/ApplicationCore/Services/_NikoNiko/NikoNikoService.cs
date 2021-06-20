@@ -37,7 +37,7 @@ namespace ApplicationCore.Services
             if (nikonikoData == null)
                 return null;
 
-            return new OutsourceVideoServiceRes()
+            return new OutsourceVideoSummaryServiceRes()
             {
                 ChannelId = nikonikoData.channelId,
                 ChannelTitle = "",

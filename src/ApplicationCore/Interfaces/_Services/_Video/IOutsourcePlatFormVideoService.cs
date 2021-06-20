@@ -18,7 +18,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="outsourceVideoId"></param>
         /// <param name="youtubeVideoId"></param>
         /// <returns></returns>
-        Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string youtubeVideoId);
+        Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string channelId);
 
         /// <summary>
         /// 動画情報取得

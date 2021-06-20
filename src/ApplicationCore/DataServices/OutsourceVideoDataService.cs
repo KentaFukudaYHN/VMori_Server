@@ -28,6 +28,20 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="includeStastics"></param>
+        /// <returns></returns>
+        public async Task<OutsourceVideo> Get(string videoId, bool includeStastics)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("videoIdが空になっています");
+
+            return (await _repository.ListAsync(new OutsourceVideoSpecifications(videoId, includeStastics))).FirstOrDefault();
+        }
+
+        /// <summary>
         /// 動画を取得
         /// </summary>
         /// <param name="page"></param>

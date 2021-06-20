@@ -19,21 +19,62 @@ namespace ApplicationCore.Services
         private readonly IOutsourceVideoStatisticsDataService _stisticsDataService;
         private readonly IUpReqOutsourceVideoDataService _upReqOutsourceVieoDataService;
         private readonly IYoutubeService _youtubeService;
-        private readonly INikoNikoService _nikonikoService;
+        private readonly IOutsouceVideoChannelDataService _channelDataService;
         private readonly IDbContext _db;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="OutsourceConfig"></param>
-        public OutsourceVideoService(IOutsourceVideoDataService videoDataService, IOutsourceVideoStatisticsDataService statisticsDataService, IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, INikoNikoService nikonikoService, IDbContext db)
+        public OutsourceVideoService(IOutsourceVideoDataService videoDataService, IOutsourceVideoStatisticsDataService statisticsDataService,
+            IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  IDbContext db)
         {
             _videoDataService = videoDataService;
             _stisticsDataService = statisticsDataService;
             _upReqOutsourceVieoDataService = upReqDataService;
             _youtubeService = youtubeService;
-            _nikonikoService = nikonikoService;
+            _channelDataService = channelDataService;
             _db = db;
+        }
+
+        /// <summary>
+        /// チャンネル情報を取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<OutsourceVideoChannelServiceRes> GetChannel(string channelTableId)
+        {
+            if (string.IsNullOrEmpty(channelTableId))
+                throw new ArgumentException("チャンネルIDが空です");
+
+            var result = await _channelDataService.Get(channelTableId);
+
+            if (result == null)
+                return null;
+
+            return new OutsourceVideoChannelServiceRes(result);
+        }
+
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        public async Task<OutsourceVideoServiceRes> Get(string videoId)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("VideoIdが空になっています");
+
+            var result = await _videoDataService.Get(videoId, false);
+
+            if (result == null)
+                return null;
+
+            var statistics = await _stisticsDataService.Get(result.ID, true);
+            if(statistics == null)
+                statistics = new OutsourceVideoStatistics();
+
+            return new OutsourceVideoServiceRes(result, statistics);
         }
 
         /// <summary>
@@ -41,7 +82,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideoServiceRes>> GetList(int page, int displayNum)
+        public async Task<List<OutsourceVideoSummaryServiceRes>> GetList(int page, int displayNum)
         {
             if (page <= 0 || displayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
@@ -59,7 +100,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideoServiceRes>> GetList(SearchCriteriaVideoServiceReq req)
+        public async Task<List<OutsourceVideoSummaryServiceRes>> GetList(SearchCriteriaVideoServiceReq req)
         {
             if (req.Page <= 0 || req.DisplayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
@@ -76,17 +117,15 @@ namespace ApplicationCore.Services
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <returns></returns>
-        private OutsourceVideoServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
+        private OutsourceVideoSummaryServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
         {
-            var service = this.GetOutsourcePlatFormVideoService(entity.PlatFormKinds);
-
             var latestStatics = entity.Statistics.OrderByDescending(entity => entity.GetDateTime).FirstOrDefault();
 
-            return new OutsourceVideoServiceRes()
+            return new OutsourceVideoSummaryServiceRes()
             {
                 VideoId = entity.VideoId,
                 VideoTitle = entity.VideoTitle,
-                VideoLink = service.CreateVideoLink(entity.VideoId),
+                VideoLink = _youtubeService.CreateVideoLink(entity.VideoId),
                 ThumbnailLink = entity.ThumbnailLink,
                 ChannelId = entity.ChanelId,
                 ChannelTitle = entity.ChanelTitle,
@@ -131,11 +170,8 @@ namespace ApplicationCore.Services
                 };
             }
 
-            //動画プラットフォームのサービスを取得
-            var outsourtcePlatFormVideoService = this.GetOutsourcePlatFormVideoService(platformKinds);
-
             //動画IDの取得
-            var videoId = outsourtcePlatFormVideoService.GetVideoId(uri);
+            var videoId = _youtubeService.GetVideoId(uri);
 
             if (string.IsNullOrEmpty(videoId))
             {
@@ -158,7 +194,7 @@ namespace ApplicationCore.Services
             }
 
             //動画情報の取得
-            var res = await outsourtcePlatFormVideoService.GetVideo(videoId);
+            var res = await _youtubeService.GetVideo(videoId);
 
             if(res == null)
             {
@@ -248,8 +284,7 @@ namespace ApplicationCore.Services
 
             //動画の統計情報を取得
             var OutsourceVideoId = Guid.NewGuid().ToString();
-            var outsourceVideoService = this.GetOutsourcePlatFormVideoService(upReqVideo.PlatFormKinds);
-            var res = await outsourceVideoService.GetVideoStatistics(upReqVideo.VideoId);
+            var res = await _youtubeService.GetVideoStatistics(upReqVideo.VideoId);
 
             var stistics = new OutsourceVideoStatistics()
             {
@@ -329,6 +364,14 @@ namespace ApplicationCore.Services
                 RegistDateTime = DateTime.Now
             };
 
+            //①既に登録されているチャンネルか確認
+            //②無ければチャンネル情報を登録
+            var channel = await _channelDataService.Get(video.ChanelId);
+            if(channel == null)
+            {
+                channel = await _youtubeService.GetChanne(video.ChanelId);
+            }
+
             using (var tx = _db.Database.BeginTransaction())
             {
                 try
@@ -338,6 +381,11 @@ namespace ApplicationCore.Services
 
                     //動画統計情報を登録
                     await _stisticsDataService.Regist(stistics, _db);
+
+                    //チャンネル情報を登録
+                    if(channel != null)
+                        await _channelDataService.Regist(channel, _db);
+
                     tx.Commit();
                 }
                 catch (Exception ex)
@@ -357,24 +405,24 @@ namespace ApplicationCore.Services
             };
         }
 
-        /// <summary>
-        /// 該当するサービスを返す
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        private IOutsourcePlatFormVideoService GetOutsourcePlatFormVideoService(VideoPlatFormKinds kinds)
-        {
-            switch (kinds)
-            {
-                case VideoPlatFormKinds.Youtube:
-                    return _youtubeService as IOutsourcePlatFormVideoService;
-                case VideoPlatFormKinds.NikoNiko:
-                    return _nikonikoService as IOutsourcePlatFormVideoService;
-                default:
-                    throw new ArgumentException("想定されてないPlatFormkindsです" + kinds);
-            }
+        ///// <summary>
+        ///// 該当するサービスを返す
+        ///// </summary>
+        ///// <param name="uri"></param>
+        ///// <returns></returns>
+        //private IOutsourcePlatFormVideoService GetOutsourcePlatFormVideoService(VideoPlatFormKinds kinds)
+        //{
+        //    switch (kinds)
+        //    {
+        //        case VideoPlatFormKinds.Youtube:
+        //            return _youtubeService as IOutsourcePlatFormVideoService;
+        //        case VideoPlatFormKinds.NikoNiko:
+        //            return _nikonikoService as IOutsourcePlatFormVideoService;
+        //        default:
+        //            throw new ArgumentException("想定されてないPlatFormkindsです" + kinds);
+        //    }
 
-        }
+        //}
 
         /// <summary>
         /// Urlから動画プラットフォームを判定
@@ -397,8 +445,8 @@ namespace ApplicationCore.Services
             {
                 case "youtube.com":
                     return VideoPlatFormKinds.Youtube;
-                case "nicovideo.jp":
-                    return VideoPlatFormKinds.NikoNiko;
+                //case "nicovideo.jp":
+                //    return VideoPlatFormKinds.NikoNiko;
                 default:
                     return VideoPlatFormKinds.UnKnown;
             }

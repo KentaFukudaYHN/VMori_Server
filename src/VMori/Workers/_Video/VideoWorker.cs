@@ -24,6 +24,21 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        public async Task<VideoRes> Get(string videoId)
+        {
+            var result = await _outsourceVideoService.Get(videoId);
+
+            if(result == null)
+                return null;
+
+            return new VideoRes(result);
+        }
+
+        /// <summary>
         /// 動画情報取得
         /// </summary>
         /// <param name="page"></param>
@@ -78,11 +93,25 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// チャンネル情報取得
+        /// </summary>
+        /// <param name="channelTableId"></param>
+        /// <returns></returns>
+        public async Task<ChannelRes> GetChannel(string channelTableId)
+        {
+            var result = await _outsourceVideoService.GetChannel(channelTableId);
+            if (result == null)
+                return null;
+
+            return new ChannelRes(result);
+        }
+
+        /// <summary>
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <param name="resVideoList"></param>
         /// <returns></returns>
-        private VideoSummaryInfoRes CreateVideoSummayIngoRes(List<OutsourceVideoServiceRes> resVideoList)
+        private VideoSummaryInfoRes CreateVideoSummayIngoRes(List<OutsourceVideoSummaryServiceRes> resVideoList)
         {
             if (resVideoList == null)
             {

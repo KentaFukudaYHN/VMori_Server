@@ -4,23 +4,23 @@ using System.Threading.Tasks;
 namespace ApplicationCore.Interfaces
 {
     /// <summary>
-    /// Outsource動画統計情報DataService
+    /// 外部動画のチャンネル情報DataService
     /// </summary>
-    public interface IOutsourceVideoStatisticsDataService
+    public interface IOutsouceVideoChannelDataService
     {
         /// <summary>
         /// 取得
         /// </summary>
-        /// <param name="outsourceVideoId"></param>
-        /// <param name="onlyLatest"></param>
+        /// <param name="channelId"></param>
         /// <returns></returns>
-        Task<OutsourceVideoStatistics> Get(string outsourceVideoId, bool onlyLatest);
+        Task<OutsourceVideoChannel> Get(string channelId);
+
         /// <summary>
         /// 登録
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public Task<bool> Regist(OutsourceVideoStatistics entity, IDbContext db);
+        Task<bool> Regist(OutsourceVideoChannel entity, IDbContext db);
     }
 }

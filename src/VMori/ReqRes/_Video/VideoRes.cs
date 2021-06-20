@@ -1,19 +1,16 @@
-﻿using ApplicationCore.Entities;
-using ApplicationCore.Enum;
+﻿using ApplicationCore.Enum;
+using ApplicationCore.ServiceReqRes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ApplicationCore.ServiceReqRes
+namespace VMori.ReqRes
 {
     /// <summary>
     /// 動画情報
     /// </summary>
-    public  class OutsourceVideoServiceRes
+    public class VideoRes
     {
-        private OutsourceVideo _original;
+        private OutsourceVideoServiceRes _original;
 
         /// <summary>
         /// 動画ID
@@ -21,7 +18,7 @@ namespace ApplicationCore.ServiceReqRes
         public string VideoId => _original.VideoId;
 
         /// <summary>
-        /// 動画プラットフォームの種類
+        /// 動画プラットご
         /// </summary>
         public VideoPlatFormKinds PlatFormKinds => _original.PlatFormKinds;
 
@@ -33,12 +30,12 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// チャンネルID
         /// </summary>
-        public string ChannelId => _original.ChanelId;
-        
+        public string ChannelId => _original.ChannelId;
+
         /// <summary>
         /// チャンネルタイトル
         /// </summary>
-        public string ChannelTitle => _original.ChanelTitle;
+        public string ChannelTitle => _original.ChannelTitle;
 
         /// <summary>
         /// 動画説明
@@ -48,7 +45,7 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// サムネイルリンク
         /// </summary>
-        public string ThumbnailLink => _original.ThumbnailLink;
+        public string ThembnailLink => _original.ThumbnailLink;
 
         /// <summary>
         /// ジャンル
@@ -83,7 +80,7 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// 日本語の翻訳がされているか
         /// </summary>
-        public bool TranslationJp => _original.TranslationJP;
+        public bool TranslationJp => _original.TranslationJp;
 
         /// <summary>
         /// 英語の翻訳がされているか
@@ -104,20 +101,21 @@ namespace ApplicationCore.ServiceReqRes
         /// V森への登録日時
         /// </summary>
         public DateTime RegistDateTime => _original.RegistDateTime;
+
         /// <summary>
-        /// 統計情報
+        /// 最新の統計情報
         /// </summary>
-        public OutsourceVideoStatisticsServiceRes LatestStatistic { get; private set; }
+        public VideoStatisticsRes LatestStatistic { get; private set; }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="original"></param>
-        public OutsourceVideoServiceRes(OutsourceVideo original, OutsourceVideoStatistics latestStatistic)
+        public VideoRes(OutsourceVideoServiceRes original)
         {
             _original = original;
 
-            LatestStatistic = new OutsourceVideoStatisticsServiceRes(latestStatistic);
+            LatestStatistic = new VideoStatisticsRes(original.LatestStatistic);
         }
+
     }
 }

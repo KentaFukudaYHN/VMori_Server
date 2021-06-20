@@ -10,6 +10,14 @@ namespace ApplicationCore.Interfaces
     /// </summary>
     public interface IOutsourceVideoDataService
     {
+
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="includeStastics"></param>
+        /// <returns></returns>
+        Task<OutsourceVideo> Get(string videoId, bool includeStastics);
         /// <summary>
         /// 動画情報を取得
         /// </summary>

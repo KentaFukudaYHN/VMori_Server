@@ -1,6 +1,8 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Specifications;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.DataServices
@@ -18,6 +20,19 @@ namespace ApplicationCore.DataServices
         public OutsourceVideoStatisticsDataService(IAsyncRepository<OutsourceVideoStatistics> repository)
         {
             _repository = repository;
+        }
+
+        /// <summary>
+        /// 取得
+        /// </summary>
+        /// <param name="outsourceVideoId"></param>
+        /// <returns></returns>
+        public async Task<OutsourceVideoStatistics> Get(string outsourceVideoId, bool onlyLatest)
+        {
+            if (string.IsNullOrEmpty(outsourceVideoId))
+                throw new ArgumentException("idが設定されていません");
+
+            return  (await _repository.ListAsync(new OutsourceVideoStatisticsSpecifications(outsourceVideoId, onlyLatest))).FirstOrDefault();
         }
 
         /// <summary>

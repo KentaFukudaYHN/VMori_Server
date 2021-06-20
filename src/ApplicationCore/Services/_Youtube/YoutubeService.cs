@@ -1,9 +1,9 @@
 ﻿using ApplicationCore.Config;
+using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
-using Google.Apis.YouTube.v3.Data;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace ApplicationCore.Services
     /// <summary>
     /// Youtubeサービス
     /// </summary>
-    public class YoutubeService : IYoutubeService, IOutsourcePlatFormVideoService
+    public class YoutubeService : IYoutubeService
     {
         private readonly YoutubeConfig _youtubeConfig;
         const string YOUTUBE_DOMAIN = "https://www.youtube.com";
@@ -55,7 +55,7 @@ namespace ApplicationCore.Services
                 if (result == null)
                     return null;
 
-                return new OutsourceVideoServiceRes()
+                return new OutsourceVideoSummaryServiceRes()
                 {
                     VideoId = youtubeVideoId,
                     VideoTitle = result.Snippet.Title,
@@ -73,6 +73,50 @@ namespace ApplicationCore.Services
             }
 
 
+        }
+
+        /// <summary>
+        /// チャンネル情報を取得
+        /// </summary>
+        /// <returns></returns>
+        public async Task<OutsourceVideoChannel> GetChanne(string channelId)
+        {
+            var youtubeService = this.CreateYoutubeSearvice();
+
+            //チャンネル情報を取得
+            var searchReq = youtubeService.Channels.List("snippet, statistics");
+
+            searchReq.Id = channelId;
+
+            var channelResult = await searchReq.ExecuteAsync();
+
+            if (channelResult.Items == null || channelResult.Items.Count == 0)
+                return null;
+
+            var channnel = channelResult.Items.Where(x => x.Id == channelId).FirstOrDefault();
+
+            if (channnel == null)
+                return null;
+
+            var thmbnailUrl = "";
+            if(channnel.Snippet.Thumbnails != null && channnel.Snippet.Thumbnails.High != null)
+            {
+                thmbnailUrl = channnel.Snippet.Thumbnails.High.Url;
+            }
+
+            return new OutsourceVideoChannel()
+            {
+                ID = Guid.NewGuid().ToString(),
+                ChannelId = channnel.Id,
+                Title = channnel.Snippet.Title,
+                CommentCount = channnel.Statistics.CommentCount,
+                Description = channnel.Snippet.Description,
+                PublishAt = channnel.Snippet.PublishedAt,
+                ThumbnailUrl = thmbnailUrl,
+                SubscriverCount = channnel.Statistics.SubscriberCount,
+                VideoCount = channnel.Statistics.VideoCount,
+                ViewCount = channnel.Statistics.ViewCount
+            };
         }
 
         /// <summary>

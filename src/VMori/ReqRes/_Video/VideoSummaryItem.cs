@@ -9,7 +9,7 @@ namespace VMori.ReqRes
     /// </summary>
     public class VideoSummaryItem
     {
-        private OutsourceVideoServiceRes _original;
+        private OutsourceVideoSummaryServiceRes _original;
 
         /// <summary>
         /// ID
@@ -65,7 +65,7 @@ namespace VMori.ReqRes
         /// コンストラクタ
         /// </summary>
         /// <param name="original"></param>
-        public VideoSummaryItem(OutsourceVideoServiceRes original)
+        public VideoSummaryItem(OutsourceVideoSummaryServiceRes original)
         {
             _original = original;
         }

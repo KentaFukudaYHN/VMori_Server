@@ -1,4 +1,7 @@
 ﻿
+using ApplicationCore.Entities;
+using System;
+
 namespace ApplicationCore.ServiceReqRes
 {
     /// <summary>
@@ -20,6 +23,31 @@ namespace ApplicationCore.ServiceReqRes
         /// コメント数
         /// </summary>
         public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// 取得日時
+        /// </summary>
+        public DateTime GetDateTime { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public OutsourceVideoStatisticsServiceRes()
+        {
+
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="original"></param>
+        public OutsourceVideoStatisticsServiceRes(OutsourceVideoStatistics original)
+        {
+            ViewCount = original.ViewCount;
+            LikeCount = original.LikeCount;
+            CommentCount = original.CommentCount;
+            GetDateTime = original.GetDateTime;
+        }
 
     }
 }

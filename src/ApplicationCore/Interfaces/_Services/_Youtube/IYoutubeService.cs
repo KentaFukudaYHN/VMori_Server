@@ -1,4 +1,5 @@
-﻿using ApplicationCore.ServiceReqRes;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.ServiceReqRes;
 using System;
 using System.Threading.Tasks;
 
@@ -30,6 +31,13 @@ namespace ApplicationCore.Interfaces
         /// <param name="youtubeVideoId"></param>
         /// <returns></returns>
         Task<IOutsourveVideoServiceRes> GetVideo(string youtubeVideoId);
+
+        /// <summary>
+        /// チャンネル情報取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        Task<OutsourceVideoChannel> GetChanne(string channelId);
 
         /// <summary>
         /// 動画のリンクを生成

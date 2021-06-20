@@ -46,6 +46,11 @@ namespace Infrastructure.Data
         public DbSet<OutsourceVideoStatistics> OutsourceVideoStatistics { get; set; }
 
         /// <summary>
+        /// Outsouceチャンネル情報
+        /// </summary>
+        public DbSet<OutsourceVideoChannel> OutsouceVideoChannels { get; set; }
+
+        /// <summary>
         /// Outsource動画のuploadリクエスト情報
         /// </summary>
         public DbSet<UpReqOutsourceVideo> UpReqOutsourceVideos { get; set; }
@@ -94,6 +99,9 @@ namespace Infrastructure.Data
            
             //Outsource動画のアップロードリクエスト情報
             modelBuilder.Entity<UpReqOutsourceVideo>().ToTable("UploadReqOutsourceVideo");
+
+            //Outsouceチャンネル情報
+            modelBuilder.Entity<OutsourceVideoChannel>().ToTable("OutsouceVideoChannel");
         }
         
         /// <summary>
