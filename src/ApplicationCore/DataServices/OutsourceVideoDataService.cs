@@ -90,6 +90,29 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// チャンネルIDで動画を取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideo>> GetListByChannelId(string channelId, int page, int take)
+        {
+            if (string.IsNullOrEmpty(channelId))
+                throw new ArgumentException("channelIDが空です");
+
+            //検索条件
+            var spec = new OutsourceVideoListSpecifications();
+            spec.AddCriteriaByChannelId(channelId);
+            spec.ApplyPaging(page, take);
+
+            var result = (await _repository.ListAsync(spec));
+
+            if (result == null)
+                return null;
+
+            return result.ToList();
+        }
+
+        /// <summary>
         /// 登録
         /// </summary>
         /// <param name="video"></param>

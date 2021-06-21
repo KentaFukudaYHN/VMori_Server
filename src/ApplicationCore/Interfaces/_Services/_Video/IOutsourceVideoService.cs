@@ -39,6 +39,15 @@ namespace ApplicationCore.Interfaces
         public Task<GetOutsourceVideoServiceRes> GetVideoByLink(string url);
 
         /// <summary>
+        /// チャンネルに紐づく動画を取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        Task<List<OutsourceVideoSummaryServiceRes>> GetListByChannelId(string channelId, int page, int take);
+
+        /// <summary>
         /// チャンネル情報の取得
         /// </summary>
         /// <param name="channelTableId"></param>

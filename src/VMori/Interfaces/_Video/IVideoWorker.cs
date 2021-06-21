@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using VMori.ReqRes;
 
 namespace VMori.Interfaces
@@ -29,6 +30,15 @@ namespace VMori.Interfaces
         /// <param name="req"></param>
         /// <returns></returns>
         Task<VideoSummaryInfoRes> GetList(SearchCriteriaVideoReq req);
+
+        /// <summary>
+        /// チャンネルに紐づく動画のリストを取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        Task<List<VideoSummaryItem>> GetChannelVideos(string channelId, int page, int take);
 
         /// <summary>
         /// チャンネル情報取得

@@ -15,6 +15,14 @@ namespace ApplicationCore.Specifications
         /// <summary>
         /// コンストラクタ
         /// </summary>
+        public OutsourceVideoListSpecifications(): base(null)
+        {
+
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
         /// <param name="page"></param>
         /// <param name=""></param>
         /// <param name=""></param>
@@ -101,6 +109,27 @@ namespace ApplicationCore.Specifications
                     }
                 });
             }
+        }
+
+        /// <summary>
+        /// チャンネルIDで検索条件追加
+        /// </summary>
+        /// <param name="channelId"></param>
+        public void AddCriteriaByChannelId(string channelId)
+        {
+            base.AddCriteria(x => x.ChanelId == channelId);
+        }
+
+        /// <summary>
+        /// ページングの設定
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        public void ApplyPaging(int page, int take)
+        {
+            var skip = CalcSkip(page, take);
+
+            base.ApplyPaging(skip, take);
         }
 
         /// <summary>

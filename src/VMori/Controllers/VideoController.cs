@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.ReqRes;
@@ -40,6 +41,18 @@ namespace VMori.Controllers
         {
             var req = new GetVideoSummaryReq() { Page = page, DisplayNum = displayNum };
             return await _videoWorker.GetList(req);
+        }
+
+        /// <summary>
+        /// チャンネルに紐づく動画を取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public async Task<List<VideoSummaryItem>> GetChannelVideos(string channelId, int page, int take)
+        {
+            return await _videoWorker.GetChannelVideos(channelId, page, take);
         }
 
         /// <summary>

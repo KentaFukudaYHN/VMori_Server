@@ -9,57 +9,63 @@ namespace VMori.ReqRes
     /// </summary>
     public class VideoSummaryItem
     {
-        private OutsourceVideoSummaryServiceRes _original;
-
         /// <summary>
         /// ID
         /// </summary>
-        public string Id => _original.VideoId;
+        public string Id { get; set; }
 
         /// <summary>
         /// 動画タイトル
         /// </summary>
-        public string Title => _original.VideoTitle;
+        public string Title { get; set; }
 
         ///// <summary>
         ///// 動画リンク
         ///// </summary>
-        //public string Link => _original.VideoLink;
+        //public string Link { get; set; }_original.VideoLink;
 
         /// <summary>
         /// チャンネル名
         /// </summary>
-        public string ChannelTitle => _original.ChannelTitle;
+        public string ChannelTitle { get; set; }
 
         /// <summary>
         /// サムネイルリンク
         /// </summary>
-        public string ThumbnailLink => _original.ThumbnailLink;
+        public string ThumbnailLink { get; set; }
 
         ///// <summary>
         ///// 動画説明
         ///// </summary>
-        //public string Description => _original.Description;
+        //public string Description { get; set; }_original.Description;
 
         /// <summary>
         /// 再生回数
         /// </summary>
-        public ulong ViewCount => _original.ViewCount;
+        public ulong ViewCount { get; set; }
 
         /// <summary>
         /// 動画プラットフォーム種類
         /// </summary>
-        public VideoPlatFormKinds PlatFormKinds => _original.PlatFormKinds;
+        public VideoPlatFormKinds PlatFormKinds { get; set; }
 
         /// <summary>
         /// 投稿日時
         /// </summary>
-        public DateTime PublishDateTime => _original.PublishDateTime;
+        public DateTime PublishDateTime { get; set; }
 
         /// <summary>
         /// Vtuberの森登録日時
         /// </summary>
-        public DateTime RegistDateTime => _original.RegistDateTime;
+        public DateTime RegistDateTime { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public VideoSummaryItem()
+        {
+
+        }
 
         /// <summary>
         /// コンストラクタ
@@ -67,7 +73,14 @@ namespace VMori.ReqRes
         /// <param name="original"></param>
         public VideoSummaryItem(OutsourceVideoSummaryServiceRes original)
         {
-            _original = original;
+            Id = original.VideoId;
+            Title = original.VideoTitle;
+            ChannelTitle = original.ChannelTitle;
+            ThumbnailLink = original.ThumbnailLink;
+            ViewCount = original.ViewCount;
+            PlatFormKinds = original.PlatFormKinds;
+            PublishDateTime = original.PublishDateTime;
+            RegistDateTime = original.RegistDateTime;
         }
     }
 }

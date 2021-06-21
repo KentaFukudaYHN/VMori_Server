@@ -114,6 +114,26 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
+        /// チャンネルIDで動画のリスト取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideoSummaryServiceRes>> GetListByChannelId(string channelId, int page, int take)
+        {
+            if (page == 0 || take == 0)
+                throw new ArgumentException("パラメーターが不正です");
+
+            var result = await _videoDataService.GetListByChannelId(channelId, page, take);
+
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+        }
+
+        /// <summary>
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <returns></returns>
@@ -370,7 +390,13 @@ namespace ApplicationCore.Services
             if(channel == null)
             {
                 channel = await _youtubeService.GetChanne(video.ChanelId);
+                channel.ID = Guid.NewGuid().ToString();
             }
+
+            if (channel == null)
+                video.ChanelId = "";
+            else
+                video.ChanelId = channel.ID;
 
             using (var tx = _db.Database.BeginTransaction())
             {

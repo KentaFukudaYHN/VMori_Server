@@ -93,6 +93,33 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// チャンネルに紐づく動画のリストを取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        public async Task<List<VideoSummaryItem>> GetChannelVideos(string channelId, int page, int take)
+        {
+            var result = await _outsourceVideoService.GetListByChannelId(channelId, page, take);
+
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x => 
+            {
+                var item = new VideoSummaryItem();
+                item.Id = x.VideoId;
+                item.Title = x.VideoTitle;
+                item.ViewCount = x.ViewCount;
+                item.ThumbnailLink = x.ThumbnailLink;
+                item.PublishDateTime = x.PublishDateTime;
+
+                return item;
+            });
+        }
+
+        /// <summary>
         /// チャンネル情報取得
         /// </summary>
         /// <param name="channelTableId"></param>

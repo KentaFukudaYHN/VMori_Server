@@ -113,6 +113,11 @@ namespace ApplicationCore.Entities
         public bool TranslationOther { get; set; }
 
         /// <summary>
+        /// チャンネル情報
+        /// </summary>
+        public string ChannelId { get; set; }
+
+        /// <summary>
         /// 投稿日時
         /// </summary>
         public DateTime PublishDateTime { get; set; }
