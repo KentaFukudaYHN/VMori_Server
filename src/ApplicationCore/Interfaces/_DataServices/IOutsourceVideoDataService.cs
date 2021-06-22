@@ -51,13 +51,6 @@ namespace ApplicationCore.Interfaces
         Task<List<OutsourceVideo>> GetListByChannelId(string channelId, int page, int take);
 
         /// <summary>
-        /// チャンネルIDで動画情報検索
-        /// </summary>
-        /// <param name="channelId"></param>
-        /// <returns></returns>
-        Task<List<OutsourceVideo>> GetListByChannelId(string channelId);
-
-        /// <summary>
         /// 動画情報を登録
         /// </summary>
         /// <param name="video"></param>

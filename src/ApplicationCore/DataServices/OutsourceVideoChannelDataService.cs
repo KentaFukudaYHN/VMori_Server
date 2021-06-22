@@ -33,9 +33,25 @@ namespace ApplicationCore.DataServices
         public async Task<OutsourceVideoChannel> Get(string channelTableId)
         {
             if (string.IsNullOrEmpty(channelTableId))
-                throw new ArgumentException("チャンネルIDが空です");
+                throw new ArgumentException("IDが空です");
 
             return await _reository.GetByIdAsync(channelTableId);
+        }
+
+        /// <summary>
+        /// チャンネルIDで取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<OutsourceVideoChannel> GetByChannelId(string channelId)
+        {
+            if (string.IsNullOrEmpty(channelId))
+                throw new ArgumentException("チャンネルIDが空です");
+
+            var spec = new OutsourceVideoChannelSpecification();
+            spec.AddCredentialByChannelId(channelId);
+
+            return (await _reository.ListAsync(spec)).FirstOrDefault();
         }
 
         /// <summary>

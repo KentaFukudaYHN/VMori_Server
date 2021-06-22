@@ -79,7 +79,7 @@ namespace ApplicationCore.Services
         /// チャンネル情報を取得
         /// </summary>
         /// <returns></returns>
-        public async Task<OutsourceVideoChannel> GetChanne(string channelId)
+        public async Task<OutsourceVideoChannel> GetChannel(string channelId)
         {
             var youtubeService = this.CreateYoutubeSearvice();
 

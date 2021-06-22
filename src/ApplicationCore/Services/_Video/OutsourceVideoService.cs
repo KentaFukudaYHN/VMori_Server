@@ -139,7 +139,10 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         private OutsourceVideoSummaryServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
         {
+            ulong viewCount = 0;
             var latestStatics = entity.Statistics.OrderByDescending(entity => entity.GetDateTime).FirstOrDefault();
+            if (latestStatics != null)
+                viewCount = latestStatics.ViewCount;
 
             return new OutsourceVideoSummaryServiceRes()
             {
@@ -153,7 +156,7 @@ namespace ApplicationCore.Services
                 PlatFormKinds = entity.PlatFormKinds,
                 PublishDateTime = entity.PublishDateTime,
                 RegistDateTime = entity.RegistDateTime,
-                ViewCount = latestStatics.ViewCount,
+                ViewCount = viewCount,
             };
         }
 
@@ -386,11 +389,13 @@ namespace ApplicationCore.Services
 
             //①既に登録されているチャンネルか確認
             //②無ければチャンネル情報を登録
-            var channel = await _channelDataService.Get(video.ChanelId);
+            var channel = await _channelDataService.GetByChannelId(video.ChanelId);
+            var registChannel = false;
             if(channel == null)
             {
-                channel = await _youtubeService.GetChanne(video.ChanelId);
+                channel = await _youtubeService.GetChannel(video.ChanelId);
                 channel.ID = Guid.NewGuid().ToString();
+                registChannel = true;
             }
 
             if (channel == null)
@@ -409,7 +414,7 @@ namespace ApplicationCore.Services
                     await _stisticsDataService.Regist(stistics, _db);
 
                     //チャンネル情報を登録
-                    if(channel != null)
+                    if(registChannel)
                         await _channelDataService.Regist(channel, _db);
 
                     tx.Commit();

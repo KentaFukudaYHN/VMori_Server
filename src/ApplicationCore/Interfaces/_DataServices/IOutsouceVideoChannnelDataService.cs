@@ -16,6 +16,13 @@ namespace ApplicationCore.Interfaces
         Task<OutsourceVideoChannel> Get(string channelId);
 
         /// <summary>
+        /// チャンネルIDで取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        Task<OutsourceVideoChannel> GetByChannelId(string channelId);
+
+        /// <summary>
         /// 登録
         /// </summary>
         /// <param name="entity"></param>

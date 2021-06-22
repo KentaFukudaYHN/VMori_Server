@@ -103,6 +103,8 @@ namespace ApplicationCore.DataServices
             var spec = new OutsourceVideoListSpecifications();
             spec.AddCriteriaByChannelId(channelId);
             spec.ApplyPaging(page, take);
+            spec.AddIncludeStatistics();
+            spec.ApplyOrderByDesc(x => x.PublishDateTime);
 
             var result = (await _repository.ListAsync(spec));
 

@@ -131,6 +131,22 @@ namespace ApplicationCore.Specifications
 
             base.ApplyPaging(skip, take);
         }
+        
+        /// <summary>
+        /// 統計情報をリレーションする
+        /// </summary>
+        public void AddIncludeStatistics()
+        {
+            base.AddIncludes(x => x.Statistics);
+        }
+
+        /// <summary>
+        /// 降順で並び替え
+        /// </summary>
+        public void ApplyOrderByDesc(Expression<Func<OutsourceVideo, object>> expression)
+        {
+            base.ApplyOrderByDescending(expression);
+        }
 
         /// <summary>
         /// ページングのスキップ数を計算
