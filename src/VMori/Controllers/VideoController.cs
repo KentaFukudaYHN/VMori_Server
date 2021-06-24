@@ -66,6 +66,16 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// チャンネル推移情報を取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<List<ChannelTransitionRes>> GetChannelTransitions(string channelId)
+        {
+            return await _videoWorker.GetChannelTransitions(channelId);
+        }
+
+        /// <summary>
         /// 動画情報を取得
         /// </summary>
         /// <param name="req"></param>

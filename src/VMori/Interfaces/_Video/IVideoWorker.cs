@@ -41,6 +41,13 @@ namespace VMori.Interfaces
         Task<List<VideoSummaryItem>> GetChannelVideos(string channelId, int page, int take);
 
         /// <summary>
+        /// チャンネル推移情報の取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        Task<List<ChannelTransitionRes>> GetChannelTransitions(string channelId);
+
+        /// <summary>
         /// チャンネル情報取得
         /// </summary>
         /// <param name="channelTableId"></param>

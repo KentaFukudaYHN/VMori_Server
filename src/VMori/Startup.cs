@@ -136,6 +136,7 @@ namespace Api
             services.AddScoped(typeof(IOutsourceVideoStatisticsDataService), typeof(OutsourceVideoStatisticsDataService));
             services.AddScoped(typeof(IUpReqOutsourceVideoDataService), typeof(UpReqOutsourceVideoDataService));
             services.AddScoped(typeof(IOutsouceVideoChannelDataService), typeof(OutsourceVideoChannelDataService));
+            services.AddScoped(typeof(IChannelTransitionDataService), typeof(ChannelTransitionDataService));
 
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
             services.AddScoped(typeof(IAuthService), typeof(AuthService));

@@ -54,6 +54,14 @@ namespace ApplicationCore.Interfaces
         /// <returns></returns>
         Task<OutsourceVideoChannelServiceRes> GetChannel(string channelTableId);
 
+
+        /// <summary>
+        /// チャンネル推移情報の取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        Task<List<ChannelTrantisionServiceRes>> GetChannelTransitions(string channelId);
+
         /// <summary>
         /// 動画情報の登録
         /// </summary>

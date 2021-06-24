@@ -106,7 +106,7 @@ namespace ApplicationCore.Services
 
             return new OutsourceVideoChannel()
             {
-                ChannelId = channnel.Id,
+                ID = channnel.Id,
                 Title = channnel.Snippet.Title,
                 CommentCount = channnel.Statistics.CommentCount,
                 Description = channnel.Snippet.Description,

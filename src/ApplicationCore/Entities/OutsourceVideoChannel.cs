@@ -8,11 +8,6 @@ namespace ApplicationCore.Entities
     public class OutsourceVideoChannel : BaseEntity
     {
         /// <summary>
-        /// チャンネルID
-        /// </summary>
-        public string ChannelId { get; set; } 
-
-        /// <summary>
         /// チェンネルタイトル
         /// </summary>
         public string Title { get; set; }

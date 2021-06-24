@@ -135,6 +135,20 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// チャンネル推移情報の取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<List<ChannelTransitionRes>> GetChannelTransitions(string channelId)
+        {
+            var result = await _outsourceVideoService.GetChannelTransitions(channelId);
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x => new ChannelTransitionRes(x));
+        }
+
+        /// <summary>
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <param name="resVideoList"></param>

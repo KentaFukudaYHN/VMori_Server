@@ -8,16 +8,21 @@ using System.Threading.Tasks;
 namespace ApplicationCore.Specifications
 {
     /// <summary>
-    /// チャンネル情報検索条件
+    /// チャンネル推移データ条件
     /// </summary>
-    public class OutsourceVideoChannelSpecification: BaseSpecification<OutsourceVideoChannel>
+    public class  ChannelTransitionSpecifications : BaseSpecification<ChannelTransition>
     {
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public OutsourceVideoChannelSpecification(): base(null)
+        public ChannelTransitionSpecifications(): base(null)
         {
 
+        }
+
+        public void AddCriteriaByChannelId(string channelId)
+        {
+            base.AddCriteria(x => x.ChannelId == channelId);
         }
     }
 }

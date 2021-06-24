@@ -17,7 +17,7 @@ namespace ApplicationCore.ServiceReqRes
         /// <summary>
         /// チャンネルID
         /// </summary>
-        public string ChannelId => _original.ChannelId;
+        public string ChannelId => _original.ID;
 
         /// <summary>
         /// タイトル

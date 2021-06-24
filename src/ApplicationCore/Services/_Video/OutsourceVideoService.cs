@@ -20,6 +20,7 @@ namespace ApplicationCore.Services
         private readonly IUpReqOutsourceVideoDataService _upReqOutsourceVieoDataService;
         private readonly IYoutubeService _youtubeService;
         private readonly IOutsouceVideoChannelDataService _channelDataService;
+        private readonly IChannelTransitionDataService _channelTransitionDataService;
         private readonly IDbContext _db;
 
         /// <summary>
@@ -27,14 +28,33 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="OutsourceConfig"></param>
         public OutsourceVideoService(IOutsourceVideoDataService videoDataService, IOutsourceVideoStatisticsDataService statisticsDataService,
-            IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  IDbContext db)
+            IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  
+            IChannelTransitionDataService channelTransitionDataService, IDbContext db)
         {
             _videoDataService = videoDataService;
             _stisticsDataService = statisticsDataService;
             _upReqOutsourceVieoDataService = upReqDataService;
             _youtubeService = youtubeService;
             _channelDataService = channelDataService;
+            _channelTransitionDataService = channelTransitionDataService;
             _db = db;
+        }
+
+        /// <summary>
+        /// チャンネルの推移データ取得
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        public async Task<List<ChannelTrantisionServiceRes>> GetChannelTransitions(string channelId)
+        {
+            if (string.IsNullOrEmpty(channelId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            var result =  await _channelTransitionDataService.GetListByChannelId(channelId);
+            if (result == null)
+                return null;
+
+            return result.ConvertAll(x => new ChannelTrantisionServiceRes(x));
         }
 
         /// <summary>
@@ -394,7 +414,6 @@ namespace ApplicationCore.Services
             if(channel == null)
             {
                 channel = await _youtubeService.GetChannel(video.ChanelId);
-                channel.ID = Guid.NewGuid().ToString();
                 registChannel = true;
             }
 

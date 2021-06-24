@@ -43,15 +43,12 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public async Task<OutsourceVideoChannel> GetByChannelId(string channelId)
+        public async Task<OutsourceVideoChannel> GetByChannelId(string id)
         {
-            if (string.IsNullOrEmpty(channelId))
+            if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("チャンネルIDが空です");
 
-            var spec = new OutsourceVideoChannelSpecification();
-            spec.AddCredentialByChannelId(channelId);
-
-            return (await _reository.ListAsync(spec)).FirstOrDefault();
+            return await _reository.GetByIdAsync(id);
         }
 
         /// <summary>
@@ -61,8 +58,8 @@ namespace ApplicationCore.DataServices
         /// <returns></returns>
         public async Task<bool> Regist(OutsourceVideoChannel entity, IDbContext db)
         {
-            if (string.IsNullOrEmpty(entity.ID) || string.IsNullOrEmpty(entity.ChannelId))
-                throw new ArgumentException("IDまたはChannelIDを空にすることはできません");
+            if (string.IsNullOrEmpty(entity.ID))
+                throw new ArgumentException("IDを空にすることはできません");
 
             await _reository.AddAsync(entity, db);
 
