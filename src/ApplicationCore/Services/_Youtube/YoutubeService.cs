@@ -143,11 +143,21 @@ namespace ApplicationCore.Services
             if (targetVideoDetail.Kind != "youtube#video")
                 return null;
 
+            ulong commentCount = 0;
+            ulong likeCount = 0;
+            ulong viewCount = 0;
+            if (targetVideoDetail.Statistics.CommentCount != null)
+                commentCount = targetVideoDetail.Statistics.CommentCount.Value;
+            if (targetVideoDetail.Statistics.LikeCount != null)
+                likeCount = targetVideoDetail.Statistics.LikeCount.Value;
+            if (targetVideoDetail.Statistics.ViewCount != null)
+                viewCount = targetVideoDetail.Statistics.ViewCount.Value;
+
             return new OutsourceVideoStatisticsServiceRes()
             {
-                CommentCount = targetVideoDetail.Statistics.CommentCount.Value,
-                LikeCount = targetVideoDetail.Statistics.LikeCount.Value,
-                ViewCount = targetVideoDetail.Statistics.ViewCount.Value,
+                CommentCount = commentCount,
+                LikeCount = likeCount,
+                ViewCount = viewCount,
             };
         }
 
