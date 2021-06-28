@@ -38,6 +38,15 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// ログイン中かどうか
+        /// </summary>
+        /// <returns></returns>
+        public bool IsLogging()
+        {
+            return HttpContext.User.Identity.IsAuthenticated;
+        }
+
+        /// <summary>
         /// メールアドレスの本人認証の最中か
         /// </summary>
         /// <param name="token"></param>
