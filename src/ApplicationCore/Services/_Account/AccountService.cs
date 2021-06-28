@@ -129,7 +129,9 @@ namespace ApplicationCore.Services
                 return false;
 
             //元のファイルを削除
-            await _storageService.DeleteImg(adc.LoginUser.StorageID, beforeIconName);
+            if(string.IsNullOrEmpty(beforeIconName) == false)
+                await _storageService.DeleteImg(adc.LoginUser.StorageID, beforeIconName);
+
             return true;
         }
 
