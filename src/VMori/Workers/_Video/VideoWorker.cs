@@ -13,14 +13,16 @@ namespace VMori.Workers._Video
     public class VideoWorker : IVideoWorker
     {
         private IOutsourceVideoService _outsourceVideoService;
+        private IVideoCommentService _videoCommentService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="outsourceVideoService"></param>
-        public VideoWorker(IOutsourceVideoService outsourceVideoService)
+        public VideoWorker(IOutsourceVideoService outsourceVideoService, IVideoCommentService videoCommentService)
         {
             _outsourceVideoService = outsourceVideoService;
+            _videoCommentService = videoCommentService;
         }
 
         /// <summary>
@@ -146,6 +148,31 @@ namespace VMori.Workers._Video
                 return null;
 
             return result.ConvertAll(x => new ChannelTransitionRes(x));
+        }
+
+        /// <summary>
+        /// 動画コメントの取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        public async Task<List<VideoCommentRes>> GetComments(string videoId)
+        {
+            var result = await _videoCommentService.GetListByVideoId(videoId);
+            if (result == null)
+                return null;
+            return result.ConvertAll(x => new VideoCommentRes(x));
+        }
+
+        /// <summary>
+        /// 動画コメント登録
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="text"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public async Task<bool> RegistComment(string videoId, string text, int time)
+        {
+            return await _videoCommentService.Regist(videoId, text, time);
         }
 
         /// <summary>

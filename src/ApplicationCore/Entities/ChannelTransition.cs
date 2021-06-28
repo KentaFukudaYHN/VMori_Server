@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ApplicationCore.Entities
 {
     /// <summary>
     /// チャンネル推移データ
     /// </summary>
+    [Index(nameof(ChannelId))]
     public class ChannelTransition : BaseEntity
     {
         /// <summary>

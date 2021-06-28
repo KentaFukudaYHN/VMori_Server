@@ -123,15 +123,15 @@ namespace Infrastructure.Migrations
                 table: "YoutubeVideoStatistics",
                 column: "YoutubeVideoID");
 
-            //フルテキストインデックスを作成
-            migrationBuilder.Sql(
-                sql: "CREATE FULLTEXT CATALOG YoutubeVideo_Catalog ON FILEGROUP SECONDARY",
-                suppressTransaction: true
-            );
-            migrationBuilder.Sql(
-                sql: "CREATE FULLTEXT INDEX ON YoutubeVideo (VideoTitle, ChanelTitle) KEY INDEX PK_YoutubeVideo ON YoutubeVideo_Catalog",
-                suppressTransaction: true
-            );
+            ////フルテキストインデックスを作成
+            //migrationBuilder.Sql(
+            //    sql: "CREATE FULLTEXT CATALOG YoutubeVideo_Catalog ON FILEGROUP SECONDARY",
+            //    suppressTransaction: true
+            //);
+            //migrationBuilder.Sql(
+            //    sql: "CREATE FULLTEXT INDEX ON YoutubeVideo (VideoTitle, ChanelTitle) KEY INDEX PK_YoutubeVideo ON YoutubeVideo_Catalog",
+            //    suppressTransaction: true
+            //);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Enum;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ namespace ApplicationCore.Entities
     /// <summary>
     /// 外部動画Entity
     /// </summary>
+    [Index(nameof(VideoId))]
     public class OutsourceVideo : BaseEntity
     {
         /// <summary>
@@ -50,6 +52,11 @@ namespace ApplicationCore.Entities
         /// 統計情報
         /// </summary>
         public List<OutsourceVideoStatistics> Statistics { get; set; }
+
+        /// <summary>
+        /// 動画コメント
+        /// </summary>
+        public List<VideoComment> VideoComments { get; set; }
 
         /// <summary>
         /// 動画ジャンル

@@ -15,6 +15,8 @@ namespace ApplicationCore.ServiceReqRes
     {
         private OutsourceVideo _original;
 
+        public string Id => _original.ID;
+
         /// <summary>
         /// 動画ID
         /// </summary>

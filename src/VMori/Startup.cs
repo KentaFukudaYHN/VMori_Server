@@ -137,6 +137,7 @@ namespace Api
             services.AddScoped(typeof(IUpReqOutsourceVideoDataService), typeof(UpReqOutsourceVideoDataService));
             services.AddScoped(typeof(IOutsouceVideoChannelDataService), typeof(OutsourceVideoChannelDataService));
             services.AddScoped(typeof(IChannelTransitionDataService), typeof(ChannelTransitionDataService));
+            services.AddScoped(typeof(IVideoCommentDataService), typeof(VideoCommentDataService));
 
             //DIƒRƒ“ƒeƒi‚ÉService‚Ì“o˜^
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -146,6 +147,7 @@ namespace Api
             services.AddScoped(typeof(IOutsourceVideoService), typeof(OutsourceVideoService));
             services.AddScoped(typeof(IYoutubeService), typeof(YoutubeService));
             services.AddScoped(typeof(INikoNikoService), typeof(NikoNikoService));
+            services.AddScoped(typeof(IVideoCommentService), typeof(VideoCommentService));
 
             //DIƒRƒ“ƒeƒi‚ÉWorker‚Ì“o˜^
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));

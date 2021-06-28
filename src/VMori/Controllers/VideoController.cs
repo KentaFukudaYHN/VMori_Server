@@ -76,6 +76,29 @@ namespace VMori.Controllers
         }
 
         /// <summary>
+        /// 動画コメントの取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        public async Task<List<VideoCommentRes>> GetComments(string videoId)
+        {
+            return await _videoWorker.GetComments(videoId);
+        }
+
+        /// <summary>
+        /// 動画コメントの登録
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="text"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> RegistComment(VideoCommentReq req)
+        {
+            return await _videoWorker.RegistComment(req.VideoId, req.Text, req.Time);
+        }
+
+        /// <summary>
         /// 動画情報を取得
         /// </summary>
         /// <param name="req"></param>

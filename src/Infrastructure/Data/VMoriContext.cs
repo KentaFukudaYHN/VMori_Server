@@ -46,6 +46,11 @@ namespace Infrastructure.Data
         public DbSet<OutsourceVideoStatistics> OutsourceVideoStatistics { get; set; }
 
         /// <summary>
+        /// 動画コメント
+        /// </summary>
+        public DbSet<VideoComment> VideoComments { get; set; }
+
+        /// <summary>
         /// Outsouceチャンネル情報
         /// </summary>
         public DbSet<OutsourceVideoChannel> OutsouceVideoChannels { get; set; }
@@ -95,9 +100,9 @@ namespace Infrastructure.Data
             //        x => this.ConvertStringToEnumArray<VideoLanguageKinds>(x));
 
             //Outsource動画統計情報
-            var OutsourceVideoStatisticsBuilder = modelBuilder.Entity<OutsourceVideoStatistics>().ToTable("OutsourceVideoStatistics");
+            var outsourceVideoStatisticsBuilder = modelBuilder.Entity<OutsourceVideoStatistics>().ToTable("OutsourceVideoStatistics");
             //リレーションの設定
-            OutsourceVideoStatisticsBuilder
+            outsourceVideoStatisticsBuilder
                 .HasOne(x => x.OutsourceVideo)
                 .WithMany(x => x.Statistics);
 
@@ -110,6 +115,16 @@ namespace Infrastructure.Data
 
             //チャンネル推移データ
             modelBuilder.Entity<ChannelTransition>().ToTable("ChannelTransition");
+
+            //動画コメント
+            var videoCommentBuilder = modelBuilder.Entity<VideoComment>().ToTable("VideoComment");
+            videoCommentBuilder
+                .HasOne(x => x.Video)
+                .WithMany(x => x.VideoComments)
+                .HasForeignKey(x => x.VideoId)
+                .HasPrincipalKey(x => x.VideoId);
+
+
         }
         
         /// <summary>

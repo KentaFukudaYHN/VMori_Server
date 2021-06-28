@@ -12,6 +12,8 @@ namespace VMori.ReqRes
     {
         private OutsourceVideoServiceRes _original;
 
+        public string Id => _original.Id;
+
         /// <summary>
         /// 動画ID
         /// </summary>

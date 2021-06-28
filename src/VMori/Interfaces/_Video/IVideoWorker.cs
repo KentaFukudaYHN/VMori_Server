@@ -48,10 +48,27 @@ namespace VMori.Interfaces
         Task<List<ChannelTransitionRes>> GetChannelTransitions(string channelId);
 
         /// <summary>
+        /// 動画コメントの取得
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        Task<List<VideoCommentRes>> GetComments(string videoId);
+
+        /// <summary>
+        /// コメントの登録
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="text"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        Task<bool> RegistComment(string videoId, string text, int time);
+
+        /// <summary>
         /// チャンネル情報取得
         /// </summary>
         /// <param name="channelTableId"></param>
         /// <returns></returns>
         Task<ChannelRes> GetChannel(string channelTableId);
+
     }
 }

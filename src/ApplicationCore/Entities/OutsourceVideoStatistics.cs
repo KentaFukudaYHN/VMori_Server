@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ApplicationCore.Entities
 {
     /// <summary>
     /// 外部動画統計情報
     /// </summary>
+    [Index(nameof(VideoId))]
     public  class OutsourceVideoStatistics : BaseEntity
     {
         /// <summary>
