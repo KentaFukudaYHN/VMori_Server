@@ -17,18 +17,3 @@ services:
         - Youtube__ApiKey=${Youtube__ApiKey}
     ports:
         - 5678:443
-  mssql:
-    image: vmori.azurecr.io/vmori-mssql
-    container_name: 'mssql'
-    environment:
-      - MSSQL_SA_PASSWORD=YEu23gA??WBYmNDN
-      - ACCEPT_EULA=Y
-      - MSSQL_PID=Developer
-      - MSSQL_LCID=1041
-      - MSSQL_COLLATION=Japanese_CI_AS
-    volumes:
-      - "./db/data:/var/opt/mssql/data"
-      - "./db/log:/var/opt/mssql/log"
-      - "./db/secrets:/var/opt/mssql/secrets"
-    ports:
-      - 1433:1433
