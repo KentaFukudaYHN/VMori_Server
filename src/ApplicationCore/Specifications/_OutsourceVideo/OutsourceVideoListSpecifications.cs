@@ -35,9 +35,6 @@ namespace ApplicationCore.Specifications
 
             //登録日時順
             ApplyOrderByDescending(x => x.RegistDateTime);
-
-            //統計情報をリレーション
-            base.AddIncludes(x => x.Statistics);
         }
 
         /// <summary>
@@ -133,19 +130,20 @@ namespace ApplicationCore.Specifications
         }
         
         /// <summary>
-        /// 統計情報をリレーションする
-        /// </summary>
-        public void AddIncludeStatistics()
-        {
-            base.AddIncludes(x => x.Statistics);
-        }
-
-        /// <summary>
         /// 降順で並び替え
         /// </summary>
         public void ApplyOrderByDesc(Expression<Func<OutsourceVideo, object>> expression)
         {
             base.ApplyOrderByDescending(expression);
+        }
+
+        /// <summary>
+        /// 昇順で並び替え
+        /// </summary>
+        /// <param name="expression"></param>
+        public new void ApplyOrderBy(Expression<Func<OutsourceVideo, object>> expression)
+        {
+            base.ApplyOrderBy(expression);
         }
 
         /// <summary>

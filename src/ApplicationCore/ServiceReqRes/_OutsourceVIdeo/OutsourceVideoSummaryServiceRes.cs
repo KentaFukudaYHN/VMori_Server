@@ -50,6 +50,16 @@ namespace ApplicationCore.ServiceReqRes
         public ulong ViewCount { get; set; }
 
         /// <summary>
+        /// コメント数
+        /// </summary>
+        public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// いいね数
+        /// </summary>
+        public ulong LikeCount { get; set; }
+
+        /// <summary>
         /// 動画プラットフォーム種類
         /// </summary>
         public VideoPlatFormKinds PlatFormKinds { get; set; }

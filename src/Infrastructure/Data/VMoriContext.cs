@@ -40,10 +40,10 @@ namespace Infrastructure.Data
         /// </summary>
         public DbSet<OutsourceVideo> OutsourceVideos { get; set; }
 
-        /// <summary>
-        /// Outsource動画統計情報
-        /// </summary>
-        public DbSet<OutsourceVideoStatistics> OutsourceVideoStatistics { get; set; }
+        ///// <summary>
+        ///// Outsource動画統計情報
+        ///// </summary>
+        //public DbSet<OutsourceVideoStatistics> OutsourceVideoStatistics { get; set; }
 
         /// <summary>
         /// 動画コメント
@@ -99,12 +99,12 @@ namespace Infrastructure.Data
             //    .HasConversion(this.ConvertEnumArrayToString<VideoLanguageKinds[]>(),
             //        x => this.ConvertStringToEnumArray<VideoLanguageKinds>(x));
 
-            //Outsource動画統計情報
-            var outsourceVideoStatisticsBuilder = modelBuilder.Entity<OutsourceVideoStatistics>().ToTable("OutsourceVideoStatistics");
-            //リレーションの設定
-            outsourceVideoStatisticsBuilder
-                .HasOne(x => x.OutsourceVideo)
-                .WithMany(x => x.Statistics);
+            ////Outsource動画統計情報
+            //var outsourceVideoStatisticsBuilder = modelBuilder.Entity<OutsourceVideoStatistics>().ToTable("OutsourceVideoStatistics");
+            ////リレーションの設定
+            //outsourceVideoStatisticsBuilder
+            //    .HasOne(x => x.OutsourceVideo)
+            //    .WithMany(x => x.Statistics);
 
            
             //Outsource動画のアップロードリクエスト情報

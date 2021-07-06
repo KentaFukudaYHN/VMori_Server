@@ -105,9 +105,19 @@ namespace VMori.ReqRes
         public DateTime RegistDateTime => _original.RegistDateTime;
 
         /// <summary>
-        /// 最新の統計情報
+        /// 再生回数
         /// </summary>
-        public VideoStatisticsRes LatestStatistic { get; private set; }
+        public ulong ViewCount => _original.ViewCount;
+
+        /// <summary>
+        /// コメント数
+        /// </summary>
+        public ulong CommentCount => _original.CommentCount;
+
+        /// <summary>
+        /// いいね数
+        /// </summary>
+        public ulong LikeCount => _original.LikeCount;
 
         /// <summary>
         /// コンストラクタ
@@ -115,8 +125,6 @@ namespace VMori.ReqRes
         public VideoRes(OutsourceVideoServiceRes original)
         {
             _original = original;
-
-            LatestStatistic = new VideoStatisticsRes(original.LatestStatistic);
         }
 
     }

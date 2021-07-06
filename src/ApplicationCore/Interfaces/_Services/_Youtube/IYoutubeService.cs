@@ -11,14 +11,6 @@ namespace ApplicationCore.Interfaces
     public interface IYoutubeService
     {
         /// <summary>
-        /// 動画の統計情報取得
-        /// </summary>
-        /// <param name="outsourceVideoId"></param>
-        /// <param name="youtubeVideoId"></param>
-        /// <returns></returns>
-        Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string youtubeVideoId);
-
-        /// <summary>
         /// 動画IDを取得
         /// </summary>
         /// <param name="uri"></param>

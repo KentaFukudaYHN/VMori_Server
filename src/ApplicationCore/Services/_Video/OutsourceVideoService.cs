@@ -16,7 +16,6 @@ namespace ApplicationCore.Services
     public class OutsourceVideoService : IOutsourceVideoService
     {
         private readonly IOutsourceVideoDataService _videoDataService;
-        private readonly IOutsourceVideoStatisticsDataService _stisticsDataService;
         private readonly IUpReqOutsourceVideoDataService _upReqOutsourceVieoDataService;
         private readonly IYoutubeService _youtubeService;
         private readonly IOutsouceVideoChannelDataService _channelDataService;
@@ -27,12 +26,11 @@ namespace ApplicationCore.Services
         /// コンストラクタ
         /// </summary>
         /// <param name="OutsourceConfig"></param>
-        public OutsourceVideoService(IOutsourceVideoDataService videoDataService, IOutsourceVideoStatisticsDataService statisticsDataService,
+        public OutsourceVideoService(IOutsourceVideoDataService videoDataService,
             IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  
             IChannelTransitionDataService channelTransitionDataService, IDbContext db)
         {
             _videoDataService = videoDataService;
-            _stisticsDataService = statisticsDataService;
             _upReqOutsourceVieoDataService = upReqDataService;
             _youtubeService = youtubeService;
             _channelDataService = channelDataService;
@@ -90,11 +88,7 @@ namespace ApplicationCore.Services
             if (result == null)
                 return null;
 
-            var statistics = await _stisticsDataService.Get(result.ID, true);
-            if(statistics == null)
-                statistics = new OutsourceVideoStatistics();
-
-            return new OutsourceVideoServiceRes(result, statistics);
+            return new OutsourceVideoServiceRes(result);
         }
 
         /// <summary>
@@ -159,11 +153,6 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         private OutsourceVideoSummaryServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
         {
-            ulong viewCount = 0;
-            var latestStatics = entity.Statistics.OrderByDescending(entity => entity.GetDateTime).FirstOrDefault();
-            if (latestStatics != null)
-                viewCount = latestStatics.ViewCount;
-
             return new OutsourceVideoSummaryServiceRes()
             {
                 VideoId = entity.VideoId,
@@ -176,7 +165,9 @@ namespace ApplicationCore.Services
                 PlatFormKinds = entity.PlatFormKinds,
                 PublishDateTime = entity.PublishDateTime,
                 RegistDateTime = entity.RegistDateTime,
-                ViewCount = viewCount,
+                ViewCount = entity.ViewCount,
+                LikeCount = entity.LikeCount,
+                CommentCount = entity.CommentCount
             };
         }
 
@@ -270,7 +261,7 @@ namespace ApplicationCore.Services
                 Description = res.Description,
                 VideoTitle = res.VideoTitle,
                 ThumbnailLink = res.ThumbnailLink,
-                PublishDateTime = res.PublishDateTime
+                PublishDateTime = res.PublishDateTime,
             };
 
             await _upReqOutsourceVieoDataService.Regist(upReqData);
@@ -327,18 +318,6 @@ namespace ApplicationCore.Services
 
             //動画の統計情報を取得
             var OutsourceVideoId = Guid.NewGuid().ToString();
-            var res = await _youtubeService.GetVideoStatistics(upReqVideo.VideoId);
-
-            var stistics = new OutsourceVideoStatistics()
-            {
-                ID = Guid.NewGuid().ToString(),
-                CommentCount = res.CommentCount,
-                LikeCount = res.LikeCount,
-                ViewCount = res.ViewCount,
-                VideoId = upReqVideo.VideoId,
-                OutsourceVideoId = OutsourceVideoId,
-                GetDateTime = DateTime.Now,
-            };
 
             //動画アップロードリクエスト情報を動画情報に保存
             var speakJp = false;
@@ -428,9 +407,6 @@ namespace ApplicationCore.Services
                 {
                     //動画情報を登録
                     await _videoDataService.Regist(video, _db);
-
-                    //動画統計情報を登録
-                    await _stisticsDataService.Regist(stistics, _db);
 
                     //チャンネル情報を登録
                     if(registChannel)

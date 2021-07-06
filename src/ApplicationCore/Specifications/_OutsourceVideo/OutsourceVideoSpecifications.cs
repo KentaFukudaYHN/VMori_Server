@@ -13,9 +13,6 @@ namespace ApplicationCore.Specifications
         /// <param name="videoId"></param>
         public OutsourceVideoSpecifications(string videoId, bool includeStatistics) : base(x => x.VideoId == videoId)
         {
-            //統計情報をリレーション
-            if (includeStatistics)
-                base.AddIncludes(x => x.Statistics);
         }
     }
 }

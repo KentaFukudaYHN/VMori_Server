@@ -49,9 +49,24 @@ namespace ApplicationCore.Entities
         public VideoPlatFormKinds PlatFormKinds { get; set; }
 
         /// <summary>
-        /// 統計情報
+        /// 再生回数
         /// </summary>
-        public List<OutsourceVideoStatistics> Statistics { get; set; }
+        public ulong ViewCount { get; set; }
+
+        /// <summary>
+        /// コメントカウント
+        /// </summary>
+        public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// いいね数
+        /// </summary>
+        public ulong LikeCount { get; set; }
+
+        ///// <summary>
+        ///// 統計情報
+        ///// </summary>
+        //public List<OutsourceVideoStatistics> Statistics { get; set; }
 
         /// <summary>
         /// 投稿日時

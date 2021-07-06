@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.DataServices
@@ -103,15 +104,41 @@ namespace ApplicationCore.DataServices
             var spec = new OutsourceVideoListSpecifications();
             spec.AddCriteriaByChannelId(channelId);
             spec.ApplyPaging(page, take);
-            spec.AddIncludeStatistics();
             spec.ApplyOrderByDesc(x => x.PublishDateTime);
 
-            var result = (await _repository.ListAsync(spec));
+            var result = await _repository.ListAsync(spec);
 
             if (result == null)
                 return null;
 
             return result.ToList();
+        }
+
+        /// <summary>
+        /// 並び替えた動画リストを取得
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="take"></param>
+        /// <param name="orderBy"></param>
+        /// <param name="isDesc"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideo>> GetListOrderBy(int page, int take, Expression<Func<OutsourceVideo, object>> orderBy, bool isDesc)
+        {
+            if (page == 0 || take == 0 || orderBy == null)
+                throw new ArgumentException("パラメーターが不正です");
+
+            //検索条件
+            var spec = new OutsourceVideoListSpecifications();
+            spec.ApplyPaging(page, take);
+
+            if (isDesc)
+                spec.ApplyOrderByDesc(orderBy);
+            else
+                spec.ApplyOrderBy(orderBy);
+
+            var result = await _repository.ListAsync(spec);
+
+            return result != null ? result.ToList() : null;
         }
 
         /// <summary>

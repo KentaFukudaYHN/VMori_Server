@@ -38,7 +38,7 @@ namespace ApplicationCore.Services
         {
             var youtubeService = this.CreateYoutubeSearvice();
 
-            var videoSearchRequest = youtubeService.Videos.List("snippet");
+            var videoSearchRequest = youtubeService.Videos.List("snippet, statistics");
             videoSearchRequest.Id = youtubeVideoId;
 
 
@@ -55,6 +55,10 @@ namespace ApplicationCore.Services
                 if (result == null)
                     return null;
 
+                var viewCount = result.Statistics.ViewCount != null ? result.Statistics.ViewCount.Value : 0;
+                var commentCount = result.Statistics.ViewCount != null ? result.Statistics.CommentCount.Value : 0;
+                var likeCount = result.Statistics.LikeCount != null ? result.Statistics.LikeCount.Value : 0;
+
                 return new OutsourceVideoSummaryServiceRes()
                 {
                     VideoId = youtubeVideoId,
@@ -64,7 +68,10 @@ namespace ApplicationCore.Services
                     ChannelTitle = result.Snippet.ChannelTitle,
                     Description = result.Snippet.Description,
                     ThumbnailLink = result.Snippet.Thumbnails.High.Url,
-                    PublishDateTime = result.Snippet.PublishedAt.Value
+                    PublishDateTime = result.Snippet.PublishedAt.Value,
+                    ViewCount = viewCount,
+                    CommentCount = commentCount,
+                    LikeCount = likeCount,
                 };
             }
             catch (Exception e)
@@ -118,48 +125,48 @@ namespace ApplicationCore.Services
             };
         }
 
-        /// <summary>
-        /// 動画の統計情報取得
-        /// </summary>
-        /// <param name="outsourceVideoId"></param>
-        /// <param name="youtubeVideoId"></param>
-        /// <returns></returns>
-        public async Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string youtubeVideoId)
-        {
-            var youtubeService = this.CreateYoutubeSearvice();
+        ///// <summary>
+        ///// 動画の統計情報取得
+        ///// </summary>
+        ///// <param name="outsourceVideoId"></param>
+        ///// <param name="youtubeVideoId"></param>
+        ///// <returns></returns>
+        //public async Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string youtubeVideoId)
+        //{
+        //    var youtubeService = this.CreateYoutubeSearvice();
 
-            //統計情報を取得
-            var searchVideoReq = youtubeService.Videos.List("contentDetails, statistics");
-            //動画IDで検索
-            searchVideoReq.Id = youtubeVideoId;
+        //    //統計情報を取得
+        //    var searchVideoReq = youtubeService.Videos.List("contentDetails, statistics");
+        //    //動画IDで検索
+        //    searchVideoReq.Id = youtubeVideoId;
 
-            var videoResult = await searchVideoReq.ExecuteAsync();
+        //    var videoResult = await searchVideoReq.ExecuteAsync();
 
-            if (videoResult.Items == null || videoResult.Items.Count == 0)
-                return null;
+        //    if (videoResult.Items == null || videoResult.Items.Count == 0)
+        //        return null;
 
-            //動画じゃなければnull
-            var targetVideoDetail = videoResult.Items[0];
-            if (targetVideoDetail.Kind != "youtube#video")
-                return null;
+        //    //動画じゃなければnull
+        //    var targetVideoDetail = videoResult.Items[0];
+        //    if (targetVideoDetail.Kind != "youtube#video")
+        //        return null;
 
-            ulong commentCount = 0;
-            ulong likeCount = 0;
-            ulong viewCount = 0;
-            if (targetVideoDetail.Statistics.CommentCount != null)
-                commentCount = targetVideoDetail.Statistics.CommentCount.Value;
-            if (targetVideoDetail.Statistics.LikeCount != null)
-                likeCount = targetVideoDetail.Statistics.LikeCount.Value;
-            if (targetVideoDetail.Statistics.ViewCount != null)
-                viewCount = targetVideoDetail.Statistics.ViewCount.Value;
+        //    ulong commentCount = 0;
+        //    ulong likeCount = 0;
+        //    ulong viewCount = 0;
+        //    if (targetVideoDetail.Statistics.CommentCount != null)
+        //        commentCount = targetVideoDetail.Statistics.CommentCount.Value;
+        //    if (targetVideoDetail.Statistics.LikeCount != null)
+        //        likeCount = targetVideoDetail.Statistics.LikeCount.Value;
+        //    if (targetVideoDetail.Statistics.ViewCount != null)
+        //        viewCount = targetVideoDetail.Statistics.ViewCount.Value;
 
-            return new OutsourceVideoStatisticsServiceRes()
-            {
-                CommentCount = commentCount,
-                LikeCount = likeCount,
-                ViewCount = viewCount,
-            };
-        }
+        //    return new OutsourceVideoStatisticsServiceRes()
+        //    {
+        //        CommentCount = commentCount,
+        //        LikeCount = likeCount,
+        //        ViewCount = viewCount,
+        //    };
+        //}
 
         /// <summary>
         /// YoutubeのUrlからIDを取得

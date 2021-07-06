@@ -10,7 +10,7 @@ namespace ApplicationCore.Entities
     /// <summary>
     /// 外部動画Entity
     /// </summary>
-    [Index(nameof(VideoId))]
+    [Index(nameof(VideoId), nameof(ViewCount), nameof(CommentCount), nameof(LikeCount))]
     public class OutsourceVideo : BaseEntity
     {
         /// <summary>
@@ -48,10 +48,25 @@ namespace ApplicationCore.Entities
         /// </summary>
         public string ThumbnailLink { get; set; }
 
+        ///// <summary>
+        ///// 統計情報
+        ///// </summary>
+        //public List<OutsourceVideoStatistics> Statistics { get; set; }
+
         /// <summary>
-        /// 統計情報
+        /// 再生回数
         /// </summary>
-        public List<OutsourceVideoStatistics> Statistics { get; set; }
+        public ulong ViewCount { get; set; }
+
+        /// <summary>
+        /// コメント数
+        /// </summary>
+        public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// いいね数
+        /// </summary>
+        public ulong LikeCount { get; set; }
 
         /// <summary>
         /// 動画コメント
@@ -98,6 +113,7 @@ namespace ApplicationCore.Entities
         /// その他の言葉を話しているか
         /// </summary>
         public bool SpeakOther { get; set; }
+
 
         /// <summary>
         /// 翻訳の有無

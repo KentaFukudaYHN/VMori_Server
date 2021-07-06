@@ -11,7 +11,7 @@ using System.Text.Json;
 
 namespace ApplicationCore.Services
 {
-    public class NikoNikoService : INikoNikoService, IOutsourcePlatFormVideoService
+    public class NikoNikoService : INikoNikoService
     {
         private readonly IHttpClientFactory _clientFactory;
         private const string NIKONIKO_API_URL = "https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search";
@@ -77,24 +77,24 @@ namespace ApplicationCore.Services
             return "https://nico.ms/ " + nikonikoVideoId;
         }
 
-        /// <summary>
-        /// 動画の統計情報を取得
-        /// </summary>
-        /// <param name="youtubeVideoId"></param>
-        /// <returns></returns>
-        public async Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string nikonikoVideoId)
-        {
-            var nikonikoData = await this.GetNikoNikoData(nikonikoVideoId);
-            if (nikonikoData == null)
-                throw new Exception("統計情報を取得できませんでした");
+        ///// <summary>
+        ///// 動画の統計情報を取得
+        ///// </summary>
+        ///// <param name="youtubeVideoId"></param>
+        ///// <returns></returns>
+        //public async Task<IOutsourceVideoStatisticsServiceRes> GetVideoStatistics(string nikonikoVideoId)
+        //{
+        //    var nikonikoData = await this.GetNikoNikoData(nikonikoVideoId);
+        //    if (nikonikoData == null)
+        //        throw new Exception("統計情報を取得できませんでした");
 
-            return new OutsourceVideoStatisticsServiceRes()
-            {
-                CommentCount = nikonikoData.commentCounter,
-                LikeCount = nikonikoData.likeCounter,
-                ViewCount = nikonikoData.viewCounter
-            };
-        }
+        //    return new OutsourceVideoStatisticsServiceRes()
+        //    {
+        //        CommentCount = nikonikoData.commentCounter,
+        //        LikeCount = nikonikoData.likeCounter,
+        //        ViewCount = nikonikoData.viewCounter
+        //    };
+        //}
 
         /// <summary>
         /// ニコニコ動画情報取得

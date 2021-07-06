@@ -2,9 +2,6 @@
 using ApplicationCore.Enum;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationCore.ServiceReqRes
 {
@@ -106,20 +103,29 @@ namespace ApplicationCore.ServiceReqRes
         /// V森への登録日時
         /// </summary>
         public DateTime RegistDateTime => _original.RegistDateTime;
+
         /// <summary>
-        /// 統計情報
+        /// 再生回数
         /// </summary>
-        public OutsourceVideoStatisticsServiceRes LatestStatistic { get; private set; }
+        public ulong ViewCount => _original.ViewCount;
+
+        /// <summary>
+        /// いいね数
+        /// </summary>
+        public ulong LikeCount => _original.LikeCount;
+
+        /// <summary>
+        /// コメント数
+        /// </summary>
+        public ulong CommentCount => _original.CommentCount;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="original"></param>
-        public OutsourceVideoServiceRes(OutsourceVideo original, OutsourceVideoStatistics latestStatistic)
+        public OutsourceVideoServiceRes(OutsourceVideo original)
         {
             _original = original;
-
-            LatestStatistic = new OutsourceVideoStatisticsServiceRes(latestStatistic);
         }
     }
 }
