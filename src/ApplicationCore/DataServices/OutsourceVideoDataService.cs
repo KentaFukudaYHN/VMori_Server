@@ -52,7 +52,10 @@ namespace ApplicationCore.DataServices
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
 
-            var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum));
+            var spec = new OutsourceVideoListSpecifications(page, displayNum);
+            spec.ApplyOrderBy(x => x.RegistDateTime);
+
+            var result = await _repository.ListAsync(spec);
             if (result == null)
                 return null;
 

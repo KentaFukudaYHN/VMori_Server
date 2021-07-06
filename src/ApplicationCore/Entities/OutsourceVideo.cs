@@ -10,7 +10,7 @@ namespace ApplicationCore.Entities
     /// <summary>
     /// 外部動画Entity
     /// </summary>
-    [Index(nameof(VideoId), nameof(ViewCount), nameof(CommentCount), nameof(LikeCount))]
+    [Index(nameof(VideoId), nameof(ViewCount), nameof(CommentCount), nameof(LikeCount), nameof(PublishDateTime), nameof(RegistDateTime))]
     public class OutsourceVideo : BaseEntity
     {
         /// <summary>
