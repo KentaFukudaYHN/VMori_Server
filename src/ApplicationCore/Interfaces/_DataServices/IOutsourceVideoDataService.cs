@@ -1,6 +1,8 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Enum;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
@@ -39,7 +41,7 @@ namespace ApplicationCore.Interfaces
         /// <returns></returns>
         Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc);
 
         /// <summary>
         /// チャンネルIDで動画のリスト取得

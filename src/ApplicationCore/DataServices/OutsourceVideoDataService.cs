@@ -75,7 +75,7 @@ namespace ApplicationCore.DataServices
         /// <returns></returns>
         public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
@@ -83,7 +83,7 @@ namespace ApplicationCore.DataServices
             try
             {
                 var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum,
-                            text, genre, langs, isTranslatioon, translationLangs));
+                            text, genre, langs, isTranslatioon, translationLangs, sortExpression, isDesc));
 
                 return result.ToList();
             }catch(Exception e)

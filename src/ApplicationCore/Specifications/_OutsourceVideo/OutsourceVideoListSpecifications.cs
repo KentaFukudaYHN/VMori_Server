@@ -46,7 +46,7 @@ namespace ApplicationCore.Specifications
         public OutsourceVideoListSpecifications( int page, int displayNum,
             string text, VideoGenreKinds? genre,
             List<VideoLanguageKinds>? langs, bool? isTranslation,
-            List<VideoLanguageKinds>? translationLangs) : this(page, displayNum)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
         {
             //タイトルのフルテキスト検索条件追加
             if (string.IsNullOrEmpty(text) == false)
@@ -106,6 +106,12 @@ namespace ApplicationCore.Specifications
                     }
                 });
             }
+
+            //並び替えの設定
+            if (isDesc)
+                ApplyOrderByDesc(sortExpression);
+            else
+                ApplyOrderBy(sortExpression);
         }
 
         /// <summary>

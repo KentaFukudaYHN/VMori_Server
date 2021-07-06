@@ -132,7 +132,7 @@ namespace ApplicationCore.Services
             if (req.Page <= 0 || req.DisplayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
 
-            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs);
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, x => x.RegistDateTime, false);
 
             if (result == null)
                 return null;
