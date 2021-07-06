@@ -3,7 +3,6 @@ using ApplicationCore.Entities;
 using ApplicationCore.Enum;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Specifications;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -153,6 +152,21 @@ namespace ApplicationCore.DataServices
                 throw new ArgumentException("IDが設定されていません");
 
             await _repository.AddAsync(video, db);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="videos"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateList(List<OutsourceVideo> videos)
+        {
+            if (videos == null)
+                throw new ArgumentException("パラメーターが不正です");
+
+            await _repository.UpdateListAsync(videos);
 
             return true;
         }

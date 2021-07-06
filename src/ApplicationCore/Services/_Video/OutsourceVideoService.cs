@@ -3,6 +3,7 @@ using ApplicationCore.Entities;
 using ApplicationCore.Enum;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace ApplicationCore.Services
         private readonly IOutsouceVideoChannelDataService _channelDataService;
         private readonly IChannelTransitionDataService _channelTransitionDataService;
         private readonly IDbContext _db;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         /// <summary>
         /// コンストラクタ
@@ -28,7 +30,7 @@ namespace ApplicationCore.Services
         /// <param name="OutsourceConfig"></param>
         public OutsourceVideoService(IOutsourceVideoDataService videoDataService,
             IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  
-            IChannelTransitionDataService channelTransitionDataService, IDbContext db)
+            IChannelTransitionDataService channelTransitionDataService, IDbContext db, IServiceScopeFactory serviceScopeFactory)
         {
             _videoDataService = videoDataService;
             _upReqOutsourceVieoDataService = upReqDataService;
@@ -36,6 +38,7 @@ namespace ApplicationCore.Services
             _channelDataService = channelDataService;
             _channelTransitionDataService = channelTransitionDataService;
             _db = db;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         /// <summary>
@@ -98,15 +101,25 @@ namespace ApplicationCore.Services
         /// <returns></returns>
         public async Task<List<OutsourceVideoSummaryServiceRes>> GetList(int page, int displayNum)
         {
-            if (page <= 0 || displayNum <= 0)
-                throw new ArgumentException("pageと表示数を0以下にすることはできません");
+            try
+            {
+                if (page <= 0 || displayNum <= 0)
+                    throw new ArgumentException("pageと表示数を0以下にすることはできません");
 
-            var result = await _videoDataService.GetList(page, displayNum);
+                var result = await _videoDataService.GetList(page, displayNum);
 
-            if (result == null)
-                return null;
+                //更新するべき動画があれば更新する
+                var checkTask = CeckAndUpdateVideoList(result);
 
-            return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+                if (result == null)
+                    return null;
+
+                return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>
@@ -124,7 +137,120 @@ namespace ApplicationCore.Services
             if (result == null)
                 return null;
 
+            //更新するべき動画があれば更新する
+            var checkTask = CeckAndUpdateVideoList(result);
+
             return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+        }
+
+        /// <summary>
+        /// 更新期間のきた動画を更新する
+        /// </summary>
+        /// <param name="videos"></param>
+        /// <returns></returns>
+        private async Task CeckAndUpdateVideoList(List<OutsourceVideo> videos)
+        {
+            //更新の必要の有無をチェック
+            bool CheckUpdate(OutsourceVideo v, DateTime now)
+            {
+                //現在と前回更新日時の日数の差を計算
+                var interval = (now - v.UpdateDateTime).TotalDays;
+
+                //更新回数が13回を超えていたらもう更新はしない
+                if (v.UpdateCount > 13)
+                    return false;
+
+                //1回目と2回目の更新は前回更新時から3日後 ※3日目、6日目
+                if (v.UpdateCount < 2 && interval > 3)
+                {
+                    return true;
+                }
+                //3回目の更新は前回更新時から4日後 ※ 10日目
+                else if (v.UpdateCount < 3 && interval > 4)
+                {
+                    return true;
+                }
+                //4回~5回目目の更新は前回更新から5日後 15日目 20日目
+                else if (v.UpdateCount < 5 && interval > 5)
+                {
+                    return true;
+                }
+                //6回目の更新は前回更新から10日後 30日目
+                else if(v.UpdateCount < 6 && interval > 10)
+                {
+                    return true;
+                }
+                //7回目~8回目は前回更新から20日後  50日目 70日目
+                else if(v.UpdateCount < 8 && interval > 20)
+                {
+                    return true;
+                }
+                //9回目は前回更新から30日後 100日目
+                else if(v.UpdateCount < 9 && interval > 30)
+                {
+                    return true;
+                }
+                //10~11回目は前回更新から50日後 150日目 200日目
+                else if(v.UpdateCount < 11 && interval > 50)
+                {
+                    return true;
+                }
+                //12回目は前回更新から100日後
+                else if(v.UpdateCount < 12 && interval > 100)
+                {
+                    return true;
+                }
+                //13回目は前回更新から65日後
+                else if(v.UpdateCount < 13 && interval > 65)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            var updateTargetVideoIds = new List<string>();
+
+            //更新の必要のある動画のVideoIdを抽出
+            var now = DateTime.Now;
+            videos.ForEach(x =>
+            {
+                if (CheckUpdate(x, now))
+                    updateTargetVideoIds.Add(x.VideoId);
+            });
+
+            if (updateTargetVideoIds.Count == 0)
+                return;
+
+            //更新対象の最新情報をyoutubeAPIから取得
+            var newDatas = await _youtubeService.GetVideos(updateTargetVideoIds);
+
+            //更新データの生成
+            var updateDatas = new List<OutsourceVideo>();
+            newDatas.ForEach(newData =>
+            {
+                var target = videos.Find(oldData => newData.VideoId == oldData.VideoId);
+                if(target != null)
+                {
+                    target.VideoId = newData.VideoTitle;
+                    target.ChannelId = newData.ChannelTitle;
+                    target.Description = newData.Description;
+                    target.ThumbnailLink = newData.ThumbnailLink;
+                    target.ViewCount = newData.ViewCount;
+                    target.CommentCount = newData.CommentCount;
+                    target.LikeCount = newData.LikeCount;
+                    target.UpdateCount++;
+                    target.UpdateDateTime = now;
+                    updateDatas.Add(target);
+                }
+            });
+
+            //更新 ※バックグラウンドで実行するとDbContextが閉じて更新できないので新たにサービスを生成する
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var newVideoDataService = scope.ServiceProvider.GetService<IOutsourceVideoDataService>();
+                await newVideoDataService.UpdateList(updateDatas);
+            }
         }
 
         /// <summary>

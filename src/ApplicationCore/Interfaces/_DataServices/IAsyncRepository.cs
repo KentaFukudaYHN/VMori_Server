@@ -59,6 +59,13 @@ namespace ApplicationCore.Interfaces
         Task UpdateAsync(T entity, IDbContext db);
 
         /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        Task UpdateListAsync(List<T> entitys);
+
+        /// <summary>
         /// 特定のカラムを更新
         /// </summary>
         /// <param name="entity"></param>

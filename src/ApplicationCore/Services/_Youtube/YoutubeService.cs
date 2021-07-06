@@ -6,6 +6,7 @@ using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -29,6 +30,71 @@ namespace ApplicationCore.Services
             _youtubeConfig = youtubeConfig.Value;
         }
 
+        public async Task<List<OutsourceVideoSummaryServiceRes>> GetVideos(List<string> videoIds)
+        {
+            if (videoIds == null)
+                throw new ArgumentException("パラーメーターが不正です");
+
+            if (videoIds.Count > 50)
+                throw new ArgumentException("50個以上videoIdを含める事はできません");
+
+            var youtubeService = this.CreateYoutubeSearvice();
+
+            var videoSearchRequest = youtubeService.Videos.List("snippet, statistics");
+            videoSearchRequest.Id = String.Join(",", videoIds);
+
+            try
+            {
+                var searchRes = await videoSearchRequest.ExecuteAsync();
+
+                if (searchRes.Items == null || searchRes.Items.Count == 0)
+                    return null;
+
+                var targetResult = new List<Google.Apis.YouTube.v3.Data.Video>();
+                foreach(var result in searchRes.Items)
+                {
+                    //既に含まれているデータでないか確認
+                    var isExsist = targetResult.Find(target => target.Id == result.Id);
+
+                    if (videoIds.Contains(result.Id) && isExsist == null)
+                        targetResult.Add(result);
+                }
+
+                return targetResult != null ? targetResult.ConvertAll(x => CreateOutsourceVideoSummaryServiceRes(x)) : null;
+
+            }catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// OutsourceVideoSummaryServiceResを生成
+        /// </summary>
+        /// <param name="original"></param>
+        /// <returns></returns>
+        private OutsourceVideoSummaryServiceRes CreateOutsourceVideoSummaryServiceRes(Google.Apis.YouTube.v3.Data.Video original)
+        {
+            var viewCount = original.Statistics.ViewCount != null ? original.Statistics.ViewCount.Value : 0;
+            var commentCount = original.Statistics.ViewCount != null ? original.Statistics.CommentCount.Value : 0;
+            var likeCount = original.Statistics.LikeCount != null ? original.Statistics.LikeCount.Value : 0;
+
+            return new OutsourceVideoSummaryServiceRes()
+            {
+                VideoId = original.Id,
+                VideoTitle = original.Snippet.Title,
+                VideoLink = this.CreateVideoLink(original.Id),
+                ChannelId = original.Snippet.ChannelId,
+                ChannelTitle = original.Snippet.ChannelTitle,
+                Description = original.Snippet.Description,
+                ThumbnailLink = original.Snippet.Thumbnails.High.Url,
+                PublishDateTime = original.Snippet.PublishedAt.Value,
+                ViewCount = viewCount,
+                CommentCount = commentCount,
+                LikeCount = likeCount,
+            };
+        }
+
         /// <summary>
         /// 動画情報取得
         /// </summary>
@@ -40,7 +106,6 @@ namespace ApplicationCore.Services
 
             var videoSearchRequest = youtubeService.Videos.List("snippet, statistics");
             videoSearchRequest.Id = youtubeVideoId;
-
 
             try
             {
@@ -55,24 +120,7 @@ namespace ApplicationCore.Services
                 if (result == null)
                     return null;
 
-                var viewCount = result.Statistics.ViewCount != null ? result.Statistics.ViewCount.Value : 0;
-                var commentCount = result.Statistics.ViewCount != null ? result.Statistics.CommentCount.Value : 0;
-                var likeCount = result.Statistics.LikeCount != null ? result.Statistics.LikeCount.Value : 0;
-
-                return new OutsourceVideoSummaryServiceRes()
-                {
-                    VideoId = youtubeVideoId,
-                    VideoTitle = result.Snippet.Title,
-                    VideoLink = this.CreateVideoLink(youtubeVideoId),
-                    ChannelId = result.Snippet.ChannelId,
-                    ChannelTitle = result.Snippet.ChannelTitle,
-                    Description = result.Snippet.Description,
-                    ThumbnailLink = result.Snippet.Thumbnails.High.Url,
-                    PublishDateTime = result.Snippet.PublishedAt.Value,
-                    ViewCount = viewCount,
-                    CommentCount = commentCount,
-                    LikeCount = likeCount,
-                };
+                return CreateOutsourceVideoSummaryServiceRes(result);
             }
             catch (Exception e)
             {

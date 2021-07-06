@@ -102,6 +102,27 @@ namespace Infrastructure.Data
         }
 
         /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="entitys"></param>
+        /// <returns></returns>
+        public async Task UpdateListAsync(List<T> entitys)
+        {
+            try
+            {
+                entitys.ForEach(x =>
+                {
+                    //_db.Set<T>().Attach(x);
+                    _db.Entry(x).State = EntityState.Modified;
+                });
+
+                await _db.SaveChangesAsync();
+            }catch(Exception e)
+            {
+            }
+        }
+
+        /// <summary>
         /// 削除
         /// </summary>
         /// <param name="entity"></param>
@@ -111,6 +132,12 @@ namespace Infrastructure.Data
             await this.DeleteAsync(entity, _db);
         }
 
+        /// <summary>
+        /// 削除
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public async Task DeleteAsync(T entity, IDbContext db)
         {
             db.Set<T>().Remove(entity);

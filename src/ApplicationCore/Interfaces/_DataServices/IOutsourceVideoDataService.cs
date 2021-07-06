@@ -64,5 +64,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="videoId"></param>
         /// <returns></returns>
         Task<OutsourceVideo> GetByVideoID(string videoId);
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="videos"></param>
+        /// <returns></returns>
+        Task<bool> UpdateList(List<OutsourceVideo> videos);
     }
 }

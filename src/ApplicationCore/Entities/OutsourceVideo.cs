@@ -149,5 +149,15 @@ namespace ApplicationCore.Entities
         /// Vtuberの森に登録した日時
         /// </summary>
         public DateTime RegistDateTime { get; set; }
+
+        /// <summary>
+        /// 更新日時
+        /// </summary>
+        public DateTime UpdateDateTime { get; set; }
+
+        /// <summary>
+        /// 更新回数
+        /// </summary>
+        public sbyte UpdateCount { get; set; }
     }
 }
