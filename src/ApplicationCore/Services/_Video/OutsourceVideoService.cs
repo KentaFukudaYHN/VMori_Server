@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -132,7 +133,25 @@ namespace ApplicationCore.Services
             if (req.Page <= 0 || req.DisplayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
 
-            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, x => x.RegistDateTime, false);
+            //並び順の設定
+            Expression<Func<OutsourceVideo, object>> sortFunc = x => x.RegistDateTime;
+            switch (req.SortKinds)
+            {
+                case SortKinds.RegistDateTime:
+                    sortFunc = x => x.RegistDateTime;
+                    break;
+                case SortKinds.ViewCount:
+                    sortFunc = x => x.ViewCount;
+                    break;
+                case SortKinds.CommentCount:
+                    sortFunc = x => x.CommentCount;
+                    break;
+                case SortKinds.LikeCount:
+                    sortFunc = x => x.LikeCount;
+                    break;
+            }
+
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, false);
 
             if (result == null)
                 return null;
@@ -416,7 +435,7 @@ namespace ApplicationCore.Services
             if (string.IsNullOrEmpty(req.upReqVideoId))
                 throw new ArgumentException("リクエストIDが空です");
 
-            if (req.Genre == Enum.VideoGenreKinds.UnKnown)
+            if (req.Genre == Enum.VideoGenreKinds.All)
                 throw new ArgumentException("ジャンルの設定は必須です");
 
             if (req.Langes == null || req.Langes.Count == 0)
@@ -603,6 +622,26 @@ namespace ApplicationCore.Services
                     return VideoPlatFormKinds.UnKnown;
             }
 
+        }
+
+        public enum SortKinds
+        {
+            /// <summary>
+            /// 登録日時順
+            /// </summary>
+            RegistDateTime = 0,
+            /// <summary>
+            /// 再生回数順
+            /// </summary>
+            ViewCount = 10,
+            /// <summary>
+            /// いいね数順
+            /// </summary>
+            LikeCount = 20,
+            /// <summary>
+            /// コメント順
+            /// </summary>
+            CommentCount = 30,
         }
 
     }

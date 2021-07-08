@@ -1,5 +1,7 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Enum;
+using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -73,6 +75,52 @@ namespace VMori.Workers._Video
         /// <returns></returns>
         public async Task<VideoSummaryInfoRes> GetList(SearchCriteriaVideoReq req)
         {
+            var result = await GetVideoSummaryServiceRes(req);
+
+            return CreateVideoSummayIngoRes(result);
+        }
+
+        /// <summary>
+        /// 各ジャンルの動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="genres"></param>
+        /// <returns></returns>
+        public async Task<VideoSummaryInfoByGenreRes> GetListByGenre(SearchCriteriaVideoReq req, List<VideoGenreKinds> genres)
+        {
+            //各ジャンルの動画情報を取得
+            var resDic = new Dictionary<VideoGenreKinds,List<OutsourceVideoSummaryServiceRes>>();
+            var tasks = new List<Task>();
+            for (int i = 0; i < genres.Count; i++)
+            {
+                req.Genre = genres[i];
+                resDic.Add(req.Genre.Value, await GetVideoSummaryServiceRes(req));
+            }
+
+
+            var result = new VideoSummaryInfoByGenreRes();
+            result.Items = new List<VideoSummaryByGenreRes>();
+            genres.ForEach(x =>
+            {
+                var targetItems = resDic[x];
+                var genreItems = targetItems.ConvertAll(x => new VideoSummaryItem(x));
+                result.Items.Add(new VideoSummaryByGenreRes()
+                {
+                    GenreKinds = x,
+                    Items = genreItems
+                });
+            });
+
+            return result;
+        }
+
+        /// <summary>
+        /// 動画情報取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        private async Task<List<OutsourceVideoSummaryServiceRes>> GetVideoSummaryServiceRes(SearchCriteriaVideoReq req)
+        {
             var detail = new SearchDetailCriteriaVideoReq()
             {
                 IsTranslation = req.IsTranslation,
@@ -85,13 +133,12 @@ namespace VMori.Workers._Video
                 Page = req.Page,
                 DisplayNum = req.DisplayNum,
                 Text = req.Text,
-                Genre = req.Genre,
-                Detail = detail
+                Genre = req.Genre == VideoGenreKinds.All ? null : req.Genre,
+                Detail = detail,
+                SortKinds = req.SortKinds
             };
 
-            var result = await _outsourceVideoService.GetList(serviceReq);
-
-            return CreateVideoSummayIngoRes(result);
+            return await _outsourceVideoService.GetList(serviceReq);
         }
 
         /// <summary>

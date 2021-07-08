@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Enum;
 using System.Collections.Generic;
+using static ApplicationCore.Services.OutsourceVideoService;
 
 namespace VMori.ReqRes
 {
@@ -26,6 +27,11 @@ namespace VMori.ReqRes
         /// 動画のジャンル
         /// </summary>
         public VideoGenreKinds? Genre { get; set; }
+
+        /// <summary>
+        /// 並び順
+        /// </summary>
+        public SortKinds SortKinds { get; set; }
 
         /// <summary>
         /// 話している言語

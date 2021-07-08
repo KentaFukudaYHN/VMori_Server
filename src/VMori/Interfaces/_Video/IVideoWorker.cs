@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ApplicationCore.Enum;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VMori.ReqRes;
 
@@ -30,6 +31,14 @@ namespace VMori.Interfaces
         /// <param name="req"></param>
         /// <returns></returns>
         Task<VideoSummaryInfoRes> GetList(SearchCriteriaVideoReq req);
+
+        /// <summary>
+        /// ジャンルごとの動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="genres"></param>
+        /// <returns></returns>
+        Task<VideoSummaryInfoByGenreRes> GetListByGenre(SearchCriteriaVideoReq req, List<VideoGenreKinds> genres);
 
         /// <summary>
         /// チャンネルに紐づく動画のリストを取得

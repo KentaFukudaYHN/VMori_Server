@@ -1,5 +1,6 @@
 ﻿
 using ApplicationCore.Enum;
+using static ApplicationCore.Services.OutsourceVideoService;
 
 namespace ApplicationCore.ServiceReqRes
 {
@@ -26,6 +27,11 @@ namespace ApplicationCore.ServiceReqRes
         /// 動画のジャンル
         /// </summary>
         public VideoGenreKinds? Genre { get; set; }
+
+        /// <summary>
+        /// 並び順
+        /// </summary>
+        public SortKinds SortKinds { get; set; }
 
         /// <summary>
         /// 詳細検索条件

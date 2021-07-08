@@ -106,86 +106,41 @@ namespace ApplicationCore.Enum
     public enum VideoGenreKinds
     {
         /// <summary>
-        /// 未設定
+        /// 全て
         /// </summary>
-        UnKnown = 0,
-        /// <summary>
-        ///雑談
-        /// <summary>
+        All = 0,
+        //雑談
         SmallTalk = 10,
-        /// <summary>
-        ///ショートムービー
-        /// <summary>
-        Short = 20,
-        /// <summary>
-        ///エンターテイメント
-        /// <summary>
-        Entertainment = 30,
-        /// <summary>
-        ///game
-        /// <summary>
-        Game = 40,
-        /// <summary>
-        ///音楽
-        /// <summary>
-        Music = 50,
-        /// <summary>
-        /// MAD
-        /// </summary>
-        MAD = 60,
-        /// <summary>
-        ///ダンス
-        /// <summary>
-        Dance = 70,
-        /// <summary>
-        ///ラジオ
-        /// <summary>
-        Radio = 80,
-        /// <summary>
-        ///動物
-        /// <summary>
-        Animal = 90,
-        /// <summary>
-        ///自然
-        /// <summary>
-        Nature = 100,
-        /// <summary>
-        ///料理
-        /// <summary>
-        Cooking = 110,
-        /// <summary>
-        ///旅行
-        /// <summary>
-        Travel = 120,
-        /// <summary>
-        ///アウトドア
-        /// <summary>
+        //エンターテイメント
+        Entertainment = 20,
+        //歌枠
+        Song = 30,
+        //音楽
+        Music = 40,
+        //ショートムービー
+        Short = 50,
+        //ゲーム
+        Game = 60,
+        //お絵描き
+        Drawing = 70,
+        //ASMR
+        Asmr = 80,
+        //ニュース
+        News = 90,
+        //技術・工作
+        Craft = 100,
+        //解説・講座
+        Course = 110,
+        //ドッキリ
+        Shock = 120,
+        //アウトドア
         Outdoor = 130,
-        /// <summary>
-        ///スポーツ
-        /// <summary>
-        Sports = 140,
-        /// <summary>
-        ///政治・社会・時事
-        /// <summary>
-        Politics = 150,
-        /// <summary>
-        ///技術・工作
-        /// <summary>
-        Craft = 160,
-        /// <summary>
-        ///解説・講座
-        /// <summary>
-        Course = 170,
-        /// <summary>
-        ///MMD
-        /// <summary>
-        MMD = 180,
-        /// <summary>
-        ///その他
-        /// <summary>
-
-        Other = 999
+        //自然・環境
+        Nature = 140,
+        //センシティブ
+        Sensitive = 150,
+        //その他
+        Other = 999,
     }
 }
 

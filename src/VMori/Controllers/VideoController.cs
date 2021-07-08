@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApplicationCore.Enum;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VMori.Interfaces;
@@ -41,6 +42,29 @@ namespace VMori.Controllers
         {
             var req = new GetVideoSummaryReq() { Page = page, DisplayNum = displayNum };
             return await _videoWorker.GetList(req);
+        }
+
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<VideoSummaryInfoRes> GetSearchList(SearchCriteriaVideoReq req)
+        {
+            return await _videoWorker.GetList(req);
+        }
+
+        /// <summary>
+        /// 動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="genres"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<VideoSummaryInfoByGenreRes> GetListByGenre(SearchCriteriaVideoByGenreReq req)
+        {
+            return await _videoWorker.GetListByGenre(req.SearchReq, req.Genres);
         }
 
         /// <summary>
@@ -96,17 +120,6 @@ namespace VMori.Controllers
         public async Task<bool> RegistComment(VideoCommentReq req)
         {
             return await _videoWorker.RegistComment(req.VideoId, req.Text, req.Time);
-        }
-
-        /// <summary>
-        /// 動画情報を取得
-        /// </summary>
-        /// <param name="req"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<VideoSummaryInfoRes> GetSearchList(SearchCriteriaVideoReq req)
-        {
-            return await _videoWorker.GetList(req);
         }
     }
 }
