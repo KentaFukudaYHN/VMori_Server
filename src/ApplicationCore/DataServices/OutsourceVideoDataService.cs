@@ -175,6 +175,29 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 再生回数をカウントアップ
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        public async Task<bool> CountUpViewCount(string videoId)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            //対象の動画情報を取得
+            var target = await this.GetByVideoID(videoId);
+
+            if (target == null)
+                throw new ArgumentException("対象の動画がありません");
+
+            target.VMoriViewCount++;
+
+            await this._repository.UpdateAsyncOnlyClumn(target, new List<string>() { nameof(target.VMoriViewCount) });
+
+            return true;
+        }
+
+        /// <summary>
         /// ビデオIDで動画を検索
         /// </summary>
         /// <param name="videoId"></param>

@@ -76,7 +76,7 @@ namespace ApplicationCore.Services
         private OutsourceVideoSummaryServiceRes CreateOutsourceVideoSummaryServiceRes(Google.Apis.YouTube.v3.Data.Video original)
         {
             var viewCount = original.Statistics.ViewCount != null ? original.Statistics.ViewCount.Value : 0;
-            var commentCount = original.Statistics.ViewCount != null ? original.Statistics.CommentCount.Value : 0;
+            var commentCount = original.Statistics.CommentCount != null ? original.Statistics.CommentCount.Value : 0;
             var likeCount = original.Statistics.LikeCount != null ? original.Statistics.LikeCount.Value : 0;
 
             return new OutsourceVideoSummaryServiceRes()

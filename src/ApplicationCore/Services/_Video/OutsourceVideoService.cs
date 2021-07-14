@@ -24,6 +24,7 @@ namespace ApplicationCore.Services
         private readonly IChannelTransitionDataService _channelTransitionDataService;
         private readonly IDbContext _db;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IVideoHistoryDataService _videoHistoryDataService;
 
         /// <summary>
         /// コンストラクタ
@@ -31,7 +32,7 @@ namespace ApplicationCore.Services
         /// <param name="OutsourceConfig"></param>
         public OutsourceVideoService(IOutsourceVideoDataService videoDataService,
             IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  
-            IChannelTransitionDataService channelTransitionDataService, IDbContext db, IServiceScopeFactory serviceScopeFactory)
+            IChannelTransitionDataService channelTransitionDataService, IDbContext db, IServiceScopeFactory serviceScopeFactory, IVideoHistoryDataService videoHistoryDataService)
         {
             _videoDataService = videoDataService;
             _upReqOutsourceVieoDataService = upReqDataService;
@@ -40,6 +41,7 @@ namespace ApplicationCore.Services
             _channelTransitionDataService = channelTransitionDataService;
             _db = db;
             _serviceScopeFactory = serviceScopeFactory;
+            _videoHistoryDataService = videoHistoryDataService;
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace ApplicationCore.Services
                     break;
             }
 
-            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, false);
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, true);
 
             if (result == null)
                 return null;
@@ -574,6 +576,49 @@ namespace ApplicationCore.Services
             {
                 Success = true
             };
+        }
+
+        /// <summary>
+        /// 再生回数のカウントアップ
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> CountUpViewCount(string videoId, string ipAddress)
+        {
+            if (string.IsNullOrEmpty(videoId) || string.IsNullOrEmpty(ipAddress))
+                throw new ArgumentException("不正なパラメーターです");
+
+            //1日以内に履歴があればカウントアップはしない
+            var targetHistyory = await _videoHistoryDataService.Get(videoId, ipAddress);
+            if(targetHistyory == null)
+            {
+                //履歴の登録
+                var history = new VideoHistory()
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    VideoId = videoId,
+                    IpAddress = ipAddress,
+                    RegistDateTime = DateTime.Now
+                };
+                await _videoHistoryDataService.Regist(history);
+                await this._videoDataService.CountUpViewCount(videoId);
+            }
+            else
+            {
+                var calcDate = DateTime.Now - targetHistyory.RegistDateTime;
+                if(calcDate.TotalDays < 1)
+                {
+                    return false;
+                }
+                else
+                {
+                    targetHistyory.RegistDateTime = DateTime.Now;
+                    await this._videoHistoryDataService.Update(targetHistyory);
+                    await this._videoDataService.CountUpViewCount(videoId);
+                }
+            }
+
+
+            return true;
         }
 
         ///// <summary>

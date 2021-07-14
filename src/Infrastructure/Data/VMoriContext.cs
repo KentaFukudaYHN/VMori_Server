@@ -65,6 +65,11 @@ namespace Infrastructure.Data
         /// </summary>
         public DbSet<UpReqOutsourceVideo> UpReqOutsourceVideos { get; set; }
 
+        /// <summary>
+        /// 動画視聴履歴
+        /// </summary>
+        public DbSet<VideoHistory> VideoHistorys { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //アカウント情報
@@ -123,6 +128,9 @@ namespace Infrastructure.Data
                 .WithMany(x => x.VideoComments)
                 .HasForeignKey(x => x.VideoId)
                 .HasPrincipalKey(x => x.VideoId);
+
+            //動画視聴履歴
+            modelBuilder.Entity<VideoHistory>().ToTable("VideoHistory");
 
 
         }

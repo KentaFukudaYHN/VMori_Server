@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(VMoriContext))]
-    partial class VMoriContextModelSnapshot : ModelSnapshot
+    [Migration("20210714050851_addVMoriViewCount")]
+    partial class addVMoriViewCount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,27 +320,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("VideoId");
 
                     b.ToTable("VideoComment");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Entities.VideoHistory", b =>
-                {
-                    b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("RegistDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VideoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("IpAddress", "VideoId");
-
-                    b.ToTable("VideoHistorys");
                 });
 
             modelBuilder.Entity("ApplicationCore.Entities.VideoComment", b =>

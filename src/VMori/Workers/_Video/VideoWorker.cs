@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Enum;
 using ApplicationCore.Interfaces;
 using ApplicationCore.ServiceReqRes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -220,6 +221,18 @@ namespace VMori.Workers._Video
         public async Task<bool> RegistComment(string videoId, string text, int time)
         {
             return await _videoCommentService.Regist(videoId, text, time);
+        }
+
+        /// <summary>
+        /// カウントアップ
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public async Task<bool> CountUpViewCount(string videoId, HttpContext context)
+        {
+            var ipAddress = context.Connection.RemoteIpAddress.ToString();
+            return await _outsourceVideoService.CountUpViewCount(videoId, ipAddress);
         }
 
         /// <summary>

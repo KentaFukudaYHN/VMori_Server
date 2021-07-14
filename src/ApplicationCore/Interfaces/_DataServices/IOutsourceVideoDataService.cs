@@ -73,5 +73,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="videos"></param>
         /// <returns></returns>
         Task<bool> UpdateList(List<OutsourceVideo> videos);
+
+        /// <summary>
+        /// 再生回数のカウントアップ
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        Task<bool> CountUpViewCount(string videoId);
     }
 }

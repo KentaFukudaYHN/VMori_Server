@@ -67,6 +67,13 @@ namespace VMori.Controllers
             return await _videoWorker.GetListByGenre(req.SearchReq, req.Genres);
         }
 
+
+        [HttpPost]
+        public async Task<bool> CountUpViewCount(RegistHistoryReq req)
+        {
+            return await _videoWorker.CountUpViewCount(req.VideoId, HttpContext);
+        }
+
         /// <summary>
         /// チャンネルに紐づく動画を取得
         /// </summary>

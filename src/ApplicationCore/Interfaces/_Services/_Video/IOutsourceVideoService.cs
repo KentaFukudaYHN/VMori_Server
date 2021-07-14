@@ -68,5 +68,12 @@ namespace ApplicationCore.Interfaces
         /// <param name="req"></param>
         /// <returns></returns>
         Task<RegistOutsourceVideoServiceRes> RegistVideo(RegistOutsourceVideoServiceReq req);
+
+        /// <summary>
+        /// 再生回数のカウントアップ
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <returns></returns>
+        Task<bool> CountUpViewCount(string videoId, string ipAddress);
     }
 }

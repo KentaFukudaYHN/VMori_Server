@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Enum;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VMori.ReqRes;
@@ -78,6 +79,14 @@ namespace VMori.Interfaces
         /// <param name="channelTableId"></param>
         /// <returns></returns>
         Task<ChannelRes> GetChannel(string channelTableId);
+
+        /// <summary>
+        /// 再生回数のカウントアップ
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        Task<bool> CountUpViewCount(string videoId, HttpContext context);
 
     }
 }

@@ -57,11 +57,20 @@ namespace ApplicationCore.Entities
         /// 再生回数
         /// </summary>
         public ulong ViewCount { get; set; }
+        /// <summary>
+        /// VMoriでの再生回数
+        /// </summary>
+        public ulong VMoriViewCount { get; set; }
 
         /// <summary>
         /// コメント数
         /// </summary>
         public ulong CommentCount { get; set; }
+
+        /// <summary>
+        /// VMoriでのいいね数
+        /// </summary>
+        public ulong VMoriLikeCount { get; set; }
 
         /// <summary>
         /// いいね数
