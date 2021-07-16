@@ -1,4 +1,5 @@
-﻿using ApplicationCore.ServiceReqRes;
+﻿using ApplicationCore.Enum;
+using ApplicationCore.ServiceReqRes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -46,6 +47,14 @@ namespace ApplicationCore.Interfaces
         /// <param name="take"></param>
         /// <returns></returns>
         Task<List<OutsourceVideoSummaryServiceRes>> GetListByChannelId(string channelId, int page, int take);
+
+        /// <summary>
+        /// 各ジャンルごとの動画情報取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="genres"></param>
+        /// <returns></returns>
+        Task<Dictionary<VideoGenreKinds, List<OutsourceVideoSummaryServiceRes>>> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres);
 
         /// <summary>
         /// チャンネル情報の取得

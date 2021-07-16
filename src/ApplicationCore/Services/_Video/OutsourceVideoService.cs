@@ -136,24 +136,9 @@ namespace ApplicationCore.Services
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
 
             //並び順の設定
-            Expression<Func<OutsourceVideo, object>> sortFunc = x => x.RegistDateTime;
-            switch (req.SortKinds)
-            {
-                case SortKinds.RegistDateTime:
-                    sortFunc = x => x.RegistDateTime;
-                    break;
-                case SortKinds.ViewCount:
-                    sortFunc = x => x.ViewCount;
-                    break;
-                case SortKinds.CommentCount:
-                    sortFunc = x => x.CommentCount;
-                    break;
-                case SortKinds.LikeCount:
-                    sortFunc = x => x.LikeCount;
-                    break;
-            }
+            var sortFunc = this.GetSortFunc(req.SortKinds);
 
-            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, true);
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc);
 
             if (result == null)
                 return null;
@@ -162,6 +147,65 @@ namespace ApplicationCore.Services
             var checkTask = CeckAndUpdateVideoList(result);
 
             return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="kinds"></param>
+        /// <returns></returns>
+        private Expression<Func<OutsourceVideo, object>> GetSortFunc(SortKinds kinds)
+        {
+            switch (kinds)
+            {
+                case SortKinds.RegistDateTime:
+                    return x => x.RegistDateTime;
+                case SortKinds.ViewCount:
+                    return x => x.ViewCount;
+                case SortKinds.CommentCount:
+                    return x => x.CommentCount;
+                case SortKinds.LikeCount:
+                    return x => x.LikeCount;
+                case SortKinds.VMoriViewCount:
+                    return x => x.VMoriViewCount;
+                default:
+                    throw new ArgumentException("不明なSortKindsです:" + kinds);
+            }
+
+        }
+
+        /// <summary>
+        /// 複数ジャンルごとの動画情報を取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<Dictionary<VideoGenreKinds, List<OutsourceVideoSummaryServiceRes>>> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres)
+        {
+            if (req.Page <= 0 || req.DisplayNum <= 0)
+                throw new ArgumentException("pageと表示数を0以下にすることはできません");
+
+
+            //並び順の設定
+            var sortFunc = this.GetSortFunc(req.SortKinds);
+
+            var videos = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, genres, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc);
+
+            if (videos == null)
+                return null;
+
+            var dic = new Dictionary<VideoGenreKinds, List<OutsourceVideoSummaryServiceRes>>();
+            genres.ForEach(x =>
+            {
+                dic.Add(x, new List<OutsourceVideoSummaryServiceRes>());
+            });
+
+            videos.ForEach(x =>
+            {
+                dic[x.Genre].Add(CreateOutsourceVideoServiceRes(x));
+            });
+
+            return dic;
+
         }
 
         /// <summary>
@@ -313,6 +357,7 @@ namespace ApplicationCore.Services
                 PublishDateTime = entity.PublishDateTime,
                 RegistDateTime = entity.RegistDateTime,
                 ViewCount = entity.ViewCount,
+                VMoriViewCount = entity.VMoriViewCount,
                 LikeCount = entity.LikeCount,
                 CommentCount = entity.CommentCount
             };
@@ -687,6 +732,10 @@ namespace ApplicationCore.Services
             /// コメント順
             /// </summary>
             CommentCount = 30,
+            /// <summary>
+            /// VMori再生回数
+            /// </summary>
+            VMoriViewCount = 40,
         }
 
     }

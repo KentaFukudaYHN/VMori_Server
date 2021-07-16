@@ -44,6 +44,23 @@ namespace ApplicationCore.Interfaces
             List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc);
 
         /// <summary>
+        /// 複数ジャンル
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        /// <param name="genres"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="isDesc"></param>
+        /// <returns></returns>
+        Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+            string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc);
+
+        /// <summary>
         /// チャンネルIDで動画のリスト取得
         /// </summary>
         /// <param name="channelId"></param>

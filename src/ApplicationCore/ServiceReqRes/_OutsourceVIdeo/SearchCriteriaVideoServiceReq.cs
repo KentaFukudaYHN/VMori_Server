@@ -34,6 +34,11 @@ namespace ApplicationCore.ServiceReqRes
         public SortKinds SortKinds { get; set; }
 
         /// <summary>
+        /// 並び順を降順にするかどうか
+        /// </summary>
+        public bool IsDesc { get; set; }
+
+        /// <summary>
         /// 詳細検索条件
         /// </summary>
         public SearchDetailCriteriaVideoReq Detail { get; set; }

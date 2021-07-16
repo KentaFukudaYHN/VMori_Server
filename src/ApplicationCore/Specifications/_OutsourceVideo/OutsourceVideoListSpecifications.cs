@@ -115,6 +115,84 @@ namespace ApplicationCore.Specifications
         }
 
         /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        public OutsourceVideoListSpecifications(int page, int displayNum,
+            string text, List<VideoGenreKinds> genres,
+            List<VideoLanguageKinds>? langs, bool? isTranslation,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
+        {
+            //タイトルのフルテキスト検索条件追加
+            if (string.IsNullOrEmpty(text) == false)
+            {
+                base.AddFullTextCriteria(x => EF.Functions.FreeText(x.VideoTitle, text) || EF.Functions.FreeText(x.Description, text) || EF.Functions.FreeText(x.TagsData, text));
+            }
+
+            //ジャンルの設定 
+            if (genres != null && genres.Count > 0)
+            {
+                base.AddCriteria(x => genres.Contains(x.Genre));
+            }
+
+            //言語の設定
+            if (langs != null)
+            {
+                langs.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            base.AddCriteria(x => x.SpeakJP == true);
+                            break;
+                        case VideoLanguageKinds.English:
+
+                            base.AddCriteria(x => x.SpeakEnglish == true);
+                            break;
+                        case VideoLanguageKinds.Other:
+                            base.AddCriteria(x => x.SpeakOther == true);
+                            break;
+                    }
+                });
+            }
+
+            //翻訳の有無設定
+            if (isTranslation != null)
+            {
+                base.AddCriteria(x => x.IsTranslation == isTranslation);
+            }
+
+            //翻訳言語の設定
+            if (translationLangs != null)
+            {
+                translationLangs.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            base.AddCriteria(x => x.TranslationJP == true);
+                            break;
+                        case VideoLanguageKinds.English:
+                            base.AddCriteria(x => x.TranslationEnglish == true);
+                            break;
+                        case VideoLanguageKinds.Other:
+                            base.AddCriteria(x => x.TranslationOther == true);
+                            break;
+                    }
+                });
+            }
+
+            //並び替えの設定
+            if (isDesc)
+                ApplyOrderByDesc(sortExpression);
+            else
+                ApplyOrderBy(sortExpression);
+        }
+
+
+        /// <summary>
         /// チャンネルIDで検索条件追加
         /// </summary>
         /// <param name="channelId"></param>

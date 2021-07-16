@@ -93,6 +93,37 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 動画を取得 ※複数ジャンル
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="displayNum"></param>
+        /// <param name="text"></param>
+        /// <param name="genre"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <returns></returns>
+        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+            string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc)
+        {
+            if (page == 0 || displayNum == 0)
+                throw new ArgumentException("pageとdisplayNumは0で指定できません");
+
+            try
+            {
+                var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum,
+                            text, genres, langs, isTranslatioon, translationLangs, sortExpression, isDesc));
+
+                return result.ToList();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
         /// チャンネルIDで動画を取得
         /// </summary>
         /// <param name="channelId"></param>

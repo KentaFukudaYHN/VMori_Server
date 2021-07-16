@@ -34,6 +34,11 @@ namespace VMori.ReqRes
         public SortKinds SortKinds { get; set; }
 
         /// <summary>
+        /// 並び順を降順にするか
+        /// </summary>
+        public bool IsDesc { get; set; }
+
+        /// <summary>
         /// 話している言語
         /// </summary>
         public List<VideoLanguageKinds>? Langs { get; set; }

@@ -45,6 +45,11 @@ namespace VMori.ReqRes
         public ulong ViewCount { get; set; }
 
         /// <summary>
+        /// VMori再生回数
+        /// </summary>
+        public ulong VMoriViewCount { get; set; }
+
+        /// <summary>
         /// 動画プラットフォーム種類
         /// </summary>
         public VideoPlatFormKinds PlatFormKinds { get; set; }
@@ -78,6 +83,7 @@ namespace VMori.ReqRes
             ChannelTitle = original.ChannelTitle;
             ThumbnailLink = original.ThumbnailLink;
             ViewCount = original.ViewCount;
+            VMoriViewCount = original.VMoriViewCount;
             PlatFormKinds = original.PlatFormKinds;
             PublishDateTime = original.PublishDateTime;
             RegistDateTime = original.RegistDateTime;

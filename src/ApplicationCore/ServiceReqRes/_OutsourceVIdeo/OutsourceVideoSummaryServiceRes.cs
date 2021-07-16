@@ -50,6 +50,11 @@ namespace ApplicationCore.ServiceReqRes
         public ulong ViewCount { get; set; }
 
         /// <summary>
+        /// VMori再生回数
+        /// </summary>
+        public ulong VMoriViewCount { get; set; }
+
+        /// <summary>
         /// コメント数
         /// </summary>
         public ulong CommentCount { get; set; }
