@@ -202,6 +202,25 @@ namespace ApplicationCore.Specifications
         }
 
         /// <summary>
+        /// 検索条件に期間を追加
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public void AddCriteriaByRegistDateTime(DateTime start, DateTime end)
+        {
+            base.AddCriteria(x => x.RegistDateTime >= start && x.RegistDateTime <= end);
+        }
+
+        /// <summary>
+        /// 検索条件に期間を追加
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public void AddCriteriaByPublishDateTime(DateTime start, DateTime end)
+        {
+            base.AddCriteria(x => x.PublishDateTime >= start && x.RegistDateTime <= end);
+        }
+        /// <summary>
         /// ページングの設定
         /// </summary>
         /// <param name="page"></param>

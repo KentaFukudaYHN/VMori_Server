@@ -1,5 +1,6 @@
 ﻿
 using ApplicationCore.Enum;
+using System;
 using static ApplicationCore.Services.OutsourceVideoService;
 
 namespace ApplicationCore.ServiceReqRes
@@ -37,6 +38,21 @@ namespace ApplicationCore.ServiceReqRes
         /// 並び順を降順にするかどうか
         /// </summary>
         public bool IsDesc { get; set; }
+
+        /// <summary>
+        /// 開始期間
+        /// </summary>
+        public DateTime? Start { get; set; }
+
+        /// <summary>
+        /// 終了期間
+        /// </summary>
+        public DateTime? End { get; set; }
+
+        /// <summary>
+        /// Vmoriの期間かどうか
+        /// </summary>
+        public bool? IsPublish { get; set; }
 
         /// <summary>
         /// 詳細検索条件

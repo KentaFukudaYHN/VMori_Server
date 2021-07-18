@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Enum;
+using System;
 using System.Collections.Generic;
 using static ApplicationCore.Services.OutsourceVideoService;
 
@@ -47,6 +48,21 @@ namespace VMori.ReqRes
         /// 翻訳の有無
         /// </summary>
         public bool? IsTranslation { get; set; }
+
+        /// <summary>
+        /// 開始期間
+        /// </summary>
+        public DateTime? Start { get; set; }
+
+        /// <summary>
+        /// 終了期間
+        /// </summary>
+        public DateTime? End { get; set; }
+
+        /// <summary>
+        /// Youtubeの期間かどうか
+        /// </summary>
+        public bool? IsPublish { get; set; }
 
         /// <summary>
         /// 翻訳している言語

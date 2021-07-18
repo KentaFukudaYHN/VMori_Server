@@ -138,7 +138,7 @@ namespace ApplicationCore.Services
             //並び順の設定
             var sortFunc = this.GetSortFunc(req.SortKinds);
 
-            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc);
+            var result = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc, req.Start, req.End, req.IsPublish);
 
             if (result == null)
                 return null;
@@ -188,7 +188,7 @@ namespace ApplicationCore.Services
             //並び順の設定
             var sortFunc = this.GetSortFunc(req.SortKinds);
 
-            var videos = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, genres, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc);
+            var videos = await _videoDataService.GetList(req.Page, req.DisplayNum, req.Text, genres, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc, req.Start, req.End, req.IsPublish);
 
             if (videos == null)
                 return null;

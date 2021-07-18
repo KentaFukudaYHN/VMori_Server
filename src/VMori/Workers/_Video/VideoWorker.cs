@@ -120,7 +120,7 @@ namespace VMori.Workers._Video
                 var allVideoRes = new VideoSummaryByGenreRes()
                 {
                     GenreKinds = VideoGenreKinds.All,
-                    Items = allVideos.ConvertAll(x => new VideoSummaryItem(x))
+                    Items = allVideos.ConvertAll(x => new VideoSummaryItem(x)),
                 };
                 result.Items.Add(allVideoRes);
             }
@@ -155,7 +155,10 @@ namespace VMori.Workers._Video
                 Genre = req.Genre == VideoGenreKinds.All ? null : req.Genre,
                 Detail = detail,
                 SortKinds = req.SortKinds,
-                IsDesc = req.IsDesc
+                IsDesc = req.IsDesc,
+                Start = req.Start,
+                End = req.End,
+                IsPublish = req.IsPublish
             };
 
             return serviceReq;

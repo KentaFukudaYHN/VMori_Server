@@ -41,7 +41,7 @@ namespace ApplicationCore.Interfaces
         /// <returns></returns>
         Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
         /// <summary>
         /// 複数ジャンル
@@ -58,7 +58,7 @@ namespace ApplicationCore.Interfaces
         /// <returns></returns>
         Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
         /// <summary>
         /// チャンネルIDで動画のリスト取得

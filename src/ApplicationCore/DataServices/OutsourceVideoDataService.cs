@@ -75,15 +75,29 @@ namespace ApplicationCore.DataServices
         /// <returns></returns>
         public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
 
             try
             {
-                var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum,
+                var spec = (new OutsourceVideoListSpecifications(page, displayNum,
                             text, genre, langs, isTranslatioon, translationLangs, sortExpression, isDesc));
+
+                if(start !=  null && end != null)
+                {
+                    if(isPublishdate != null && isPublishdate.Value)
+                    {
+                        spec.AddCriteriaByPublishDateTime(start.Value, end.Value);
+                    }
+                    else
+                    {
+                        spec.AddCriteriaByRegistDateTime(start.Value, end.Value);
+                    }
+                }
+
+                var result = await _repository.ListAsync(spec);
 
                 return result.ToList();
             }catch(Exception e)
@@ -105,15 +119,28 @@ namespace ApplicationCore.DataServices
         /// <returns></returns>
         public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
             string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
 
             try
             {
-                var result = await _repository.ListAsync(new OutsourceVideoListSpecifications(page, displayNum,
-                            text, genres, langs, isTranslatioon, translationLangs, sortExpression, isDesc));
+                var spec = new OutsourceVideoListSpecifications(page, displayNum,
+                            text, genres, langs, isTranslatioon, translationLangs, sortExpression, isDesc);
+
+                if (start != null && end != null)
+                {
+                    if (isPublishdate != null && isPublishdate.Value)
+                    {
+                        spec.AddCriteriaByPublishDateTime(start.Value, end.Value);
+                    }
+                    else
+                    {
+                        spec.AddCriteriaByRegistDateTime(start.Value, end.Value);
+                    }
+                }
+                var result = await _repository.ListAsync(spec);
 
                 return result.ToList();
             }
