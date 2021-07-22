@@ -28,10 +28,7 @@ namespace ApplicationCore.Specifications
         /// <param name=""></param>
         public OutsourceVideoListSpecifications(int page, int displayNum): base(null)
         {
-            //ページのスキップ数を計算
-            var skip = this.CalcSkip(page, displayNum);
-
-            ApplyPaging(skip, displayNum);
+            ApplyPaging(page, displayNum);
 
             //登録日時順
             ApplyOrderByDescending(x => x.RegistDateTime);
@@ -48,70 +45,28 @@ namespace ApplicationCore.Specifications
             List<VideoLanguageKinds>? langs, bool? isTranslation,
             List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
         {
+            ApplyPaging(page, displayNum);
+
             //タイトルのフルテキスト検索条件追加
-            if (string.IsNullOrEmpty(text) == false)
-            {
-                base.AddFullTextCriteria(x => EF.Functions.FreeText(x.VideoTitle, text) || EF.Functions.FreeText(x.Description, text) || EF.Functions.FreeText(x.TagsData, text));
-            }
+            settingFullText(text);
+
+            //言語の設定
+            settingLangs(langs);
+
+            //翻訳の有無設定
+            settingIsTranslation(isTranslation);
+
+            //翻訳言語の設定
+            settingTransrationLangs(translationLangs);
+
+            //並び替えの設定
+            settingOrder(isDesc, sortExpression);
 
             //ジャンルの設定
             if (genre != null)
             {
                 base.AddCriteria(x => x.Genre == genre);
             }
-
-            //言語の設定
-            if (langs != null)
-            {
-                langs.ForEach(x =>
-                {
-                    switch (x)
-                    {
-                        case VideoLanguageKinds.JP:
-                            base.AddCriteria(x => x.SpeakJP == true);
-                            break;
-                        case VideoLanguageKinds.English:
-                            
-                            base.AddCriteria(x => x.SpeakEnglish == true);
-                            break;
-                        case VideoLanguageKinds.Other:
-                            base.AddCriteria(x => x.SpeakOther == true);
-                            break;
-                    }
-                });
-            }
-
-            //翻訳の有無設定
-            if (isTranslation != null)
-            {
-                base.AddCriteria(x => x.IsTranslation == isTranslation);
-            }
-
-            //翻訳言語の設定
-            if (translationLangs != null)
-            {
-                translationLangs.ForEach(x =>
-                {
-                    switch (x)
-                    {
-                        case VideoLanguageKinds.JP:
-                            base.AddCriteria(x => x.TranslationJP == true);
-                            break;
-                        case VideoLanguageKinds.English:
-                            base.AddCriteria(x => x.TranslationEnglish == true);
-                            break;
-                        case VideoLanguageKinds.Other:
-                            base.AddCriteria(x => x.TranslationOther == true);
-                            break;
-                    }
-                });
-            }
-
-            //並び替えの設定
-            if (isDesc)
-                ApplyOrderByDesc(sortExpression);
-            else
-                ApplyOrderBy(sortExpression);
         }
 
         /// <summary>
@@ -121,74 +76,102 @@ namespace ApplicationCore.Specifications
         /// <param name="displayNum"></param>
         /// <param name="text"></param>
         public OutsourceVideoListSpecifications(int page, int displayNum,
-            string text, List<VideoGenreKinds> genres,
-            List<VideoLanguageKinds>? langs, bool? isTranslation,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
+        string text, List<VideoGenreKinds> genres,
+        List<VideoLanguageKinds>? langs, bool? isTranslation,
+        List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
         {
+            ApplyPaging(page, displayNum);
+
             //タイトルのフルテキスト検索条件追加
-            if (string.IsNullOrEmpty(text) == false)
-            {
-                base.AddFullTextCriteria(x => EF.Functions.FreeText(x.VideoTitle, text) || EF.Functions.FreeText(x.Description, text) || EF.Functions.FreeText(x.TagsData, text));
-            }
+            settingFullText(text);
+
+            //言語の設定
+            settingLangs(langs);
+
+            //翻訳の有無設定
+            settingIsTranslation(isTranslation);
+
+            //翻訳言語の設定
+            settingTransrationLangs(translationLangs);
+
+            //並び替えの設定
+            settingOrder(isDesc, sortExpression);
 
             //ジャンルの設定 
             if (genres != null && genres.Count > 0)
             {
                 base.AddCriteria(x => genres.Contains(x.Genre));
             }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="genre"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslation"></param>
+        /// <param name="translationLangs"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="isDesc"></param>
+        public OutsourceVideoListSpecifications(string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslation,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : base(null)
+        {
+            //タイトルのフルテキスト検索条件追加
+            settingFullText(text);
 
             //言語の設定
-            if (langs != null)
-            {
-                langs.ForEach(x =>
-                {
-                    switch (x)
-                    {
-                        case VideoLanguageKinds.JP:
-                            base.AddCriteria(x => x.SpeakJP == true);
-                            break;
-                        case VideoLanguageKinds.English:
-
-                            base.AddCriteria(x => x.SpeakEnglish == true);
-                            break;
-                        case VideoLanguageKinds.Other:
-                            base.AddCriteria(x => x.SpeakOther == true);
-                            break;
-                    }
-                });
-            }
+            settingLangs(langs);
 
             //翻訳の有無設定
-            if (isTranslation != null)
-            {
-                base.AddCriteria(x => x.IsTranslation == isTranslation);
-            }
+            settingIsTranslation(isTranslation);
 
             //翻訳言語の設定
-            if (translationLangs != null)
-            {
-                translationLangs.ForEach(x =>
-                {
-                    switch (x)
-                    {
-                        case VideoLanguageKinds.JP:
-                            base.AddCriteria(x => x.TranslationJP == true);
-                            break;
-                        case VideoLanguageKinds.English:
-                            base.AddCriteria(x => x.TranslationEnglish == true);
-                            break;
-                        case VideoLanguageKinds.Other:
-                            base.AddCriteria(x => x.TranslationOther == true);
-                            break;
-                    }
-                });
-            }
+            settingTransrationLangs(translationLangs);
 
             //並び替えの設定
-            if (isDesc)
-                ApplyOrderByDesc(sortExpression);
-            else
-                ApplyOrderBy(sortExpression);
+            settingOrder(isDesc, sortExpression);
+
+            //ジャンルの設定
+            if (genre != null)
+            {
+                base.AddCriteria(x => x.Genre == genre);
+            }
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="genres"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslation"></param>
+        /// <param name="translationLangs"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="isDesc"></param>
+        public OutsourceVideoListSpecifications(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslation,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc): base (null)
+        {
+            //タイトルのフルテキスト検索条件追加
+            settingFullText(text);
+
+            //言語の設定
+            settingLangs(langs);
+
+            //翻訳の有無設定
+            settingIsTranslation(isTranslation);
+
+            //翻訳言語の設定
+            settingTransrationLangs(translationLangs);
+
+            //並び替えの設定
+            settingOrder(isDesc, sortExpression);
+
+            //ジャンルの設定 
+            if (genres != null && genres.Count > 0)
+            {
+                base.AddCriteria(x => genres.Contains(x.Genre));
+            }
         }
 
 
@@ -262,6 +245,96 @@ namespace ApplicationCore.Specifications
                 skip = (page - 1) * displayNum;
 
             return skip;
+        }
+
+        /// <summary>
+        /// フルテキスト検索の設定
+        /// </summary>
+        /// <param name="text"></param>
+        private void settingFullText(string text)
+        {
+            if (string.IsNullOrEmpty(text) == false)
+            {
+                base.AddFullTextCriteria(x => EF.Functions.FreeText(x.VideoTitle, text) || EF.Functions.FreeText(x.Description, text) || EF.Functions.FreeText(x.TagsData, text));
+            }
+        }
+
+        /// <summary>
+        /// 言語の設定
+        /// </summary>
+        /// <param name="langs"></param>
+        private void settingLangs(List<VideoLanguageKinds> langs)
+        {
+            if (langs != null)
+            {
+                langs.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            base.AddCriteria(x => x.SpeakJP == true);
+                            break;
+                        case VideoLanguageKinds.English:
+
+                            base.AddCriteria(x => x.SpeakEnglish == true);
+                            break;
+                        case VideoLanguageKinds.Other:
+                            base.AddCriteria(x => x.SpeakOther == true);
+                            break;
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// 翻訳の有無設定
+        /// </summary>
+        /// <param name="isTranslation"></param>
+        private void settingIsTranslation(bool? isTranslation)
+        {
+            if (isTranslation != null)
+            {
+                base.AddCriteria(x => x.IsTranslation == isTranslation);
+            }
+        }
+
+        /// <summary>
+        /// 翻訳言語の設定
+        /// </summary>
+        /// <param name="translationLangs"></param>
+        private void settingTransrationLangs(List<VideoLanguageKinds>? translationLangs)
+        {
+            if (translationLangs != null)
+            {
+                translationLangs.ForEach(x =>
+                {
+                    switch (x)
+                    {
+                        case VideoLanguageKinds.JP:
+                            base.AddCriteria(x => x.TranslationJP == true);
+                            break;
+                        case VideoLanguageKinds.English:
+                            base.AddCriteria(x => x.TranslationEnglish == true);
+                            break;
+                        case VideoLanguageKinds.Other:
+                            base.AddCriteria(x => x.TranslationOther == true);
+                            break;
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// 並び替え設定
+        /// </summary>
+        /// <param name="isDesc"></param>
+        /// <param name="sortExpression"></param>
+        private void settingOrder(bool isDesc, Expression<Func<OutsourceVideo, object>> sortExpression)
+        {
+            if (isDesc)
+                ApplyOrderByDesc(sortExpression);
+            else
+                ApplyOrderBy(sortExpression);
         }
     }
 }

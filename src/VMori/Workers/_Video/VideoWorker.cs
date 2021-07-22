@@ -52,20 +52,22 @@ namespace VMori.Workers._Video
         {
             var result = await _outsourceVideoService.GetList(req.Page, req.DisplayNum);
 
-            if (result == null)
+            if (result.Items == null)
             {
                 return new VideoSummaryInfoRes()
                 {
-                    Items = new List<VideoSummaryItem>()
+                    Items = new List<VideoSummaryItem>(),
+                    TotalCount = 0
                 };
             }
 
             return new VideoSummaryInfoRes()
             {
-                Items = result.ConvertAll(x =>
+                Items = result.Items.ConvertAll(x =>
                 {
                     return new VideoSummaryItem(x);
-                })
+                }),
+                TotalCount = result.TotalCount
             };
         }
 
@@ -76,9 +78,12 @@ namespace VMori.Workers._Video
         /// <returns></returns>
         public async Task<VideoSummaryInfoRes> GetList(SearchCriteriaVideoReq req)
         {
-            var result = await GetVideoSummaryServiceRes(req);
+            var serviceReq = CreateSearchCriteriaVideoServiceReq(req);
 
-            return CreateVideoSummayIngoRes(result);
+
+            var res = await _outsourceVideoService.GetList(serviceReq);
+
+            return CreateVideoSummayIngoRes(res);
         }
 
         /// <summary>
@@ -94,18 +99,18 @@ namespace VMori.Workers._Video
             List<OutsourceVideoSummaryServiceRes> allVideos = null;
             if (genres.Contains(VideoGenreKinds.All))
             {
-                allVideos = await this._outsourceVideoService.GetList(serviceSearchReq);
+                allVideos = (await this._outsourceVideoService.GetList(serviceSearchReq)).Items;
                 genres.Remove(VideoGenreKinds.All);
             }
 
 
-            var resDic = await this._outsourceVideoService.GetListByGenres(serviceSearchReq, genres);
+            var res = await this._outsourceVideoService.GetListByGenres(serviceSearchReq, genres);
 
             var result = new VideoSummaryInfoByGenreRes();
             result.Items = new List<VideoSummaryByGenreRes>();
             genres.ForEach(x =>
             {
-                var targetItems = resDic[x];
+                var targetItems = res.Items[x];
                 var genreItems = targetItems.ConvertAll(x => new VideoSummaryItem(x));
                 result.Items.Add(new VideoSummaryByGenreRes()
                 {
@@ -128,7 +133,6 @@ namespace VMori.Workers._Video
 
             //動画数が多い順に並び替え
             result.Items.Sort((a, b) => b.Items.Count - a.Items.Count);
-
 
             return result;
         }
@@ -164,18 +168,6 @@ namespace VMori.Workers._Video
             return serviceReq;
         }
 
-        /// <summary>
-        /// 動画情報取得
-        /// </summary>
-        /// <param name="req"></param>
-        /// <returns></returns>
-        private async Task<List<OutsourceVideoSummaryServiceRes>> GetVideoSummaryServiceRes(SearchCriteriaVideoReq req)
-        {
-
-            var serviceReq = CreateSearchCriteriaVideoServiceReq(req);
-
-            return await _outsourceVideoService.GetList(serviceReq);
-        }
 
         /// <summary>
         /// チャンネルに紐づく動画のリストを取得
@@ -275,22 +267,24 @@ namespace VMori.Workers._Video
         /// </summary>
         /// <param name="resVideoList"></param>
         /// <returns></returns>
-        private VideoSummaryInfoRes CreateVideoSummayIngoRes(List<OutsourceVideoSummaryServiceRes> resVideoList)
+        private VideoSummaryInfoRes CreateVideoSummayIngoRes(OutsourceVideoGetListRes res)
         {
-            if (resVideoList == null)
+            if (res.Items == null)
             {
                 return new VideoSummaryInfoRes()
                 {
-                    Items = new List<VideoSummaryItem>()
+                    Items = new List<VideoSummaryItem>(),
+                    TotalCount = 1,
                 };
             }
 
             return new VideoSummaryInfoRes()
             {
-                Items = resVideoList.ConvertAll(x =>
+                Items = res.Items.ConvertAll(x =>
                 {
                     return new VideoSummaryItem(x);
-                })
+                }),
+                TotalCount = res.TotalCount
             };
         }
     }

@@ -21,7 +21,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="page"></param>
         /// <param name="displayNum"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideoSummaryServiceRes>> GetList(int page, int displayNum);
+        Task<OutsourceVideoGetListRes> GetList(int page, int displayNum);
 
         /// <summary>
         /// 動画情報をリストで取得
@@ -30,7 +30,15 @@ namespace ApplicationCore.Interfaces
         /// <param name="displayNum"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideoSummaryServiceRes>> GetList(SearchCriteriaVideoServiceReq req);
+        Task<OutsourceVideoGetListRes> GetList(SearchCriteriaVideoServiceReq req);
+
+        /// <summary>
+        /// 各ジャンルごとの動画情報取得
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="genres"></param>
+        /// <returns></returns>
+        Task<OutsourceGetListByGenresRes> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres);
 
         /// <summary>
         /// 動画情報を取得
@@ -47,14 +55,6 @@ namespace ApplicationCore.Interfaces
         /// <param name="take"></param>
         /// <returns></returns>
         Task<List<OutsourceVideoSummaryServiceRes>> GetListByChannelId(string channelId, int page, int take);
-
-        /// <summary>
-        /// 各ジャンルごとの動画情報取得
-        /// </summary>
-        /// <param name="req"></param>
-        /// <param name="genres"></param>
-        /// <returns></returns>
-        Task<Dictionary<VideoGenreKinds, List<OutsourceVideoSummaryServiceRes>>> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres);
 
         /// <summary>
         /// チャンネル情報の取得

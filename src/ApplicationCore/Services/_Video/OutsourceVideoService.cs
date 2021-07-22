@@ -102,7 +102,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideoSummaryServiceRes>> GetList(int page, int displayNum)
+        public async Task<OutsourceVideoGetListRes> GetList(int page, int displayNum)
         {
             try
             {
@@ -117,7 +117,11 @@ namespace ApplicationCore.Services
                 if (result == null)
                     return null;
 
-                return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+                return new OutsourceVideoGetListRes()
+                {
+                    Items = result.ConvertAll(x => CreateOutsourceVideoServiceRes(x)),
+                    TotalCount = await _videoDataService.GetCount()
+                };
             }
             catch (Exception e)
             {
@@ -130,7 +134,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideoSummaryServiceRes>> GetList(SearchCriteriaVideoServiceReq req)
+        public async Task<OutsourceVideoGetListRes> GetList(SearchCriteriaVideoServiceReq req)
         {
             if (req.Page <= 0 || req.DisplayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
@@ -146,7 +150,11 @@ namespace ApplicationCore.Services
             //更新するべき動画があれば更新する
             var checkTask = CeckAndUpdateVideoList(result);
 
-            return result.ConvertAll(x => CreateOutsourceVideoServiceRes(x));
+            return new OutsourceVideoGetListRes()
+            {
+                Items = result.ConvertAll(x => CreateOutsourceVideoServiceRes(x)),
+                TotalCount = await _videoDataService.GetCount(req.Text, req.Genre, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc, req.Start, req.End, req.IsPublish)
+            };
         }
 
         /// <summary>
@@ -168,6 +176,8 @@ namespace ApplicationCore.Services
                     return x => x.LikeCount;
                 case SortKinds.VMoriViewCount:
                     return x => x.VMoriViewCount;
+                case SortKinds.PublishDateTime:
+                    return x => x.PublishDateTime;
                 default:
                     throw new ArgumentException("不明なSortKindsです:" + kinds);
             }
@@ -179,7 +189,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public async Task<Dictionary<VideoGenreKinds, List<OutsourceVideoSummaryServiceRes>>> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres)
+        public async Task<OutsourceGetListByGenresRes> GetListByGenres(SearchCriteriaVideoServiceReq req, List<VideoGenreKinds> genres)
         {
             if (req.Page <= 0 || req.DisplayNum <= 0)
                 throw new ArgumentException("pageと表示数を0以下にすることはできません");
@@ -204,7 +214,13 @@ namespace ApplicationCore.Services
                 dic[x.Genre].Add(CreateOutsourceVideoServiceRes(x));
             });
 
-            return dic;
+            //動画の総レコード数を取得
+            var total = await _videoDataService.GetCount(req.Text, VideoGenreKinds.All, req.Detail.Langs, req.Detail.IsTranslation, req.Detail.TransrationLangs, sortFunc, req.IsDesc, req.Start, req.End, req.IsPublish);
+
+            return new OutsourceGetListByGenresRes()
+            {
+                Items = dic
+            };
 
         }
 
@@ -736,6 +752,10 @@ namespace ApplicationCore.Services
             /// VMori再生回数
             /// </summary>
             VMoriViewCount = 40,
+            /// <summary>
+            /// Youtube登録日時
+            /// </summary>
+            PublishDateTime = 50,
         }
 
     }

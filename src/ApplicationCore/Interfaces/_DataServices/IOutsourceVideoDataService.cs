@@ -97,5 +97,46 @@ namespace ApplicationCore.Interfaces
         /// <param name="videoId"></param>
         /// <returns></returns>
         Task<bool> CountUpViewCount(string videoId);
+
+        /// <summary>
+        /// レコード数をカウント
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCount();
+        /// <summary>
+        /// レコード数をカウント
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="genre"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="isDesc"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="isPublishdate"></param>
+        /// <returns></returns>
+        Task<int> GetCount(string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+
+        /// <summary>
+        /// レコード数をカウント ※複数ジャンル
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="genres"></param>
+        /// <param name="langs"></param>
+        /// <param name="isTranslatioon"></param>
+        /// <param name="translationLangs"></param>
+        /// <param name="sortExpression"></param>
+        /// <param name="isDesc"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="isPublishdate"></param>
+        /// <returns></returns>
+        Task<int> GetCount(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+
+
     }
 }

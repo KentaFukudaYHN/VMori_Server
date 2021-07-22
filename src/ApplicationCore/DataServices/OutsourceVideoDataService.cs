@@ -151,6 +151,62 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// レコード数をカウント
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetCount()
+        {
+            return await _repository.CountAsync();
+        }
+        /// <summary>
+        /// レコード数をカウント
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetCount(string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+        {
+            var spec = new OutsourceVideoListSpecifications(text, genre, langs, isTranslatioon, translationLangs, sortExpression, isDesc);
+
+            if (start != null && end != null)
+            {
+                if (isPublishdate != null && isPublishdate.Value)
+                {
+                    spec.AddCriteriaByPublishDateTime(start.Value, end.Value);
+                }
+                else
+                {
+                    spec.AddCriteriaByRegistDateTime(start.Value, end.Value);
+                }
+            }
+
+            return await _repository.CountAsync(spec);
+        }
+
+        /// <summary>
+        /// レコード数をカウント ※複数ジャンル
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetCount(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+        {
+            var spec = new OutsourceVideoListSpecifications(text, genres, langs, isTranslatioon, translationLangs, sortExpression, isDesc);
+
+            if (start != null && end != null)
+            {
+                if (isPublishdate != null && isPublishdate.Value)
+                {
+                    spec.AddCriteriaByPublishDateTime(start.Value, end.Value);
+                }
+                else
+                {
+                    spec.AddCriteriaByRegistDateTime(start.Value, end.Value);
+                }
+            }
+            
+            return await _repository.CountAsync(spec);
+        }
+
+        /// <summary>
         /// チャンネルIDで動画を取得
         /// </summary>
         /// <param name="channelId"></param>
