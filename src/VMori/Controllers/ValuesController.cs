@@ -19,7 +19,7 @@ namespace VMori.Controllers
 
         public async Task<string> Get([FromQuery]List<string> test)
         {
-            return "Hello World 1";
+            return "Hello World 12";
         }
     }
 }

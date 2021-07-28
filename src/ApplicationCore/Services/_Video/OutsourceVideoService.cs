@@ -158,7 +158,7 @@ namespace ApplicationCore.Services
         }
 
         /// <summary>
-        /// 
+        /// 並び替えの関数を取得
         /// </summary>
         /// <param name="kinds"></param>
         /// <returns></returns>

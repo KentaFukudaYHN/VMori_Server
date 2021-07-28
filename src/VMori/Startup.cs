@@ -1,7 +1,10 @@
 using ApplicationCore.Config;
 using ApplicationCore.DataServices;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Interfaces._DataServices;
+using ApplicationCore.Interfaces._Services.Channel;
 using ApplicationCore.Services;
+using ApplicationCore.Services.Channel;
 using ApplicationCore.Utility;
 using Infrastructure.Data;
 using Infrastructure.Mail;
@@ -16,8 +19,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using VMori.Interfaces;
+using VMori.Interfaces.Channel;
 using VMori.Workers;
 using VMori.Workers._Video;
+using VMori.Workers.Channel;
 
 namespace Api
 {
@@ -66,7 +71,8 @@ namespace Api
             services.Configure<CookiePolicyOptions>(o =>
             {
                 o.Secure = CookieSecurePolicy.Always;   //クッキーはHTTPSでのみ送信
-                o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない
+                o.HttpOnly = HttpOnlyPolicy.Always;     //クライアント側のスクリプトからCookieは触れない,
+                o.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services
@@ -138,6 +144,7 @@ namespace Api
             services.AddScoped(typeof(IChannelTransitionDataService), typeof(ChannelTransitionDataService));
             services.AddScoped(typeof(IVideoCommentDataService), typeof(VideoCommentDataService));
             services.AddScoped(typeof(IVideoHistoryDataService), typeof(VideoHistoryDataService));
+            services.AddScoped(typeof(IChannelDataService), typeof(ChannelDataService));
 
             //DIコンテナにServiceの登録
             services.AddScoped(typeof(IAuthService), typeof(AuthService));
@@ -148,12 +155,14 @@ namespace Api
             services.AddScoped(typeof(IYoutubeService), typeof(YoutubeService));
             services.AddScoped(typeof(INikoNikoService), typeof(NikoNikoService));
             services.AddScoped(typeof(IVideoCommentService), typeof(VideoCommentService));
+            services.AddScoped(typeof(IChannelService), typeof(ChannelService));
 
             //DIコンテナにWorkerの登録
             services.AddScoped(typeof(IAuthWorker), typeof(AuthWorker));
             services.AddScoped(typeof(IAccountWorker), typeof(AccountWorker));
             services.AddScoped(typeof(IUploadVideoWorker), typeof(UploadVideoWorker));
             services.AddScoped(typeof(IVideoWorker), typeof(VideoWorker));
+            services.AddScoped(typeof(IChannelWorker), typeof(ChannelWorker));
 
             //DIコンテナにConfigの設定
             services.Configure<MailConfig>(this.Configration.GetSection("Mail"));

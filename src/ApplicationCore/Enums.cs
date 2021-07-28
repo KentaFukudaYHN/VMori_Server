@@ -142,5 +142,24 @@ namespace ApplicationCore.Enum
         //その他
         Other = 999,
     }
+
+    /// <summary>
+    /// チャンネル情報取得並び替え種類
+    /// </summary>
+    public enum ChannelSortKins
+    {
+        /// <summary>
+        /// チャンネル情報取得日時
+        /// </summary>
+        GetRegistDateTime = 0,
+        /// <summary>
+        /// チャンネル登録者数
+        /// </summary>
+        SubscriverCount = 10,
+        /// <summary>
+        /// チャンネルの再生回数
+        /// </summary>
+        ViewCount = 20,
+    }
 }
 
