@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IOutsourceVideoService
+    public interface IVideoService
     {
         /// <summary>
         /// 動画情報を取得

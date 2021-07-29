@@ -10,8 +10,8 @@ namespace VMori.Controllers
     public class ValuesController : Controller
     {
         private readonly IMailService _mailService;
-        private readonly IOutsourceVideoService _OutsourceVideoService;
-        public ValuesController(IMailService mailService, IOutsourceVideoService OutsourceVideoService)
+        private readonly IVideoService _OutsourceVideoService;
+        public ValuesController(IMailService mailService, IVideoService OutsourceVideoService)
         {
             _mailService = mailService;
             _OutsourceVideoService = OutsourceVideoService;

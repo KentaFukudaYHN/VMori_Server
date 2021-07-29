@@ -5,7 +5,7 @@ namespace ApplicationCore.Specifications
     /// <summary>
     /// 動画情報検索条件
     /// </summary>
-    public class OutsourceVideoSpecifications : BaseSpecification<OutsourceVideo>
+    public class OutsourceVideoSpecifications : BaseSpecification<Video>
     {
         /// <summary>
         /// コンストラクタ

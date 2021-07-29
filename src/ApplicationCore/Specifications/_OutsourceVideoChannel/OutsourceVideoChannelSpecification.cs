@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
     /// <summary>
     /// チャンネル情報検索条件
     /// </summary>
-    public class OutsourceVideoChannelSpecification: BaseSpecification<OutsourceVideoChannel>
+    public class OutsourceVideoChannelSpecification: BaseSpecification<Entities.Channel>
     {
         /// <summary>
         /// コンストラクタ

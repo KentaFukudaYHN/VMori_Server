@@ -10,13 +10,13 @@ namespace VMori.Workers
 {
     public class UploadVideoWorker : IUploadVideoWorker
     {
-        private readonly IOutsourceVideoService _OutsourceVideoService;
+        private readonly IVideoService _OutsourceVideoService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="OutsourceVideoService"></param>
-        public UploadVideoWorker(IOutsourceVideoService OutsourceVideoService)
+        public UploadVideoWorker(IVideoService OutsourceVideoService)
         {
             _OutsourceVideoService = OutsourceVideoService;
         }

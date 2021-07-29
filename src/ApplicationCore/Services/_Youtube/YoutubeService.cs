@@ -134,7 +134,7 @@ namespace ApplicationCore.Services
         /// チャンネル情報を取得
         /// </summary>
         /// <returns></returns>
-        public async Task<OutsourceVideoChannel> GetChannel(string channelId)
+        public async Task<Entities.Channel> GetChannel(string channelId)
         {
             var youtubeService = this.CreateYoutubeSearvice();
 
@@ -159,7 +159,7 @@ namespace ApplicationCore.Services
                 thmbnailUrl = channnel.Snippet.Thumbnails.High.Url;
             }
 
-            return new OutsourceVideoChannel()
+            return new Entities.Channel()
             {
                 ID = channnel.Id,
                 Title = channnel.Snippet.Title,

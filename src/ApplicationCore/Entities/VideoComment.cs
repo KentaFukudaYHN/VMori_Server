@@ -31,6 +31,6 @@ namespace ApplicationCore.Entities
         /// <summary>
         /// リレーションされれるEntity
         /// </summary>
-        public OutsourceVideo Video { get; set; }
+        public Video Video { get; set; }
     }
 }

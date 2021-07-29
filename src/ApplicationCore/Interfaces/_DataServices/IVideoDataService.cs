@@ -10,7 +10,7 @@ namespace ApplicationCore.Interfaces
     /// <summary>
     /// Outsource動画Dataservice
     /// </summary>
-    public interface IOutsourceVideoDataService
+    public interface IVideoDataService
     {
 
         /// <summary>
@@ -19,14 +19,14 @@ namespace ApplicationCore.Interfaces
         /// <param name="videoId"></param>
         /// <param name="includeStastics"></param>
         /// <returns></returns>
-        Task<OutsourceVideo> Get(string videoId, bool includeStastics);
+        Task<Video> Get(string videoId, bool includeStastics);
         /// <summary>
         /// 動画情報を取得
         /// </summary>
         /// <param name="page"></param>
         /// <param name="displayNum"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideo>> GetList(int page, int displayNum);
+        Task<List<Video>> GetList(int page, int displayNum);
 
         /// <summary>
         /// 動画情報を取得
@@ -39,9 +39,9 @@ namespace ApplicationCore.Interfaces
         /// <param name="isTranslatioon"></param>
         /// <param name="translationLangs"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+        Task<List<Video>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
         /// <summary>
         /// 複数ジャンル
@@ -56,9 +56,9 @@ namespace ApplicationCore.Interfaces
         /// <param name="sortExpression"></param>
         /// <param name="isDesc"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+        Task<List<Video>> GetList(int page, int displayNum,
             string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
         /// <summary>
         /// チャンネルIDで動画のリスト取得
@@ -67,7 +67,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="page"></param>
         /// <param name="take"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideo>> GetListByChannelId(string channelId, int page, int take);
+        Task<List<Video>> GetListByChannelId(string channelId, int page, int take);
 
         /// <summary>
         /// 動画情報を登録
@@ -75,21 +75,21 @@ namespace ApplicationCore.Interfaces
         /// <param name="video"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public Task<bool> Regist(OutsourceVideo video, IDbContext db);
+        public Task<bool> Regist(Video video, IDbContext db);
 
         /// <summary>
         /// 動画IDで検索
         /// </summary>
         /// <param name="videoId"></param>
         /// <returns></returns>
-        Task<OutsourceVideo> GetByVideoID(string videoId);
+        Task<Video> GetByVideoID(string videoId);
 
         /// <summary>
         /// 更新
         /// </summary>
         /// <param name="videos"></param>
         /// <returns></returns>
-        Task<bool> UpdateList(List<OutsourceVideo> videos);
+        Task<bool> UpdateList(List<Video> videos);
 
         /// <summary>
         /// 再生回数のカウントアップ
@@ -118,7 +118,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="isPublishdate"></param>
         /// <returns></returns>
         Task<int> GetCount(string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
         /// <summary>
         /// レコード数をカウント ※複数ジャンル
@@ -135,7 +135,7 @@ namespace ApplicationCore.Interfaces
         /// <param name="isPublishdate"></param>
         /// <returns></returns>
         Task<int> GetCount(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
 
     }

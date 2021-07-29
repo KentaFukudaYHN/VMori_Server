@@ -138,7 +138,7 @@ namespace Api
             services.AddScoped(typeof(IAccountDataService), typeof(AccountDataService));
             services.AddScoped(typeof(IAppReqMailDataService), typeof(AppReqMailDataService));
             services.AddScoped(typeof(IChangeReqPasswordDataService), typeof(ChangeReqPasswordDataService));
-            services.AddScoped(typeof(IOutsourceVideoDataService), typeof(OutsourceVideoDataService));
+            services.AddScoped(typeof(IVideoDataService), typeof(VideoDataService));
             services.AddScoped(typeof(IUpReqOutsourceVideoDataService), typeof(UpReqOutsourceVideoDataService));
             services.AddScoped(typeof(IOutsouceVideoChannelDataService), typeof(OutsourceVideoChannelDataService));
             services.AddScoped(typeof(IChannelTransitionDataService), typeof(ChannelTransitionDataService));
@@ -151,7 +151,7 @@ namespace Api
             services.AddScoped(typeof(IHashService), typeof(HashService));
             services.AddScoped(typeof(IAccountService), typeof(AccountService));
             services.AddScoped(typeof(IMailService), typeof(SendGridService));
-            services.AddScoped(typeof(IOutsourceVideoService), typeof(OutsourceVideoService));
+            services.AddScoped(typeof(IVideoService), typeof(VideoService));
             services.AddScoped(typeof(IYoutubeService), typeof(YoutubeService));
             services.AddScoped(typeof(INikoNikoService), typeof(NikoNikoService));
             services.AddScoped(typeof(IVideoCommentService), typeof(VideoCommentService));

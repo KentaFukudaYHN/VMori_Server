@@ -161,5 +161,28 @@ namespace ApplicationCore.Enum
         /// </summary>
         ViewCount = 20,
     }
+
+    /// <summary>
+    /// 期間の種類
+    /// </summary>
+    public enum PeriodKinds
+    {
+        /// <summary>
+        /// 今日
+        /// </summary>
+        ToDay = 10,
+        /// <summary>
+        /// 今週
+        /// </summary>
+        Week = 20,
+        /// <summary>
+        /// 今月
+        /// </summary>
+        Month = 30,
+        /// <summary>
+        /// 全て
+        /// </summary>
+        All = 1000
+    }
 }
 

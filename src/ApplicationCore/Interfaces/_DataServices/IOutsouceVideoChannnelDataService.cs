@@ -13,14 +13,14 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        Task<OutsourceVideoChannel> Get(string channelId);
+        Task<Channel> Get(string channelId);
 
         /// <summary>
         /// チャンネルIDで取得
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        Task<OutsourceVideoChannel> GetByChannelId(string channelId);
+        Task<Channel> GetByChannelId(string channelId);
 
         /// <summary>
         /// 登録
@@ -28,6 +28,6 @@ namespace ApplicationCore.Interfaces
         /// <param name="entity"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        Task<bool> Regist(OutsourceVideoChannel entity, IDbContext db);
+        Task<bool> Regist(Channel entity, IDbContext db);
     }
 }

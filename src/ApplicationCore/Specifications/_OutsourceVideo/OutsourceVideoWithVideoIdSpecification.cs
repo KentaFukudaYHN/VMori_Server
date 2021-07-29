@@ -5,7 +5,7 @@ namespace ApplicationCore.Specifications
     /// <summary>
     /// VideoIDでOutsource動画検索
     /// </summary>
-    public class OutsourceVideoWithVideoIdSpecification : BaseSpecification<OutsourceVideo>
+    public class OutsourceVideoWithVideoIdSpecification : BaseSpecification<Video>
     {
         /// <summary>
         /// VideoIDで検索

@@ -18,7 +18,7 @@ namespace ApplicationCore.Interfaces._DataServices
         /// <param name="page"></param>
         /// <param name="displayNum"></param>
         /// <returns></returns>
-        Task<List<OutsourceVideoChannel>> GetList(int page, int displayNum, Expression<Func<OutsourceVideoChannel, object>> sortFunc, bool isDesc);
+        Task<List<Channel>> GetList(int page, int displayNum, Expression<Func<Channel, object>> sortFunc, bool isDesc);
 
         /// <summary>
         /// 総レコード数取得

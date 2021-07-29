@@ -6,7 +6,7 @@ namespace ApplicationCore.Entities
     /// <summary>
     /// 外部動画のチャンネル情報v
     /// </summary>
-    public class OutsourceVideoChannel : BaseEntity
+    public class Channel : BaseEntity
     {
         /// <summary>
         /// チェンネルタイトル

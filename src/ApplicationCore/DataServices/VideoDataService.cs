@@ -14,15 +14,15 @@ namespace ApplicationCore.DataServices
     /// <summary>
     /// Outsource動画DataService
     /// </summary>
-    public class OutsourceVideoDataService : IOutsourceVideoDataService
+    public class VideoDataService : IVideoDataService
     {
-        private readonly IAsyncRepository<OutsourceVideo> _repository;
+        private readonly IAsyncRepository<Video> _repository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="repository"></param>
-        public OutsourceVideoDataService(IAsyncRepository<OutsourceVideo> repository)
+        public VideoDataService(IAsyncRepository<Video> repository)
         {
             _repository = repository;
         }
@@ -33,7 +33,7 @@ namespace ApplicationCore.DataServices
         /// <param name="videoId"></param>
         /// <param name="includeStastics"></param>
         /// <returns></returns>
-        public async Task<OutsourceVideo> Get(string videoId, bool includeStastics)
+        public async Task<Video> Get(string videoId, bool includeStastics)
         {
             if (string.IsNullOrEmpty(videoId))
                 throw new ArgumentException("videoIdが空になっています");
@@ -47,7 +47,7 @@ namespace ApplicationCore.DataServices
         /// <param name="page"></param>
         /// <param name="displayNum"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum)
+        public async Task<List<Video>> GetList(int page, int displayNum)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
@@ -73,9 +73,9 @@ namespace ApplicationCore.DataServices
         /// <param name="isTranslatioon"></param>
         /// <param name="translationLangs"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+        public async Task<List<Video>> GetList(int page, int displayNum,
             string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
@@ -117,9 +117,9 @@ namespace ApplicationCore.DataServices
         /// <param name="isTranslatioon"></param>
         /// <param name="translationLangs"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideo>> GetList(int page, int displayNum,
+        public async Task<List<Video>> GetList(int page, int displayNum,
             string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             if (page == 0 || displayNum == 0)
                 throw new ArgumentException("pageとdisplayNumは0で指定できません");
@@ -163,7 +163,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <returns></returns>
         public async Task<int> GetCount(string text, VideoGenreKinds? genre, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             var spec = new OutsourceVideoListSpecifications(text, genre, langs, isTranslatioon, translationLangs, sortExpression, isDesc);
 
@@ -187,7 +187,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <returns></returns>
         public async Task<int> GetCount(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate)
         {
             var spec = new OutsourceVideoListSpecifications(text, genres, langs, isTranslatioon, translationLangs, sortExpression, isDesc);
 
@@ -211,7 +211,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideo>> GetListByChannelId(string channelId, int page, int take)
+        public async Task<List<Video>> GetListByChannelId(string channelId, int page, int take)
         {
             if (string.IsNullOrEmpty(channelId))
                 throw new ArgumentException("channelIDが空です");
@@ -238,7 +238,7 @@ namespace ApplicationCore.DataServices
         /// <param name="orderBy"></param>
         /// <param name="isDesc"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideo>> GetListOrderBy(int page, int take, Expression<Func<OutsourceVideo, object>> orderBy, bool isDesc)
+        public async Task<List<Video>> GetListOrderBy(int page, int take, Expression<Func<Video, object>> orderBy, bool isDesc)
         {
             if (page == 0 || take == 0 || orderBy == null)
                 throw new ArgumentException("パラメーターが不正です");
@@ -263,7 +263,7 @@ namespace ApplicationCore.DataServices
         /// <param name="video"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(OutsourceVideo video, IDbContext db)
+        public async Task<bool> Regist(Video video, IDbContext db)
         {
             if (string.IsNullOrEmpty(video.ID))
                 throw new ArgumentException("IDが設定されていません");
@@ -278,7 +278,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="videos"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateList(List<OutsourceVideo> videos)
+        public async Task<bool> UpdateList(List<Video> videos)
         {
             if (videos == null)
                 throw new ArgumentException("パラメーターが不正です");
@@ -316,7 +316,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="videoId"></param>
         /// <returns></returns>
-        public async Task<OutsourceVideo> GetByVideoID( string videoId)
+        public async Task<Video> GetByVideoID( string videoId)
         {
             if (string.IsNullOrEmpty(videoId))
                 throw new ArgumentException("IDが設定されていません");

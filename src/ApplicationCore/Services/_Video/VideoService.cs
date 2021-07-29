@@ -15,9 +15,9 @@ namespace ApplicationCore.Services
     /// <summary>
     /// ユーチューブサービス
     /// </summary>
-    public class OutsourceVideoService : IOutsourceVideoService
+    public class VideoService : IVideoService
     {
-        private readonly IOutsourceVideoDataService _videoDataService;
+        private readonly IVideoDataService _videoDataService;
         private readonly IUpReqOutsourceVideoDataService _upReqOutsourceVieoDataService;
         private readonly IYoutubeService _youtubeService;
         private readonly IOutsouceVideoChannelDataService _channelDataService;
@@ -30,7 +30,7 @@ namespace ApplicationCore.Services
         /// コンストラクタ
         /// </summary>
         /// <param name="OutsourceConfig"></param>
-        public OutsourceVideoService(IOutsourceVideoDataService videoDataService,
+        public VideoService(IVideoDataService videoDataService,
             IUpReqOutsourceVideoDataService upReqDataService, IYoutubeService youtubeService, IOutsouceVideoChannelDataService channelDataService,  
             IChannelTransitionDataService channelTransitionDataService, IDbContext db, IServiceScopeFactory serviceScopeFactory, IVideoHistoryDataService videoHistoryDataService)
         {
@@ -162,7 +162,7 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="kinds"></param>
         /// <returns></returns>
-        private Expression<Func<OutsourceVideo, object>> GetSortFunc(SortKinds kinds)
+        private Expression<Func<Video, object>> GetSortFunc(SortKinds kinds)
         {
             switch (kinds)
             {
@@ -229,10 +229,10 @@ namespace ApplicationCore.Services
         /// </summary>
         /// <param name="videos"></param>
         /// <returns></returns>
-        private async Task CeckAndUpdateVideoList(List<OutsourceVideo> videos)
+        private async Task CeckAndUpdateVideoList(List<Video> videos)
         {
             //更新の必要の有無をチェック
-            bool CheckUpdate(OutsourceVideo v, DateTime now)
+            bool CheckUpdate(Video v, DateTime now)
             {
                 //現在と前回更新日時の日数の差を計算
                 var interval = (now - v.UpdateDateTime).TotalDays;
@@ -307,7 +307,7 @@ namespace ApplicationCore.Services
             var newDatas = await _youtubeService.GetVideos(updateTargetVideoIds);
 
             //更新データの生成
-            var updateDatas = new List<OutsourceVideo>();
+            var updateDatas = new List<Video>();
             newDatas.ForEach(newData =>
             {
                 var target = videos.Find(oldData => newData.VideoId == oldData.VideoId);
@@ -329,7 +329,7 @@ namespace ApplicationCore.Services
             //更新 ※バックグラウンドで実行するとDbContextが閉じて更新できないので新たにサービスを生成する
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var newVideoDataService = scope.ServiceProvider.GetService<IOutsourceVideoDataService>();
+                var newVideoDataService = scope.ServiceProvider.GetService<IVideoDataService>();
                 await newVideoDataService.UpdateList(updateDatas);
             }
         }
@@ -358,7 +358,7 @@ namespace ApplicationCore.Services
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <returns></returns>
-        private OutsourceVideoSummaryServiceRes CreateOutsourceVideoServiceRes(OutsourceVideo entity)
+        private OutsourceVideoSummaryServiceRes CreateOutsourceVideoServiceRes(Video entity)
         {
             return new OutsourceVideoSummaryServiceRes()
             {
@@ -571,7 +571,7 @@ namespace ApplicationCore.Services
                 });
             }
 
-            var video = new OutsourceVideo()
+            var video = new Video()
             {
                 ID = OutsourceVideoId,
                 VideoId = upReqVideo.VideoId,

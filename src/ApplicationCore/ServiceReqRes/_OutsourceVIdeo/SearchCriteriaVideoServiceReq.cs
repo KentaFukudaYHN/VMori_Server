@@ -1,7 +1,7 @@
 ﻿
 using ApplicationCore.Enum;
 using System;
-using static ApplicationCore.Services.OutsourceVideoService;
+using static ApplicationCore.Services.VideoService;
 
 namespace ApplicationCore.ServiceReqRes
 {

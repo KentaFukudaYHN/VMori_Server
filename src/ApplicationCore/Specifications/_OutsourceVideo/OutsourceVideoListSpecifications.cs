@@ -10,7 +10,7 @@ namespace ApplicationCore.Specifications
     /// <summary>
     /// 動画リスト取得条件
     /// </summary>
-    public class OutsourceVideoListSpecifications : BaseSpecification<OutsourceVideo>
+    public class OutsourceVideoListSpecifications : BaseSpecification<Video>
     {
         /// <summary>
         /// コンストラクタ
@@ -43,7 +43,7 @@ namespace ApplicationCore.Specifications
         public OutsourceVideoListSpecifications( int page, int displayNum,
             string text, VideoGenreKinds? genre,
             List<VideoLanguageKinds>? langs, bool? isTranslation,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc) : this(page, displayNum)
         {
             ApplyPaging(page, displayNum);
 
@@ -78,7 +78,7 @@ namespace ApplicationCore.Specifications
         public OutsourceVideoListSpecifications(int page, int displayNum,
         string text, List<VideoGenreKinds> genres,
         List<VideoLanguageKinds>? langs, bool? isTranslation,
-        List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : this(page, displayNum)
+        List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc) : this(page, displayNum)
         {
             ApplyPaging(page, displayNum);
 
@@ -115,7 +115,7 @@ namespace ApplicationCore.Specifications
         /// <param name="sortExpression"></param>
         /// <param name="isDesc"></param>
         public OutsourceVideoListSpecifications(string text, VideoGenreKinds? genre,List<VideoLanguageKinds>? langs, bool? isTranslation,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc) : base(null)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc) : base(null)
         {
             //タイトルのフルテキスト検索条件追加
             settingFullText(text);
@@ -150,7 +150,7 @@ namespace ApplicationCore.Specifications
         /// <param name="sortExpression"></param>
         /// <param name="isDesc"></param>
         public OutsourceVideoListSpecifications(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslation,
-            List<VideoLanguageKinds>? translationLangs, Expression<Func<OutsourceVideo, object>> sortExpression, bool isDesc): base (null)
+            List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc): base (null)
         {
             //タイトルのフルテキスト検索条件追加
             settingFullText(text);
@@ -218,7 +218,7 @@ namespace ApplicationCore.Specifications
         /// <summary>
         /// 降順で並び替え
         /// </summary>
-        public void ApplyOrderByDesc(Expression<Func<OutsourceVideo, object>> expression)
+        public void ApplyOrderByDesc(Expression<Func<Video, object>> expression)
         {
             base.ApplyOrderByDescending(expression);
         }
@@ -227,7 +227,7 @@ namespace ApplicationCore.Specifications
         /// 昇順で並び替え
         /// </summary>
         /// <param name="expression"></param>
-        public new void ApplyOrderBy(Expression<Func<OutsourceVideo, object>> expression)
+        public new void ApplyOrderBy(Expression<Func<Video, object>> expression)
         {
             base.ApplyOrderBy(expression);
         }
@@ -329,7 +329,7 @@ namespace ApplicationCore.Specifications
         /// </summary>
         /// <param name="isDesc"></param>
         /// <param name="sortExpression"></param>
-        private void settingOrder(bool isDesc, Expression<Func<OutsourceVideo, object>> sortExpression)
+        private void settingOrder(bool isDesc, Expression<Func<Video, object>> sortExpression)
         {
             if (isDesc)
                 ApplyOrderByDesc(sortExpression);

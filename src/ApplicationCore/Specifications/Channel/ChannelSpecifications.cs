@@ -7,7 +7,7 @@ namespace ApplicationCore.Specifications.Channel
     /// <summary>
     /// チャンネル情報抽出条件
     /// </summary>
-    public class ChannelSpecifications : BaseSpecification<OutsourceVideoChannel>
+    public class ChannelSpecifications : BaseSpecification<Entities.Channel>
     {
         /// <summary>
         /// コンストラクタ
@@ -31,7 +31,7 @@ namespace ApplicationCore.Specifications.Channel
         /// </summary>
         /// <param name="isDesc"></param>
         /// <param name="func"></param>
-        public void ApplySort(bool isDesc, Expression<Func<OutsourceVideoChannel, object>> func)
+        public void ApplySort(bool isDesc, Expression<Func<Entities.Channel, object>> func)
         {
             if (isDesc)
                 base.ApplyOrderByDescending(func);

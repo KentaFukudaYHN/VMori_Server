@@ -14,13 +14,13 @@ namespace ApplicationCore.DataServices
     /// </summary>
     public class OutsourceVideoChannelDataService : IOutsouceVideoChannelDataService
     {
-        private readonly IAsyncRepository<OutsourceVideoChannel> _reository;
+        private readonly IAsyncRepository<Channel> _reository;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="repository"></param>
-        public OutsourceVideoChannelDataService(IAsyncRepository<OutsourceVideoChannel> repository)
+        public OutsourceVideoChannelDataService(IAsyncRepository<Channel> repository)
         {
             _reository = repository;
         }
@@ -30,7 +30,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public async Task<OutsourceVideoChannel> Get(string channelTableId)
+        public async Task<Channel> Get(string channelTableId)
         {
             if (string.IsNullOrEmpty(channelTableId))
                 throw new ArgumentException("IDが空です");
@@ -43,7 +43,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public async Task<OutsourceVideoChannel> GetByChannelId(string id)
+        public async Task<Channel> GetByChannelId(string id)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentException("チャンネルIDが空です");
@@ -56,7 +56,7 @@ namespace ApplicationCore.DataServices
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> Regist(OutsourceVideoChannel entity, IDbContext db)
+        public async Task<bool> Regist(Channel entity, IDbContext db)
         {
             if (string.IsNullOrEmpty(entity.ID))
                 throw new ArgumentException("IDを空にすることはできません");

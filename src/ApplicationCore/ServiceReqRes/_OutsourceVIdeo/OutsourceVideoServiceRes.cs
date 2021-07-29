@@ -10,7 +10,7 @@ namespace ApplicationCore.ServiceReqRes
     /// </summary>
     public  class OutsourceVideoServiceRes
     {
-        private OutsourceVideo _original;
+        private Video _original;
 
         public string Id => _original.ID;
 
@@ -123,7 +123,7 @@ namespace ApplicationCore.ServiceReqRes
         /// コンストラクタ
         /// </summary>
         /// <param name="original"></param>
-        public OutsourceVideoServiceRes(OutsourceVideo original)
+        public OutsourceVideoServiceRes(Video original)
         {
             _original = original;
         }

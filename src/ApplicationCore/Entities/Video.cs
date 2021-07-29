@@ -11,7 +11,7 @@ namespace ApplicationCore.Entities
     /// 外部動画Entity
     /// </summary>
     [Index(nameof(VideoId), nameof(ViewCount), nameof(CommentCount), nameof(LikeCount), nameof(PublishDateTime), nameof(RegistDateTime))]
-    public class OutsourceVideo : BaseEntity
+    public class Video : BaseEntity
     {
         /// <summary>
         /// 動画ID

@@ -12,7 +12,7 @@ namespace ApplicationCore.ServiceReqRes
     /// </summary>
     public class OutsourceVideoChannelServiceRes
     {
-        private OutsourceVideoChannel _original;
+        private Entities.Channel _original;
 
         /// <summary>
         /// チャンネルID
@@ -68,7 +68,7 @@ namespace ApplicationCore.ServiceReqRes
         /// コンストラクタ
         /// </summary>
         /// <param name="entity"></param>
-        public OutsourceVideoChannelServiceRes(OutsourceVideoChannel entity)
+        public OutsourceVideoChannelServiceRes(Entities.Channel entity)
         {
             _original = entity;
         }

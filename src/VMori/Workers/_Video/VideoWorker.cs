@@ -15,14 +15,14 @@ namespace VMori.Workers._Video
     /// </summary>
     public class VideoWorker : IVideoWorker
     {
-        private IOutsourceVideoService _outsourceVideoService;
+        private IVideoService _outsourceVideoService;
         private IVideoCommentService _videoCommentService;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="outsourceVideoService"></param>
-        public VideoWorker(IOutsourceVideoService outsourceVideoService, IVideoCommentService videoCommentService)
+        public VideoWorker(IVideoService outsourceVideoService, IVideoCommentService videoCommentService)
         {
             _outsourceVideoService = outsourceVideoService;
             _videoCommentService = videoCommentService;
@@ -151,6 +151,8 @@ namespace VMori.Workers._Video
                 TransrationLangs = req.TransrationLangs
             };
 
+            var period = CreatePeriodDateTime(req.PeiodKinds);
+
             var serviceReq = new SearchCriteriaVideoServiceReq()
             {
                 Page = req.Page,
@@ -160,8 +162,8 @@ namespace VMori.Workers._Video
                 Detail = detail,
                 SortKinds = req.SortKinds,
                 IsDesc = req.IsDesc,
-                Start = req.Start,
-                End = req.End,
+                Start = period.Item1,
+                End = period.Item2,
                 IsPublish = req.IsPublish
             };
 
@@ -286,6 +288,42 @@ namespace VMori.Workers._Video
                 }),
                 TotalCount = res.TotalCount
             };
+        }
+
+        /// <summary>
+        /// 期間の生成
+        /// </summary>
+        /// <param name="kinds"></param>
+        /// <returns>(開始,終了)</returns>
+        private (DateTime?, DateTime?) CreatePeriodDateTime(PeriodKinds kinds)
+        {
+            var now = DateTime.Now;
+            DateTime? start = null;
+            DateTime? end = null;
+            switch (kinds)
+            {
+                case PeriodKinds.ToDay:
+                    start = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, 0);
+                    end = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59, 999);
+                    break;
+                case PeriodKinds.Week:
+                    DateTime tmp = DateTime.Now;
+                    tmp.AddDays(DayOfWeek.Monday - tmp.DayOfWeek);
+
+                    start = new DateTime(tmp.Year, tmp.Month, tmp.Day, 0, 0, 0, 0);
+                    end = now;
+                    break;
+                case PeriodKinds.Month:
+                    start = new DateTime(now.Year, now.Month, 1, 0, 0, 0, 0);
+                    end = now;
+                    break;
+                case PeriodKinds.All:
+                    start = null;
+                    end = null;
+                    break;
+            }
+
+            return (start, end);
         }
     }
 }

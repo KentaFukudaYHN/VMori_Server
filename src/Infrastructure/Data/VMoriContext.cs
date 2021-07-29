@@ -38,7 +38,7 @@ namespace Infrastructure.Data
         /// <summary>
         /// Outsource動画
         /// </summary>
-        public DbSet<OutsourceVideo> OutsourceVideos { get; set; }
+        public DbSet<Video> Videos { get; set; }
 
         ///// <summary>
         ///// Outsource動画統計情報
@@ -53,7 +53,7 @@ namespace Infrastructure.Data
         /// <summary>
         /// Outsouceチャンネル情報
         /// </summary>
-        public DbSet<OutsourceVideoChannel> OutsouceVideoChannels { get; set; }
+        public DbSet<Channel> VideoChannels { get; set; }
 
         /// <summary>
         /// チャンネル推移データ
@@ -63,7 +63,7 @@ namespace Infrastructure.Data
         /// <summary>
         /// Outsource動画のuploadリクエスト情報
         /// </summary>
-        public DbSet<UpReqOutsourceVideo> UpReqOutsourceVideos { get; set; }
+        public DbSet<UpReqOutsourceVideo> UpReqVideos { get; set; }
 
         /// <summary>
         /// 動画視聴履歴
@@ -85,7 +85,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<AppReqMail>().HasKey(x => new { x.ID, x.Token });
 
             //Outsource動画
-            var OutsourceVideoBuilder = modelBuilder.Entity<OutsourceVideo>().ToTable("OutsourceVideo");
+            var OutsourceVideoBuilder = modelBuilder.Entity<Video>().ToTable("Video");
             //OutsourceVideoBuilder
             //    .Property(x => x.Tags)
             //    .HasConversion(
@@ -113,10 +113,10 @@ namespace Infrastructure.Data
 
            
             //Outsource動画のアップロードリクエスト情報
-            modelBuilder.Entity<UpReqOutsourceVideo>().ToTable("UploadReqOutsourceVideo");
+            modelBuilder.Entity<UpReqOutsourceVideo>().ToTable("UploadReqVideo");
 
             //Outsouceチャンネル情報
-            modelBuilder.Entity<OutsourceVideoChannel>().ToTable("OutsourceVideoChannel");
+            modelBuilder.Entity<Channel>().ToTable("Channel");
 
             //チャンネル推移データ
             modelBuilder.Entity<ChannelTransition>().ToTable("ChannelTransition");

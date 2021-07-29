@@ -16,7 +16,7 @@ namespace ApplicationCore.DataServices
     /// </summary>
     public class ChannelDataService : IChannelDataService
     {
-        private readonly IAsyncRepository<OutsourceVideoChannel> _repository;
+        private readonly IAsyncRepository<Channel> _repository;
 
         /// <summary>
         /// チャンネルリストの取得
@@ -24,7 +24,7 @@ namespace ApplicationCore.DataServices
         /// <param name="page"></param>
         /// <param name="displayNum"></param>
         /// <returns></returns>
-        public async Task<List<OutsourceVideoChannel>> GetList(int page, int displayNum, Expression<Func<OutsourceVideoChannel, object>> sortFunc, bool isDesc)
+        public async Task<List<Channel>> GetList(int page, int displayNum, Expression<Func<Channel, object>> sortFunc, bool isDesc)
         {
             if(page == 0 || displayNum == 0)
                 throw new ArgumentException("パラメーターが不正です");
@@ -47,7 +47,7 @@ namespace ApplicationCore.DataServices
             return await _repository.CountAsync();
         }
 
-        public ChannelDataService(IAsyncRepository<OutsourceVideoChannel> repository)
+        public ChannelDataService(IAsyncRepository<Channel> repository)
         {
             _repository = repository;
         }

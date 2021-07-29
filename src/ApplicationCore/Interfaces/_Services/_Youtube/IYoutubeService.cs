@@ -37,7 +37,7 @@ namespace ApplicationCore.Interfaces
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        Task<OutsourceVideoChannel> GetChannel(string channelId);
+        Task<Channel> GetChannel(string channelId);
 
         /// <summary>
         /// 動画のリンクを生成

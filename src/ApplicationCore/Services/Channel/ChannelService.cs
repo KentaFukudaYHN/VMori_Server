@@ -62,7 +62,7 @@ namespace ApplicationCore.Services.Channel
         /// </summary>
         /// <param name="sortKinds"></param>
         /// <returns></returns>
-        private Expression<Func<OutsourceVideoChannel, object>> GetSortFunc(ChannelSortKins sortKinds)
+        private Expression<Func<Entities.Channel, object>> GetSortFunc(ChannelSortKins sortKinds)
         {
             switch (sortKinds)
             {
