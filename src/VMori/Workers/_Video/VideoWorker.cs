@@ -265,6 +265,17 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTags(string id, List<string> tags)
+        {
+            return await _outsourceVideoService.UpdateTags(id, tags);
+        }
+
+        /// <summary>
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <param name="resVideoList"></param>

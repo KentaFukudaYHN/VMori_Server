@@ -324,5 +324,74 @@ namespace ApplicationCore.DataServices
             return (await _repository.ListAsync(new OutsourceVideoWithVideoIdSpecification(videoId))).FirstOrDefault();
         }
 
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTagById(string videoId, List<string> tags)
+        {
+            if (string.IsNullOrEmpty(videoId) || tags == null)
+                throw new ArgumentException("不正なパラメーターです");
+
+            var video = new Video() { ID = videoId, Tags = tags };
+            await _repository.UpdateAsyncOnlyClumn(video, new List<string>() { nameof(Video.TagsData) });
+
+            return true;
+        }
+
+        /// <summary>
+        /// 有効無効の更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="available"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateAvailableById(string id, bool available)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("パラメーターが不正です");
+
+            var video = new Video() { ID = id, Available = available };
+            await _repository.UpdateAsyncOnlyClumn(video, new List<string>() { nameof(Video.Available) });
+
+            return true;
+        }
+
+        /// <summary>
+        /// 有効無効の更新
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="available"></param>
+        /// <returns></returns>
+        public bool UpdateAvailableById(List<string> ids, bool available)
+        {
+            if (ids == null || ids.Count == 0)
+                throw new ArgumentException("パラメーターが不正です");
+
+            var idStr = string.Empty;
+            ids.ForEach(x =>
+            {
+                idStr += "'" + x + "'" + ",";
+            });
+
+            idStr = idStr.TrimEnd(',');
+
+            var availableVal = available ? 1 : 0;
+
+            var sql = "UPDATE video set available = " + availableVal +  " WHERE ID IN (" + idStr + ")";
+
+            try
+            {
+                _repository.ExecuteSqlRaw(sql);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return true;
+        }
+
     }
 }

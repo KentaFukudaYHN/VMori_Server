@@ -128,5 +128,17 @@ namespace VMori.Controllers
         {
             return await _videoWorker.RegistComment(req.VideoId, req.Text, req.Time);
         }
+
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> UpdateTags(UpdateVideoTagsReq req)
+        {
+            return await _videoWorker.UpdateTags(req.Id, req.Tags);
+        }
     }
 }

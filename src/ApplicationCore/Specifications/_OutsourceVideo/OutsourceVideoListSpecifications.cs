@@ -32,6 +32,8 @@ namespace ApplicationCore.Specifications
 
             //登録日時順
             ApplyOrderByDescending(x => x.RegistDateTime);
+
+            AddCriteria(x => x.Available == true);
         }
 
         /// <summary>

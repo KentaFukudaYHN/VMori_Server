@@ -84,5 +84,13 @@ namespace ApplicationCore.Interfaces
         /// <param name="videoId"></param>
         /// <returns></returns>
         Task<bool> CountUpViewCount(string videoId, string ipAddress);
+
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTags(string id, List<string> tags);
     }
 }

@@ -137,6 +137,28 @@ namespace ApplicationCore.Interfaces
         Task<int> GetCount(string text, List<VideoGenreKinds> genres, List<VideoLanguageKinds>? langs, bool? isTranslatioon,
             List<VideoLanguageKinds>? translationLangs, Expression<Func<Video, object>> sortExpression, bool isDesc, DateTime? start, DateTime? end, bool? isPublishdate);
 
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTagById(string videoId, List<string> tags);
 
+        /// <summary>
+        /// 有効無効の更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="available"></param>
+        /// <returns></returns>
+        Task<bool> UpdateAvailableById(string id, bool available);
+
+        /// <summary>
+        /// 有効無効の更新
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="available"></param>
+        /// <returns></returns>
+        bool UpdateAvailableById(List<string> ids, bool available);
     }
 }

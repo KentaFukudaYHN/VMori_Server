@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ApplicationCore.Services
 {
     /// <summary>
-    /// ユーチューブサービス
+    /// 動画サービス
     /// </summary>
     public class VideoService : IVideoService
     {
@@ -306,6 +306,30 @@ namespace ApplicationCore.Services
             //更新対象の最新情報をyoutubeAPIから取得
             var newDatas = await _youtubeService.GetVideos(updateTargetVideoIds);
 
+            if(newDatas == null || newDatas.Count < updateTargetVideoIds.Count)
+            {
+                //動画が削除されている可能性があるので、Availableをfalseに更新する
+                var targetIds = new List<string>();
+                var newDataIds = newDatas.ConvertAll(x => x.VideoId);
+                for (int i = 0; i < updateTargetVideoIds.Count; i++)
+                {
+                    if (newDataIds.Contains(updateTargetVideoIds[i]) == false)
+                    {
+                        targetIds.Add(videos.Find(x => x.VideoId == updateTargetVideoIds[i]).ID);
+                        continue;
+                    }
+                }
+
+                if(targetIds.Count > 0)
+                {
+                    using (var scope = _serviceScopeFactory.CreateScope())
+                    {
+                        var dataService = scope.ServiceProvider.GetService<IVideoDataService>();
+                        dataService.UpdateAvailableById(targetIds, false);
+                    }
+                }
+            }
+
             //更新データの生成
             var updateDatas = new List<Video>();
             newDatas.ForEach(newData =>
@@ -591,7 +615,8 @@ namespace ApplicationCore.Services
                 TranslationJP = transitionJp,
                 TranslationEnglish = transitionEnglish,
                 TranslationOther = transtionOther,
-                RegistDateTime = DateTime.Now
+                RegistDateTime = DateTime.Now,
+                Available = true
             };
 
             //①既に登録されているチャンネルか確認
@@ -678,6 +703,22 @@ namespace ApplicationCore.Services
                 }
             }
 
+
+            return true;
+        }
+
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTags(string videoId, List<string> tags)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            await _videoDataService.UpdateTagById(videoId, tags);
 
             return true;
         }

@@ -59,6 +59,13 @@ namespace ApplicationCore.Interfaces
         Task UpdateAsync(T entity, IDbContext db);
 
         /// <summary>
+        /// SQLの直接実行
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        void ExecuteSqlRaw(string sql, params object[] parameters);
+
+        /// <summary>
         /// 更新
         /// </summary>
         /// <param name="entitys"></param>

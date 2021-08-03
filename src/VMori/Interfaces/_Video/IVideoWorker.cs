@@ -88,5 +88,12 @@ namespace VMori.Interfaces
         /// <returns></returns>
         Task<bool> CountUpViewCount(string videoId, HttpContext context);
 
+        /// <summary>
+        /// タグの更新
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTags(string id, List<string> tags);
     }
 }

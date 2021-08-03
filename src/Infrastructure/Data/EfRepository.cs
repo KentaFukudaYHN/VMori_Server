@@ -123,6 +123,16 @@ namespace Infrastructure.Data
         }
 
         /// <summary>
+        /// SQLの直接実行
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        public void ExecuteSqlRaw(string sql, params object[] parameters)
+        {
+            _db.Database.ExecuteSqlRaw(sql, parameters);
+        }
+
+        /// <summary>
         /// 削除
         /// </summary>
         /// <param name="entity"></param>

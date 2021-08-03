@@ -97,14 +97,16 @@ namespace ApplicationCore.Entities
         {
             get
             {
-                if (this.Tags == null)
+                if (this.Tags == null || this.Tags.Count == 0)
                     return "";
                 return string.Join(',', this.Tags);
             }
             set
             {
-                if(!string.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                     this.Tags = value.Split(',').ToList();
+                else
+                    this.Tags = new List<string>();
             }
         }
 
@@ -168,5 +170,10 @@ namespace ApplicationCore.Entities
         /// 更新回数
         /// </summary>
         public sbyte UpdateCount { get; set; }
+
+        /// <summary>
+        /// 有効無効の有無
+        /// </summary>
+        public bool Available { get; set; }
     }
 }
