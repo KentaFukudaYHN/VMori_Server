@@ -342,6 +342,44 @@ namespace ApplicationCore.DataServices
         }
 
         /// <summary>
+        /// 言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateLangsById(string videoId, bool speakJp, bool speakEnglish, bool speakOther)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            var video = new Video() { ID = videoId, SpeakJP = speakJp, SpeakEnglish = speakEnglish, SpeakOther = speakOther };
+            await _repository.UpdateAsyncOnlyClumn(video, new List<string>() { nameof(Video.SpeakJP), nameof(Video.SpeakEnglish), nameof(Video.SpeakOther) });
+
+            return true;
+        }
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTranslationLangsById(string videoId, bool speakJp, bool speakEnglish, bool speakOther)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            var video = new Video() { ID = videoId, TranslationJP = speakJp, TranslationEnglish = speakEnglish, TranslationOther = speakOther };
+            await _repository.UpdateAsyncOnlyClumn(video, new List<string>() { nameof(Video.TranslationJP), nameof(Video.TranslationEnglish), nameof(Video.TranslationOther) });
+
+            return true;
+        }
+
+        /// <summary>
         /// 有効無効の更新
         /// </summary>
         /// <param name="id"></param>

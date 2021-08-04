@@ -92,5 +92,25 @@ namespace ApplicationCore.Interfaces
         /// <param name="tags"></param>
         /// <returns></returns>
         Task<bool> UpdateTags(string id, List<string> tags);
+
+        /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        Task<bool> UpdateLangs(string videoId, bool speakJp, bool speakEnglish, bool speakOther);
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="translationJP"></param>
+        /// <param name="translationglish"></param>
+        /// <param name="translationOther"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTranslationLangs(string videoId, bool translationJP, bool translationglish, bool translationOther);
     }
 }

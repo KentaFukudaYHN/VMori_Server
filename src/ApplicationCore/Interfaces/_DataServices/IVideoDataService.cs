@@ -160,5 +160,25 @@ namespace ApplicationCore.Interfaces
         /// <param name="available"></param>
         /// <returns></returns>
         bool UpdateAvailableById(List<string> ids, bool available);
+
+        /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        Task<bool> UpdateLangsById(string videoId, bool speakJp, bool speakEnglish, bool speakOther);
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTranslationLangsById(string videoId, bool speakJp, bool speakEnglish, bool speakOther);
     }
 }

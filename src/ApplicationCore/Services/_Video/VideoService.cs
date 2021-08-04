@@ -718,9 +718,39 @@ namespace ApplicationCore.Services
             if (string.IsNullOrEmpty(videoId))
                 throw new ArgumentException("パラメーターが不正です");
 
-            await _videoDataService.UpdateTagById(videoId, tags);
+            return await _videoDataService.UpdateTagById(videoId, tags);
+        }
 
-            return true;
+        /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateLangs(string videoId, bool speakJp, bool speakEnglish, bool speakOther)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            return await _videoDataService.UpdateLangsById(videoId, speakJp, speakEnglish, speakOther);
+        }
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="videoId"></param>
+        /// <param name="speakJp"></param>
+        /// <param name="speakEnglish"></param>
+        /// <param name="speakOther"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTranslationLangs(string videoId, bool translationJP, bool translationglish, bool translationOther)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                throw new ArgumentException("パラメーターが不正です");
+
+            return await _videoDataService.UpdateTranslationLangsById(videoId, translationJP, translationglish, translationOther);
         }
 
         ///// <summary>

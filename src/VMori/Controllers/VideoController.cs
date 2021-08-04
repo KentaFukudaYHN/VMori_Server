@@ -140,5 +140,27 @@ namespace VMori.Controllers
         {
             return await _videoWorker.UpdateTags(req.Id, req.Tags);
         }
+
+        /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> UpdateLangs(UpdateVideoLangsReq req)
+        {
+            return await _videoWorker.UpdateLangs(req);
+        }
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<bool> UpdateTranslationLangs(UpdateVideoTranslationLangReq req)
+        {
+            return await _videoWorker.UpdateTranslationLangs(req);
+        }
     }
 }

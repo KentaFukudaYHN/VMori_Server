@@ -276,6 +276,26 @@ namespace VMori.Workers._Video
         }
 
         /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateLangs(UpdateVideoLangsReq req)
+        {
+            return await _outsourceVideoService.UpdateLangs(req.Id, req.SpeakJP, req.SpeakEnglish, req.SpeakOther);
+        }
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateTranslationLangs(UpdateVideoTranslationLangReq req)
+        {
+            return await _outsourceVideoService.UpdateTranslationLangs(req.Id, req.TranslationJP, req.TranslationEnglish, req.TranslationOther);
+        }
+
+        /// <summary>
         /// OutsourceVideoServiceResの生成
         /// </summary>
         /// <param name="resVideoList"></param>

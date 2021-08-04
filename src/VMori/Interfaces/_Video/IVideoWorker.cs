@@ -95,5 +95,19 @@ namespace VMori.Interfaces
         /// <param name="tags"></param>
         /// <returns></returns>
         Task<bool> UpdateTags(string id, List<string> tags);
+
+        /// <summary>
+        /// 話している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<bool> UpdateLangs(UpdateVideoLangsReq req);
+
+        /// <summary>
+        /// 翻訳している言語の更新
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        Task<bool> UpdateTranslationLangs(UpdateVideoTranslationLangReq req);
     }
 }
