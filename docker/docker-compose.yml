@@ -2,18 +2,38 @@ version: '3.4'
 
 services:
   vmori:
-    image: ${DOCKER_REGISTRY-}vmori
+    container_name: vmori
     build:
       context: ../
       dockerfile: ./src/VMori/Dockerfile
     environment:
-        - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection}
-        - Storage__ConnectionStrings=${Storage__ConnectionStrings}
-        - Storage__Domain=${Storage__Domain}
-        - Mail__ApiKey=${Mail__ApiKey}
-        - Mail__SystemMailAddress=${Mail__SystemMailAddress}
-        - Mail__SupportMailAddress=${Mail__SupportMailAddress}
-        - Client__Domain=${Client__Domain}
-        - Youtube__ApiKey=${Youtube__ApiKey}
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection}
+      - Storage__ConnectionStrings=${Storage__ConnectionStrings}
+      - Storage__Domain=${Storage__Domain}
+      - Mail__ApiKey=${Mail__ApiKey}
+      - Mail__SystemMailAddress=${Mail__SystemMailAddress}
+      - Mail__SupportMailAddress=${Mail__SupportMailAddress}
+      - Client__Domain=${Client__Domain}
+      - Youtube__ApiKey=${Youtube__ApiKey}
     ports:
-        - 5678:443
+      - 5678:443
+    depends_on:
+      - vmori_db
+  db:
+    build:
+      context: .
+    container_name: vmori_db
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${VmoriDB_Password}
+      - MSSQL_PID=Express
+      - MSSQL_LCID=1041
+      - MSSQL_COLLATION=Japanese_CI_AS
+    volumes:
+      - "./db/data:/var/opt/mssql/data"
+      - "./db/log:/var/opt/mssql/log"
+      - "./db/secrets:/var/opt/mssql/secrets"
+    
+    
