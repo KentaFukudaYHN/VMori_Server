@@ -193,6 +193,7 @@ namespace VMori.Workers._Video
                 item.ViewCount = x.ViewCount;
                 item.ThumbnailLink = x.ThumbnailLink;
                 item.PublishDateTime = x.PublishDateTime;
+                item.RegistDateTime = x.RegistDateTime;
                 item.PlatFormKinds = x.PlatFormKinds;
 
                 return item;
