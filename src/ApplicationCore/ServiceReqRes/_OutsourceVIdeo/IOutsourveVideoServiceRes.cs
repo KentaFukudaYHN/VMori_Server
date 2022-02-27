@@ -11,6 +11,7 @@ namespace ApplicationCore.ServiceReqRes
         /// 動画ID
         /// </summary>
         public string VideoId { get; }
+
         /// <summary>
         /// 動画タイトル
         /// </summary>
@@ -20,6 +21,11 @@ namespace ApplicationCore.ServiceReqRes
         /// 動画リンク
         /// </summary>
         public string VideoLink { get; }
+
+        /// <summary>
+        /// 再生回数
+        /// </summary>
+        public ulong ViewCount { get; }
 
         /// <summary>
         /// チャンネルID
