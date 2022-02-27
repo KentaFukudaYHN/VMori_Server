@@ -203,7 +203,7 @@ namespace ApplicationCore.Specifications
         /// <param name="end"></param>
         public void AddCriteriaByPublishDateTime(DateTime start, DateTime end)
         {
-            base.AddCriteria(x => x.PublishDateTime >= start && x.RegistDateTime <= end);
+            base.AddCriteria(x => x.PublishDateTime >= start && x.PublishDateTime <= end);
         }
         /// <summary>
         /// ページングの設定
