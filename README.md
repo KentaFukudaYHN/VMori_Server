@@ -17,7 +17,7 @@ Youtube上では他のYoutuberの動画によって、Vtuberの動画が探し�
 # 構成
 フレームワーク：ASP.NET Core 5.0
 DB：Azure SQL Server
-ユーザーアイコン等のストレージ：Azure Blob Container
+画像等のストレージ：Azure Blob Container
 アカウント認証方式：JWTを使用
  
 # アーキテクチャ
