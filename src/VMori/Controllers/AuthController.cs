@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
@@ -27,13 +28,15 @@ namespace VMori.Controllers
         /// <param name="vModel"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel vModel)
         {
-            var isValid = await _authWorker.Login(vModel, HttpContext);
+            var token = await _authWorker.Login(vModel, HttpContext);
 
-            if (isValid == false)
+            if (string.IsNullOrEmpty(token))
                 return StatusCode((int)HttpStatusCode.Unauthorized);
 
+            Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true });
             return StatusCode((int)HttpStatusCode.OK);
         }
 

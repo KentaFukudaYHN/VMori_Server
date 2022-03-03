@@ -17,7 +17,7 @@ namespace VMori.Interfaces
         /// <param name="mail"></param>
         /// <param name="ps"></param>
         /// <returns></returns>
-        Task<bool> Login(LoginViewModel vModel, HttpContext context);
+        Task<string> Login(LoginViewModel vModel, HttpContext context);
 
         /// <summary>
         /// パスワード変更の認証コードチェック

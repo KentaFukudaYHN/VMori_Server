@@ -12,7 +12,7 @@ namespace ApplicationCore.Interfaces
         /// ログイン
         /// </summary>
         /// <returns></returns>
-        Task<bool> Login(string mail, string ps, HttpContext context);
+        Task<string> Login(string mail, string ps, HttpContext context);
 
         /// <summary>
         /// メールアドレス認証準備用の情報作成

@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -25,13 +28,17 @@ namespace ApplicationCore.Services
         private readonly IChangeReqPasswordDataService _changeReqPasswordDataService;
         private readonly ClientConfig _clientConfig;
         private readonly MailConfig _mailConfig;
-
+        private readonly SecretConfig _secretConfig;
+        private readonly ServerConfig _serverConfig;
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="accountDataService"></param>
-        public AuthService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, IChangeReqPasswordDataService changeReqPasswordDataService,IMailService mailService, IOptions<ClientConfig> clientConfig, IOptions<MailConfig> mailConfig, IDbContext db)
+        public AuthService(IAccountDataService accountDataService, IAppReqMailDataService appReqMailDataService, 
+            IChangeReqPasswordDataService changeReqPasswordDataService,IMailService mailService, 
+            IOptions<ClientConfig> clientConfig, IOptions<MailConfig> mailConfig, 
+            IOptions<SecretConfig> secretConfig, IOptions<ServerConfig> serverConfig, IDbContext db)
         {
             _accountDataService = accountDataService;
             _appReqMailDataService = appReqMailDataService;
@@ -39,6 +46,8 @@ namespace ApplicationCore.Services
             _changeReqPasswordDataService = changeReqPasswordDataService;
             _clientConfig = clientConfig.Value;
             _mailConfig = mailConfig.Value;
+            _secretConfig = secretConfig.Value;
+            _serverConfig = serverConfig.Value;
             _db = db;
         }
 
@@ -48,43 +57,34 @@ namespace ApplicationCore.Services
         /// <param name="id"></param>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public async Task<bool> Login(string mail, string ps, HttpContext context)
+        public async Task<string> Login(string mail, string ps, HttpContext context)
         {
             if (string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(ps))
                 throw new ArgumentException();
 
             var account = await _accountDataService.GetAsync(mail, ps);
             if (account == null)
-                return false;
+                return null;
 
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, account.ID), //ユニーク
+                new Claim(ClaimTypes.NameIdentifier, account.ID),
                 new Claim(ClaimTypes.Name, account.Name),
                 new Claim("Mail", account.Mail),
                 new Claim("StorageID", account.StorageID)
             };
 
-            //一意のID情報
-            var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretConfig.JwtKey));
 
-            var authProperties = new Microsoft.AspNetCore.Authentication.AuthenticationProperties
-            {
-                //認証セッションの更新許可
-                AllowRefresh = true,
-                //認証セッションの有効期限を1日に設定
-                ExpiresUtc = DateTimeOffset.Now.AddDays(1),
-                //認証セッションの要求間の永続化
-                IsPersistent = false
-            };
+            var token = new JwtSecurityToken(
+                "https://" + _serverConfig.Domain, //issure
+                "https://" + _clientConfig.Domain, //audience
+                claims,
+                expires: DateTime.Now.AddSeconds(60 * 60 * 24), // 有効期限
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+            );
 
-            await context.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimIdentity),
-                authProperties
-                );
-
-            return true;
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         /// <summary>

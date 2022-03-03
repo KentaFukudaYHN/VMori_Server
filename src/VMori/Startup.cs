@@ -8,21 +8,27 @@ using ApplicationCore.Services.Channel;
 using ApplicationCore.Utility;
 using Infrastructure.Data;
 using Infrastructure.Mail;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 using VMori.Interfaces;
 using VMori.Interfaces.Channel;
 using VMori.Workers;
 using VMori.Workers._Video;
 using VMori.Workers.Channel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api
 {
@@ -49,11 +55,12 @@ namespace Api
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            app.UseRouting();
 
             app.UseCors(LocalAllowSpecificOrigins);
 
             app.UseAuthentication();
+            app.UseRouting();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -75,28 +82,60 @@ namespace Api
                 o.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services
-                .AddAuthentication(options =>
+            //services
+            //    .AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+            //})
+            //.AddCookie(options =>
+            // {
+            //     options.SlidingExpiration = true;
+            //     options.Events.OnRedirectToLogin = cxt =>
+            //     {
+            //         cxt.Response.StatusCode = 401;
+            //         return Task.CompletedTask;
+            //     };
+            //     options.Events.OnRedirectToAccessDenied = cxt =>
+            //     {
+            //         cxt.Response.StatusCode = 403;
+            //         return Task.CompletedTask;
+            //     };
+            //     options.Events.OnRedirectToLogout = cxt => Task.CompletedTask;
+            // });
+
+            //jwt‚ÌÝ’è
+            var clientDomain = "https://" + this.Configration.GetSection("Client").GetValue(typeof(string), "Domain") as string;
+            var serverDomain = "https://" + this.Configration.GetSection("Server").GetValue(typeof(string), "Domain") as string;
+            var jwtSecret = this.Configration.GetSection("Secret").GetValue(typeof(string), "JwtKey") as string;
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options => {
-                    options.SlidingExpiration = true;
-                    options.Events.OnRedirectToLogin = cxt =>
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = serverDomain,
+                    ValidAudience = clientDomain,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                    ClockSkew = TimeSpan.Zero
+                };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
                     {
-                        cxt.Response.StatusCode = 401;
+                        if (context.Request.Cookies.ContainsKey("X-Access-Token"))
+                        {
+                            context.Token = context.Request.Cookies["X-Access-Token"];
+                        }
                         return Task.CompletedTask;
-                    };
-                    options.Events.OnRedirectToAccessDenied = cxt =>
-                    {
-                        cxt.Response.StatusCode = 403;
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnRedirectToLogout = cxt => Task.CompletedTask;
-                });
-            
+                    }
+                };
+            });
+
             //CORS‚ÌÝ’è
             services.AddCors(options =>
             {
@@ -106,7 +145,7 @@ namespace Api
                         builder
                             .AllowAnyMethod()
                             .AllowAnyHeader()
-                            .WithOrigins(new string[] { "https://" + this.Configration.GetSection("Client").GetValue(typeof(string), "Domain") as string })
+                            .WithOrigins(new string[] { clientDomain })
                             .AllowCredentials();
                     });
             });
@@ -169,6 +208,8 @@ namespace Api
             services.Configure<ClientConfig>(this.Configration.GetSection("Client"));
             services.Configure<StorageConfig>(this.Configration.GetSection("Storage"));
             services.Configure<YoutubeConfig>(this.Configration.GetSection("Youtube"));
+            services.Configure<SecretConfig>(this.Configration.GetSection("Secret"));
+            services.Configure<ServerConfig>(this.Configration.GetSection("Server"));
         }
     }
 }

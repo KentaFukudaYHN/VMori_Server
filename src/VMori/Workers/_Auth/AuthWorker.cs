@@ -26,7 +26,7 @@ namespace VMori.Workers
         /// <param name="mail"></param>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public async Task<bool> Login(LoginViewModel vModel, HttpContext context)
+        public async Task<string> Login(LoginViewModel vModel, HttpContext context)
         {
             return await _authService.Login(vModel.Mail, vModel.Password, context);
         }
