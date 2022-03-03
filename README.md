@@ -15,10 +15,10 @@ Youtube上では他のYoutuberの動画によって、Vtuberの動画が探し�
 ・Vtuberファンの方同士で交流できるSNS(※未実装)
  
 # 構成
-フレームワーク：ASP.NET Core 5.0
-DB：Azure SQL Server
-画像等のストレージ：Azure Blob Container
-アカウント認証方式：JWTを使用
+フレームワーク：ASP.NET Core 5.0<br>
+DB：Azure SQL Server<br>
+画像等のストレージ：Azure Blob Container<br>
+アカウント認証方式：JWTを使用<br>
  
 # アーキテクチャ
  バックエンドとフロントエンドでプロジェクトを完全に分けています<br>
